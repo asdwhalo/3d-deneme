@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://bs8c80ml1gvmm"]
+
+[ext_resource type="Shader" uid="uid://c31gdtlcyn50t" path="res://assets/deneme.gdshader" id="1_6d3x2"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s4ruc"]
+sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
+sky_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
+ground_bottom_color = Color(0.158572, 0.177427, 0.194551, 1)
+ground_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
+
+[sub_resource type="Sky" id="Sky_8sngn"]
+sky_material = SubResource("ProceduralSkyMaterial_s4ruc")
+
+[sub_resource type="Environment" id="Environment_rcj30"]
+background_mode = 2
+sky = SubResource("Sky_8sngn")
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6d3x2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_s4ruc"]
+noise = SubResource("FastNoiseLite_6d3x2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tgjhq"]
+render_priority = 0
+shader = ExtResource("1_6d3x2")
+shader_parameter/albedo_color = Color(0.752403, 0.658692, 0.150772, 1)
+shader_parameter/albedo_tex = SubResource("NoiseTexture2D_s4ruc")
+shader_parameter/use_albedo_tex = true
+shader_parameter/specular_color = Color(1, 0.682012, 0.632742, 1)
+shader_parameter/spec_intensity = 2.0
+shader_parameter/shininess = 128.0
+shader_parameter/rim_intensity = 1.0
+shader_parameter/rim_power = 3.056
+
+[sub_resource type="SphereMesh" id="SphereMesh_n75tu"]
+material = SubResource("ShaderMaterial_tgjhq")
+radius = 2.5
+height = 5.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6d3x2"]
+custom_solver_bias = 1.0
+radius = 2.5
+
+[node name="world" type="Node3D"]
+
+[node name="env" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_rcj30")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.866025, -0.5, -2.18557e-08, 0, -4.37114e-08, 1, -0.5, 0.866025, 3.78552e-08, 0, 18.9286, 0)
+light_energy = 0.431
+shadow_enabled = true
+directional_shadow_max_distance = 1.0
+
+[node name="ground" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.31647, 0, -2.47418)
+size = Vector3(64.6071, 1, 57.4161)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="ground"]
+transform = Transform3D(4.86067, 0, 0, 0, 4.52916, 0, 0, 0, 4.08709, 0, 22.6414, 0)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.61346, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8316, 21.6501, 0)
+mesh = SubResource("SphereMesh_n75tu")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_6d3x2")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(4.49119e-05, -0.999978, -0.00663205, -0.00677165, -0.0066322, 0.999955, -0.999977, 3.6379e-12, -0.0067718, 15.0848, 31.3029, 0)

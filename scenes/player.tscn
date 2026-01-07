@@ -1,0 +1,59 @@
+[gd_scene load_steps=10 format=3 uid="uid://bgbrkn1kix4pk"]
+
+[ext_resource type="Script" uid="uid://bp6o4lr3m30lr" path="res://scripts/player.gd" id="1_4flbx"]
+[ext_resource type="Texture2D" uid="uid://c0kjvys7swrtv" path="res://assets/PNG/Orange/texture_05.png" id="2_i3pqv"]
+[ext_resource type="PackedScene" uid="uid://cgmadr3sv7asu" path="res://scenes/dialuge.tscn" id="2_onrkg"]
+[ext_resource type="Texture2D" uid="uid://cg2vxdhi1sppd" path="res://icon.svg" id="4_hqtel"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hqtel"]
+albedo_texture = ExtResource("2_i3pqv")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_onrkg"]
+material = SubResource("StandardMaterial3D_hqtel")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i3pqv"]
+albedo_color = Color(1.68458e-07, 0.167165, 0.0656959, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hqtel"]
+material = SubResource("StandardMaterial3D_i3pqv")
+size = Vector3(1, 0.2, 0.4)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sweqy"]
+
+[node name="player" type="CharacterBody3D"]
+script = ExtResource("1_4flbx")
+speed = 10.0
+jump_height = 100.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01393, 0)
+mesh = SubResource("CapsuleMesh_onrkg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(0.832297, 0, 0, 0, 1, 0, 0, 0, 1, 0.0165479, 0.574503, 0.336768)
+mesh = SubResource("BoxMesh_hqtel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01393, 0)
+shape = SubResource("CapsuleShape3D_sweqy")
+
+[node name="hud" type="CanvasLayer" parent="."]
+
+[node name="dialuge" parent="hud" instance=ExtResource("2_onrkg")]
+visible = false
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="hud"]
+anchors_preset = -1
+anchor_right = 0.126
+anchor_bottom = 0.256
+offset_right = -0.152008
+offset_bottom = 0.112
+
+[node name="SubViewport" type="SubViewport" parent="hud/SubViewportContainer"]
+size = Vector2i(128, 128)
+
+[node name="Sprite2D" type="Sprite2D" parent="hud/SubViewportContainer/SubViewport"]
+position = Vector2(62, 67)
+texture = ExtResource("4_hqtel")

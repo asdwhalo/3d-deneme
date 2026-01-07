@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4y5v31maeayx"]
+
+[ext_resource type="PackedScene" uid="uid://duqatgr4rsk46" path="res://gun_display.tscn" id="1_rliri"]
+
+[node name="SubViewport" type="Node3D"]
+
+[node name="gun_display" parent="." instance=ExtResource("1_rliri")]
+transform = Transform3D(1, 0, 0, 0, 0.997564, -0.0697565, 0, 0.0697565, 0.997564, -0.140772, -0.505553, 0)
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+current = true

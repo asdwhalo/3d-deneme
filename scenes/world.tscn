@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqq704m2j208n"]
+
+[ext_resource type="Texture2D" uid="uid://dr8bbqs8r420s" path="res://assets/PNG/Green/texture_08.png" id="1_rwgxs"]
+[ext_resource type="PackedScene" uid="uid://bby0quyyjfjai" path="res://scenes/player_fps.tscn" id="2_4wyf3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
+sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
+sky_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
+sky_curve = 4.63649
+sky_cover_modulate = Color(1, 0.885601, 0.934621, 1)
+ground_bottom_color = Color(0.158572, 0.177427, 0.194551, 1)
+ground_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
+
+[sub_resource type="Sky" id="Sky_tlwt5"]
+sky_material = SubResource("ProceduralSkyMaterial_fj7yv")
+
+[sub_resource type="Environment" id="Environment_aqk2v"]
+background_mode = 2
+sky = SubResource("Sky_tlwt5")
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_036b0"]
+albedo_color = Color(0.344076, 0.344076, 0.344076, 1)
+albedo_texture = ExtResource("1_rwgxs")
+uv1_triplanar = true
+
+[node name="world" type="Node3D"]
+
+[node name="env" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_aqk2v")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.866004, -0.499992, 0.00671762, 0.0058192, 0.0033561, 0.999977, -0.500003, 0.866024, 3.15723e-06, 0.837257, 10.6437, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 1.0
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(20, 0.5, 20)
+material = SubResource("StandardMaterial3D_036b0")
+
+[node name="PlayerFps" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+offset_right = 253.0
+offset_bottom = 234.0
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(253, 234)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 16, 6, 0)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45996, 0.919484, -4.86285)
+layers = 3
+use_collision = true
+size = Vector3(3.91992, 1.70593, 0.289917)
+metadata/name = "oha"

@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://duqatgr4rsk46"]
+
+[ext_resource type="PackedScene" uid="uid://wrq73c1d16i4" path="res://scenes/gun.tscn" id="1_dm7wk"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_fh3vb"]
+radius = 0.25
+height = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_iq32i"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_iq32i"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fh3vb"]
+
+[node name="gun_display" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.997564, -0.0697565, 0, 0.0697565, 0.997564, 0, 0, 0)
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.342388, 0.0958952, -0.757272)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.122788, -0.316492, 0)
+mesh = SubResource("SphereMesh_fh3vb")
+skeleton = NodePath("../..")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Node3D"]
+
+[node name="gun" parent="Node3D" instance=ExtResource("1_dm7wk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.120555, 0, -0.667919)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-0.0156082, 0.110089, -0.0939953, 0.13603, -0.0201835, -0.0273508, -0.0320447, -0.139301, -0.0703213, -0.257418, -0.19716, -0.301057)
+mesh = SubResource("CapsuleMesh_iq32i")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(0.140622, 0, 0, 0, 0.15875, 0.0553367, 0, -0.0820387, 0.10708, -0.0831198, 0.0647074, 0.0333736)
+mesh = SubResource("CapsuleMesh_iq32i")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(0.266342, -0.00333813, -0.163997, 0.0037069, 0.269401, -0.00190055, 0.367524, -0.000298107, 0.118867, -0.00561532, -0.0882803, -0.555761)
+mesh = SubResource("BoxMesh_iq32i")
+skeleton = NodePath("../../hand")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/MeshInstance3D4"]
+transform = Transform3D(0.237263, -0.106536, 0.0775054, 0.0565752, 0.474183, -0.257255, -0.00675541, 0.229427, 0.567687, 0.422553, 0.95262, 0.316262)
+mesh = SubResource("CapsuleMesh_fh3vb")
+
+[node name="hand" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.997564, 0.0697565, 0, -0.0697565, 0.997564, -0.151397, 0.423647, -0.144945)
