@@ -2,7 +2,7 @@ class_name Player
 extends CharacterBody3D
 
 ## FPS player base
-
+var item_name = "sen"
 #signal dead
 #TODO item alma yakalama bırakma sistemi yaz giti ayarla
 @export var is_cap:bool = true
@@ -66,14 +66,22 @@ func Mstate_manager():
 		Mstates = stsm.CROUCH
 	else:
 		Mstates = stsm.WALK
+
 func hudControl()->void:
+	var collider = raycast.get_collider()
 	hud.speed.text = str(velocity.z)
 	hud.is_ground.text = str(is_on_floor())
-	
-	if raycast.is_colliding() and raycast.get_collider().has_meta("name") or raycast.get_collider().item_name == !null:
-		hud.info.text = str(raycast.get_collider().get_meta("name"))
+	if not raycast.is_colliding():
+		return
 	else:
-		hud.info.text = "+"
+		if collider is Item:
+			hud.info.text = str(collider.item_name)
+		elif collider.has_meta("name"):
+			hud.info.text = str(collider.get_meta("name"))
+		else:
+			hud.info.text = "+"
+	
+	
 func fire():
 	if Input.is_action_just_pressed("fire"):
 		anim.play("fire")

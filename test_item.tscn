@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6wnrao755lgc"]
+
+[ext_resource type="Script" uid="uid://cnvs6lqnbhnmj" path="res://scripts/item.gd" id="1_0l3m6"]
+[ext_resource type="Texture2D" uid="uid://fw7npuj2cmyu" path="res://assets/PNG/Light/texture_08.png" id="2_e5x20"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e5x20"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cbefx"]
+albedo_texture = ExtResource("2_e5x20")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_cbefx"]
+material = SubResource("StandardMaterial3D_cbefx")
+
+[node name="Item" type="RigidBody3D"]
+script = ExtResource("1_0l3m6")
+item_name = "ohaaa"
+grabable = true
+metadata/_custom_type_script = "uid://cnvs6lqnbhnmj"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47546816, 0)
+shape = SubResource("BoxShape3D_e5x20")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47546816, 0)
+mesh = SubResource("BoxMesh_cbefx")

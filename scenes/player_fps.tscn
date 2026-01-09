@@ -84,6 +84,7 @@ collision_bounce = 0.09
 [node name="PlayerFps" type="CharacterBody3D"]
 collision_layer = 3
 script = ExtResource("1_xby0o")
+metadata/name = "self"
 
 [node name="upper" type="CollisionShape3D" parent="."]
 unique_name_in_owner = true
