@@ -110,6 +110,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53647, 0)
 
 [node name="Camera3D" type="Camera3D" parent="head"]
+fov = 140.0
 near = 0.2
 
 [node name="gun_display" parent="head/Camera3D" instance=ExtResource("5_iq32i")]

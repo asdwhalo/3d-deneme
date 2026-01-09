@@ -18,7 +18,7 @@ var item_name = "sen"
 	set = set_slam,
 	get = get_slam
 @onready var particels: GPUParticles3D = $GPUParticles3D
-@onready var hand: Node3D = %hand
+#@onready var hand: Node3D = %hand
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var raycast: RayCast3D = $head/RayCast3D
 @onready var hud: Control = %hud
@@ -32,7 +32,7 @@ var current_gravity:float
 @onready var lower: CollisionShape3D = %lower
 
 @onready var mesh: MeshInstance3D = %MeshInstance3D
-@onready var gun: Node3D = %gun_display
+#@onready var gun: Node3D = %gun_display
 
 #			TODO
 # daha sulu bir sistem yaz
@@ -68,10 +68,13 @@ func Mstate_manager():
 		Mstates = stsm.WALK
 
 func hudControl()->void:
+	var input_dir := Input.get_vector("a", "d", "w", "s")
+	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var collider = raycast.get_collider()
-	hud.speed.text = str(velocity.z)
+	hud.speed.text = str(velocity.x)
 	hud.is_ground.text = str(is_on_floor())
 	if not raycast.is_colliding():
+		hud.info.text = "+"
 		return
 	else:
 		if collider is Item:
@@ -98,7 +101,7 @@ func cap_mouse()->void:
 func tween_denemesi():
 	var _tween = self.create_tween()
 	var degress:int = 10
-	gun.rotation.x = lerp_angle(deg_to_rad(degress),deg_to_rad(-degress),1)
+	#gun.rotation.x = lerp_angle(deg_to_rad(degress),deg_to_rad(-degress),1)
 	
 	
 	#tween.tween_property(gun,"rotation",Vector3(deg_to_rad(degress),0,0),2)
@@ -116,10 +119,11 @@ func _input(event: InputEvent) -> void:
 		head.rotate_x(deg_to_rad(event.relative.y *-mouse_sensivity))
 		head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
 func _physics_process(delta: float) -> void:
+	var input_dir := Input.get_vector("a", "d", "w", "s")
 	# Add the gravity.
 	fire()
 	hudControl()
-	if current_speed >= 6 and is_on_floor():
+	if current_speed >= 6 and is_on_floor() and input_dir:
 		particels.emitting = true
 	else:
 		particels.emitting = false
@@ -155,7 +159,7 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("a", "d", "w", "s")
+	
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * current_speed
