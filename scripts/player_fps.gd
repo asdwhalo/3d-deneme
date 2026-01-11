@@ -5,6 +5,7 @@ extends CharacterBody3D
 var item_name = "sen"
 #signal dead
 #TODO item alma yakalama bırakma sistemi yaz giti ayarla
+@export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
 @export var Mstates:stsm
@@ -23,6 +24,8 @@ var item_name = "sen"
 @onready var raycast: RayCast3D = $head/RayCast3D
 @onready var hud: Control = %hud
 @onready var grap_point: Node3D = $head/grapPoint
+@onready var bullet_scene = preload("res://scenes/bullet.tscn")
+@onready var shoot_point : Node3D = $head/shoot_point
 
 var current_gravity:float
 
@@ -68,8 +71,12 @@ func Mstate_manager():
 		Mstates = stsm.WALK
 
 func hudControl()->void:
-	var input_dir := Input.get_vector("a", "d", "w", "s")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+#	if invertory[1] == null:
+#		hud.inventory.text = "empty"
+#	else:
+#		hud.inventory.text = str(invertory[0])
+	#var input_dir := Input.get_vector("a", "d", "w", "s")
+	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var collider = raycast.get_collider()
 	hud.speed.text = str(velocity.x)
 	hud.is_ground.text = str(is_on_floor())
@@ -79,15 +86,24 @@ func hudControl()->void:
 	else:
 		if collider is Item:
 			hud.info.text = str(collider.item_name)
-		elif collider.has_meta("name"):
+			if collider.has_method("grap") and Input.is_action_just_pressed("interac"):
+				collider.grap()
+			return
+		else:
+			hud.info.text = "+"
+		if collider != null and collider.has_meta("name") and collider is not Item:
 			hud.info.text = str(collider.get_meta("name"))
 		else:
 			hud.info.text = "+"
+		
 	
 	
 func fire():
+	var bullet = bullet_scene.instantiate()
 	if Input.is_action_just_pressed("fire"):
-		anim.play("fire")
+		add_child(bullet)
+		bullet.global_rotation_degrees = -head.global_rotation_degrees.x * head.global_basis.z
+		bullet.global_position = shoot_point.global_position
 func state_manager():
 	if self.is_on_floor():
 		states = sts.YER

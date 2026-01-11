@@ -81,7 +81,7 @@ collision_bounce = 0.09
 
 [sub_resource type="SphereMesh" id="SphereMesh_0enxy"]
 
-[node name="PlayerFps" type="CharacterBody3D"]
+[node name="PlayerFps" type="CharacterBody3D" groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_xby0o")
 metadata/name = "self"
@@ -138,6 +138,9 @@ target_position = Vector3(0, 0, -5)
 hit_from_inside = true
 
 [node name="grapPoint" type="Node3D" parent="head"]
+
+[node name="shoot_point" type="Node3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5135621)
 
 [node name="extra" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.048, 0)

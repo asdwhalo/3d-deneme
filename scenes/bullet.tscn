@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dyts86owng27t"]
+
+[ext_resource type="Script" uid="uid://dtxt8ag0tig74" path="res://scripts/bullet.gd" id="1_mkf8s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mkf8s"]
+albedo_color = Color(0.75686276, 0.9372549, 0.023529412, 1)
+emission_enabled = true
+emission = Color(0.46618086, 0.4661808, 0.4661808, 1)
+emission_energy_multiplier = 2.38
+stencil_flags = 2
+stencil_outline_thickness = 0.032
+
+[sub_resource type="BoxMesh" id="BoxMesh_y25gk"]
+material = SubResource("StandardMaterial3D_mkf8s")
+size = Vector3(0.1, 0.1, 1)
+
+[node name="bullet" type="CharacterBody3D"]
+script = ExtResource("1_mkf8s")
+speed = 50.0
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.51099086)
+target_position = Vector3(0, 0, 1)
+hit_from_inside = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_y25gk")
