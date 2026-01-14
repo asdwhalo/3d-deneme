@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene load_steps=27 format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://d3vgvd142746t" path="res://scripts/gun_manager.gd" id="4_3na6w"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
-[ext_resource type="PackedScene" uid="uid://duqatgr4rsk46" path="res://gun_display.tscn" id="5_iq32i"]
+[ext_resource type="PackedScene" uid="uid://duqatgr4rsk46" path="res://scenes/gun_display.tscn" id="5_iq32i"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
 
@@ -27,6 +27,9 @@ uv1_triplanar = true
 [sub_resource type="BoxMesh" id="BoxMesh_sen8m"]
 material = SubResource("StandardMaterial3D_bn4h4")
 size = Vector3(0.75, 0.2, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fh3vb"]
+size = Vector3(0.1, 0.1, 0.7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iq32i"]
 albedo_texture = ExtResource("4_jgv2g")
@@ -140,7 +143,10 @@ hit_from_inside = true
 [node name="grapPoint" type="Node3D" parent="head"]
 
 [node name="shoot_point" type="Node3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5135621)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32153535, -1.1514773)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head/shoot_point"]
+mesh = SubResource("BoxMesh_fh3vb")
 
 [node name="extra" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.048, 0)

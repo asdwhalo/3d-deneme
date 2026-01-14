@@ -2,9 +2,9 @@ class_name Player
 extends CharacterBody3D
 
 ## FPS player base
-var item_name = "sen"
 #signal dead
-#TODO item alma yakalama bırakma sistemi yaz giti ayarla
+#TODO item alma yakalama bırakma sistemi yaz giti ayarla FIXME merminin oyuncunun baktığı yöne dönme sini sağla
+#TODO  merdiven basamak fiziklerini ekle
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -102,7 +102,10 @@ func fire():
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_just_pressed("fire"):
 		add_child(bullet)
-		bullet.global_rotation_degrees = -head.global_rotation_degrees.x * head.global_basis.z
+		bullet.global_rotation_degrees.y = head.global_rotation_degrees.y
+		bullet.global_rotation_degrees.x = -head.global_rotation_degrees.x
+#		bullet.global_rotation_degrees.z = -head.global_rotation_degrees.z
+		#bullet.global_rotation_degrees = -head.global_rotation_degrees * head.global_basis
 		bullet.global_position = shoot_point.global_position
 func state_manager():
 	if self.is_on_floor():

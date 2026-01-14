@@ -8,12 +8,10 @@ var current_range:float
 @onready var raycast: RayCast3D = $RayCast3D
 
 func _process(delta: float) -> void:
-	
 	var collider = raycast.get_collider()
 	current_range += 1 * delta
 	velocity = speed * global_basis.z
 	if raycast.is_colliding() or current_range >= bullet_range:
-		
 		queue_free()
 		
 	move_and_slide()
