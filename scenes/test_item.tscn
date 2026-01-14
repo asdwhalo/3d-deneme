@@ -15,7 +15,7 @@ material = SubResource("StandardMaterial3D_cbefx")
 [node name="Item" type="RigidBody3D"]
 script = ExtResource("1_0l3m6")
 item_name = "ohaaa"
-grabable = true
+grapable = false
 metadata/_custom_type_script = "uid://cnvs6lqnbhnmj"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

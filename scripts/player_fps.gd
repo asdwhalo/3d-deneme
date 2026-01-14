@@ -3,8 +3,9 @@ extends CharacterBody3D
 
 ## FPS player base
 #signal dead
-#TODO item alma yakalama bırakma sistemi yaz giti ayarla FIXME merminin oyuncunun baktığı yöne dönme sini sağla
+#TODO item +alma +yakalama +bırakma ve çekme  sistemi yaz giti ayarla FIXME merminin oyuncunun baktığı yöne dönme sini sağla
 #TODO  merdiven basamak fiziklerini ekle
+#TODO noclip ve debug kameraları ekle
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -78,6 +79,8 @@ func hudControl()->void:
 	#var input_dir := Input.get_vector("a", "d", "w", "s")
 	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var collider = raycast.get_collider()
+	#var collide_point = raycast.get_collision_point()
+	#grap_point.global_position = collide_point.global_position
 	hud.speed.text = str(velocity.x)
 	hud.is_ground.text = str(is_on_floor())
 	if not raycast.is_colliding():
@@ -86,9 +89,17 @@ func hudControl()->void:
 	else:
 		if collider is Item:
 			hud.info.text = str(collider.item_name)
-			if collider.has_method("grap") and Input.is_action_just_pressed("interac"):
-				collider.grap()
-			return
+			if Input.is_action_pressed("interac"):
+				if collider.grapable == false:
+					if collider.has_method("take"):
+						collider.take()
+					
+				elif collider.has_method("grap"):
+					collider.global_position = grap_point.global_position
+					collider.grap()
+					#if Input.is_action_just_pressed("interac"):
+					#	collider.drop()
+					
 		else:
 			hud.info.text = "+"
 		if collider != null and collider.has_meta("name") and collider is not Item:
@@ -102,9 +113,9 @@ func fire():
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_just_pressed("fire"):
 		add_child(bullet)
-		bullet.global_rotation_degrees.y = head.global_rotation_degrees.y
+		bullet.global_rotation_degrees.y = -head.global_rotation_degrees.y
 		bullet.global_rotation_degrees.x = -head.global_rotation_degrees.x
-#		bullet.global_rotation_degrees.z = -head.global_rotation_degrees.z
+		bullet.global_rotation_degrees.z = head.global_rotation_degrees.z
 		#bullet.global_rotation_degrees = -head.global_rotation_degrees * head.global_basis
 		bullet.global_position = shoot_point.global_position
 func state_manager():

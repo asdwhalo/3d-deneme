@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene load_steps=28 format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
@@ -30,6 +30,9 @@ size = Vector3(0.75, 0.2, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_fh3vb"]
 size = Vector3(0.1, 0.1, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0enxy"]
+size = Vector3(0.1, 0.4, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iq32i"]
 albedo_texture = ExtResource("4_jgv2g")
@@ -112,6 +115,9 @@ script = ExtResource("4_3na6w")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53647, 0)
 
+[node name="grapPoint" type="Node3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.6710835)
+
 [node name="Camera3D" type="Camera3D" parent="head"]
 fov = 140.0
 near = 0.2
@@ -140,13 +146,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6172138)
 target_position = Vector3(0, 0, -5)
 hit_from_inside = true
 
-[node name="grapPoint" type="Node3D" parent="head"]
-
 [node name="shoot_point" type="Node3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32153535, -1.1514773)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="head/shoot_point"]
+transform = Transform3D(1.4827573, 0, 0, 0, 1.1563551, 0, 0, 0, 1.0563363, 0, 0, 0)
 mesh = SubResource("BoxMesh_fh3vb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head/shoot_point/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 0.8374613, 0.5464967, 0, -0.5464967, 0.8374613, 0, -0.14986265, 0.27079797)
+mesh = SubResource("BoxMesh_0enxy")
 
 [node name="extra" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.048, 0)
