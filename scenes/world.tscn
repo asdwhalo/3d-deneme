@@ -95,7 +95,7 @@ metadata/name = "oha"
 
 [node name="Item" parent="." instance=ExtResource("3_4wyf3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.98872, 0.49812925, -4.86285)
-grapable = true
+ground_only = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 

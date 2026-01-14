@@ -3,9 +3,12 @@ extends CharacterBody3D
 
 ## FPS player base
 #signal dead
-#TODO item +alma +yakalama +bırakma ve çekme  sistemi yaz giti ayarla FIXME merminin oyuncunun baktığı yöne dönme sini sağla
+#TODO item +alma +yakalama +bırakma ve çekme  sistemi yaz giti ayarla+ FIXME merminin oyuncunun baktığı yöne dönme sini sağla
 #TODO  merdiven basamak fiziklerini ekle
 #TODO noclip ve debug kameraları ekle
+#TODO mermileri düzelt garp sistemini düzelt
+#TODO eşya fiziklerini onar 
+
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -16,9 +19,7 @@ extends CharacterBody3D
 @export var run_speed:float = 7.0
 @export var jump_velocity:float = 4.5
 @export var mouse_sensivity:float = 0.3
-@export var slam_multiper:float = 1:
-	set = set_slam,
-	get = get_slam
+@export var slam_multiper:float = 1
 @onready var particels: GPUParticles3D = $GPUParticles3D
 #@onready var hand: Node3D = %hand
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -59,10 +60,8 @@ enum stsm{
 
 const normal_height := 2.0
 const cruch_height := 1.3
-func set_slam(value):
-	slam_multiper = value
-func get_slam():
-	return slam_multiper
+
+
 func Mstate_manager():
 	if Input.is_action_pressed("run"):
 		Mstates = stsm.RUN
@@ -93,10 +92,20 @@ func hudControl()->void:
 				if collider.grapable == false:
 					if collider.has_method("take"):
 						collider.take()
-					
+				#refaktor yap
 				elif collider.has_method("grap"):
-					collider.global_position = grap_point.global_position
-					collider.grap()
+					if collider.pullable_on_x == true:
+						collider.global_position.x = grap_point.global_position.x
+					elif collider.pullable_on_y == true:
+						collider.global_position.y = grap_point.global_position.y
+					elif collider.pullable_on_z == true:
+						collider.global_position.z = grap_point.global_position.z
+					elif collider.ground_only == true:
+						collider.global_position.x = grap_point.global_position.x
+						collider.global_position.z = grap_point.global_position.z
+					else:
+						collider.global_position = grap_point.global_position
+						collider.grap()
 					#if Input.is_action_just_pressed("interac"):
 					#	collider.drop()
 					
@@ -113,9 +122,8 @@ func fire():
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_just_pressed("fire"):
 		add_child(bullet)
-		bullet.global_rotation_degrees.y = -head.global_rotation_degrees.y
-		bullet.global_rotation_degrees.x = -head.global_rotation_degrees.x
-		bullet.global_rotation_degrees.z = head.global_rotation_degrees.z
+		bullet.global_rotation = -shoot_point.global_rotation * shoot_point.global_basis.z + shoot_point.global_basis.x
+		#bullet.global_rotation.x = -shoot_point.global_rotation.x
 		#bullet.global_rotation_degrees = -head.global_rotation_degrees * head.global_basis
 		bullet.global_position = shoot_point.global_position
 func state_manager():
@@ -171,16 +179,16 @@ func _physics_process(delta: float) -> void:
 		coll.shape.height = cruch_height
 		mesh.mesh.height = cruch_height
 		if states == sts.HAVA:
-			set_slam(3)
+			slam_multiper = 3
 		elif states == sts.YER:
-			set_slam(1)
+			slam_multiper = 1
 	else:
 		current_speed = walk_speed
 		coll.shape.height = normal_height
 		mesh.mesh.height = normal_height
-		set_slam(1)
+		slam_multiper = 1
 	if not is_on_floor():
-		velocity += get_gravity() * get_slam() * delta
+		velocity += get_gravity() * slam_multiper * delta
 
 	# Handle jump.
 	if Input.is_action_just_pressed("space") and is_on_floor():
