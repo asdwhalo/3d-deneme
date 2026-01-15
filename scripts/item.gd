@@ -16,6 +16,6 @@ func _init() -> void:
 func take():
 	queue_free()
 func grap():
-	pass
+	freeze = true
 func drop():
-	pass
+	freeze = false

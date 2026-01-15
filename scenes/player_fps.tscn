@@ -198,17 +198,17 @@ process_material = SubResource("ParticleProcessMaterial_iq32i")
 draw_pass_1 = SubResource("SphereMesh_0enxy")
 
 [node name="stair_check" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0, 0.5319425, -0.7303631)
+transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0, 0.5319425, -0.5833064)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [node name="stair_check2" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0, 0.5319425, 0.6092065)
+transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0, 0.5319425, 0.5437109)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [node name="stair_check3" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0.680305, 0.5319425, 0.0072793365)
+transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0.59973896, 0.5319425, 0.0072793365)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [node name="stair_check4" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, -0.7311981, 0.5319425, 0.0072793365)
+transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, -0.60797906, 0.5319425, 0.0072793365)
 shape = SubResource("SeparationRayShape3D_fh3vb")

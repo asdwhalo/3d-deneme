@@ -8,7 +8,7 @@ extends CharacterBody3D
 #TODO noclip ve debug kameraları ekle
 #TODO mermileri düzelt garp sistemini düzelt
 #TODO eşya fiziklerini onar 
-
+#TODO durdurma menüsünü yap
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -174,6 +174,7 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("a", "d", "w", "s")
 	# Add the gravity.
 	fire()
+	stair_control()
 	hudControl()
 	if current_speed >= 6 and states == sts.YER and input_dir:
 		particels.emitting = true
