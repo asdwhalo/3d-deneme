@@ -3,8 +3,8 @@ extends CharacterBody3D
 
 ## FPS player base
 #signal dead
-#TODO item +alma +yakalama +bırakma ve çekme  sistemi yaz giti ayarla+ FIXME merminin oyuncunun baktığı yöne dönme sini sağla
-#TODO  merdiven basamak fiziklerini ekle
+#TODO item +alma +yakalama +bırakma ve ~çekme  sistemi yaz giti ayarla+ FIXME merminin oyuncunun baktığı yöne dönme sini sağla
+#TODO  ##+merdiven basamak fiziklerini+ ekle ve eğilmeyi düzelt##
 #TODO noclip ve debug kameraları ekle
 #TODO mermileri düzelt garp sistemini düzelt
 #TODO eşya fiziklerini onar 
@@ -28,8 +28,16 @@ extends CharacterBody3D
 @onready var grap_point: Node3D = $head/grapPoint
 @onready var bullet_scene = preload("res://scenes/bullet.tscn")
 @onready var shoot_point : Node3D = $head/shoot_point
-
+#@onready var ground_check :RayCast3D= $groundCheck
+#@onready var is_on_ground :bool = ground_check.is_colliding() and ground_check.get_collider() is not Player
 var current_gravity:float
+@onready var stair_check: CollisionShape3D = $stair_check
+@onready var stair_check_2: CollisionShape3D = $stair_check2
+@onready var stair_check_3: CollisionShape3D = $stair_check3
+@onready var stair_check_4: CollisionShape3D = $stair_check4
+@onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4]
+
+
 
 
 @onready var head: Node3D = %head
@@ -61,7 +69,6 @@ enum stsm{
 const normal_height := 2.0
 const cruch_height := 1.3
 
-
 func Mstate_manager():
 	if Input.is_action_pressed("run"):
 		Mstates = stsm.RUN
@@ -69,6 +76,13 @@ func Mstate_manager():
 		Mstates = stsm.CROUCH
 	else:
 		Mstates = stsm.WALK
+func stair_control():
+	for ray in stair_check_array:
+		if states == sts.HAVA or Mstates == stsm.CROUCH:
+			ray.disabled = true
+			continue
+		else:
+			ray.disabled = false
 
 func hudControl()->void:
 #	if invertory[1] == null:
@@ -118,6 +132,7 @@ func hudControl()->void:
 		
 	
 	
+
 func fire():
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_just_pressed("fire"):
@@ -127,9 +142,9 @@ func fire():
 		#bullet.global_rotation_degrees = -head.global_rotation_degrees * head.global_basis
 		bullet.global_position = shoot_point.global_position
 func state_manager():
-	if self.is_on_floor():
+	if is_on_floor():
 		states = sts.YER
-	elif not self.is_on_floor():
+	elif not is_on_floor():
 		states = sts.HAVA
 func cap_mouse()->void:
 	if is_cap:
@@ -140,8 +155,6 @@ func tween_denemesi():
 	var _tween = self.create_tween()
 	var degress:int = 10
 	#gun.rotation.x = lerp_angle(deg_to_rad(degress),deg_to_rad(-degress),1)
-	
-	
 	#tween.tween_property(gun,"rotation",Vector3(deg_to_rad(degress),0,0),2)
 	#tween.tween_property(gun,"rotation",Vector3(deg_to_rad(-degress),0,0),2)
 	match Mstates:
@@ -157,11 +170,12 @@ func _input(event: InputEvent) -> void:
 		head.rotate_x(deg_to_rad(event.relative.y *-mouse_sensivity))
 		head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
 func _physics_process(delta: float) -> void:
+	
 	var input_dir := Input.get_vector("a", "d", "w", "s")
 	# Add the gravity.
 	fire()
 	hudControl()
-	if current_speed >= 6 and is_on_floor() and input_dir:
+	if current_speed >= 6 and states == sts.YER and input_dir:
 		particels.emitting = true
 	else:
 		particels.emitting = false
@@ -187,11 +201,11 @@ func _physics_process(delta: float) -> void:
 		coll.shape.height = normal_height
 		mesh.mesh.height = normal_height
 		slam_multiper = 1
-	if not is_on_floor():
+	if states == sts.HAVA:
 		velocity += get_gravity() * slam_multiper * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed("space") and is_on_floor():
+	if Input.is_action_just_pressed("space") and states == sts.YER:
 		velocity.y = jump_velocity
 		$jump_particels.emitting = true
 

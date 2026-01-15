@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1bin8gml8r6"]
+
+[ext_resource type="Texture2D" uid="uid://4yjrj6ppok8p" path="res://assets/PNG/Orange/texture_09.png" id="1_tpqne"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qpode"]
+albedo_texture = ExtResource("1_tpqne")
+uv1_triplanar = true
+
+[node name="stairs" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.3501316, 0, 0, 0, 0.92749405, 0, 0.32036072, -0.058127165)
+material = SubResource("StandardMaterial3D_qpode")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.3501316, 0, 0, 0, 0.92749405, 0, 0.50060165, -0.8597289)
+material = SubResource("StandardMaterial3D_qpode")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.3501316, 0, 0, 0, 0.92749405, 0, 0.657925, -1.4872081)
+material = SubResource("StandardMaterial3D_qpode")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.3501316, 0, 0, 0, 0.92749405, 0, 0.847966, -1.8981619)
+material = SubResource("StandardMaterial3D_qpode")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.3501316, 0, 0, 0, 0.92749405, 0, 1.028207, -2.6997635)
+material = SubResource("StandardMaterial3D_qpode")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.3501316, 0, 0, 0, 0.92749405, 0, 1.1855303, -3.3272429)
+material = SubResource("StandardMaterial3D_qpode")

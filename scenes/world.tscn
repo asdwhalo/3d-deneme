@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=4 uid="uid://bqq704m2j208n"]
+[gd_scene load_steps=14 format=4 uid="uid://bqq704m2j208n"]
 
 [ext_resource type="Texture2D" uid="uid://dr8bbqs8r420s" path="res://assets/PNG/Green/texture_08.png" id="1_rwgxs"]
 [ext_resource type="PackedScene" uid="uid://bby0quyyjfjai" path="res://scenes/player_fps.tscn" id="2_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://c6wnrao755lgc" path="res://scenes/test_item.tscn" id="3_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://dyts86owng27t" path="res://scenes/bullet.tscn" id="4_k0juu"]
+[ext_resource type="PackedScene" uid="uid://c1bin8gml8r6" path="res://scenes/stairs.tscn" id="5_71j4m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
@@ -95,7 +96,6 @@ metadata/name = "oha"
 
 [node name="Item" parent="." instance=ExtResource("3_4wyf3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.98872, 0.49812925, -4.86285)
-ground_only = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -120,3 +120,6 @@ skeleton = NodePath("../..")
 [node name="bullet" parent="." instance=ExtResource("4_k0juu")]
 transform = Transform3D(0.2315102, 0, 0.9728325, 0, 1, 0, -0.9728325, 0, 0.2315102, -3.711723, 2.9049747, 0)
 speed = 1.0
+
+[node name="stairs" parent="." instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 0)
