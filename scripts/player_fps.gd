@@ -10,6 +10,7 @@ extends CharacterBody3D
 #TODO ~eşya fiziklerini onar 
 #TODO durdurma menüsünü yap silah kamerası yap
 #TODO modüler silah sistemleri yaz
+#TODO basit head bob ekle
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -37,7 +38,7 @@ var current_gravity:float
 @onready var stair_check_3: CollisionShape3D = $stair_check3
 @onready var stair_check_4: CollisionShape3D = $stair_check4
 @onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4]
-
+const default_head_y = 1.536
 
 
 
@@ -69,7 +70,13 @@ enum stsm{
 
 const normal_height := 2.0
 const cruch_height := 1.3
-
+@export var is_bobable:bool = true
+func bobbed_y(multipler:float = 0.5)-> float:
+	return sin(multipler * global_position.x)
+func head_bob():
+	if !is_bobable:
+		return
+	head.position.y = bobbed_y() + default_head_y
 func Mstate_manager():
 	if Input.is_action_pressed("run"):
 		Mstates = stsm.RUN
@@ -175,6 +182,7 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("a", "d", "w", "s")
 	# Add the gravity.
 	fire()
+	head_bob()
 	stair_control()
 	hudControl()
 	if current_speed >= 6 and states == sts.YER and input_dir:

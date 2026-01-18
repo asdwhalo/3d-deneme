@@ -119,6 +119,7 @@ length = 0.5
 [node name="PlayerFps" type="CharacterBody3D" groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_xby0o")
+is_bobable = false
 metadata/name = "self"
 
 [node name="stairCheckParent" type="Node3D" parent="."]
