@@ -3,12 +3,13 @@ extends CharacterBody3D
 
 ## FPS player base
 #signal dead
-#TODO item +alma +yakalama +bırakma ve ~çekme  sistemi yaz giti ayarla+ FIXME merminin oyuncunun baktığı yöne dönme sini sağla
-#TODO  ##+merdiven basamak fiziklerini+ ekle ve eğilmeyi düzelt##
+#TODO item +alma +yakalama +bırakma ve ~çekme  sistemi yaz +giti ayarla+ FIXME merminin oyuncunun baktığı yöne dönme sini sağla
+#TODO  ##+merdiven basamak fiziklerini+ ekle ve +eğilmeyi düzelt##
 #TODO noclip ve debug kameraları ekle
-#TODO mermileri düzelt garp sistemini düzelt
-#TODO eşya fiziklerini onar 
-#TODO durdurma menüsünü yap
+#TODO mermileri düzelt +garp sistemini düzelt
+#TODO ~eşya fiziklerini onar 
+#TODO durdurma menüsünü yap silah kamerası yap
+#TODO modüler silah sistemleri yaz
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -120,8 +121,8 @@ func hudControl()->void:
 					else:
 						collider.global_position = grap_point.global_position
 						collider.grap()
-					#if Input.is_action_just_pressed("interac"):
-					#	collider.drop()
+			if Input.is_action_just_released("interac") and collider is Item and collider.has_method("drop"):
+				collider.drop()
 					
 		else:
 			hud.info.text = "+"
@@ -136,11 +137,11 @@ func hudControl()->void:
 func fire():
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_just_pressed("fire"):
-		add_child(bullet)
-		bullet.global_rotation = -shoot_point.global_rotation * shoot_point.global_basis.z + shoot_point.global_basis.x
-		#bullet.global_rotation.x = -shoot_point.global_rotation.x
-		#bullet.global_rotation_degrees = -head.global_rotation_degrees * head.global_basis
-		bullet.global_position = shoot_point.global_position
+		if !anim.is_playing():
+			anim.play("shoot")
+			add_child(bullet)
+			bullet.global_transform.basis = shoot_point.global_transform.basis
+			bullet.global_position = shoot_point.global_position
 func state_manager():
 	if is_on_floor():
 		states = sts.YER

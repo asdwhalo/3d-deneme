@@ -17,7 +17,7 @@ size = Vector3(0.1, 0.1, 1)
 [node name="bullet" type="CharacterBody3D"]
 top_level = true
 script = ExtResource("1_mkf8s")
-speed = 50.0
+speed = -50.0
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.45201516)

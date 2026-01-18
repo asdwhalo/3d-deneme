@@ -10,7 +10,7 @@ var current_range:float
 func _process(delta: float) -> void:
 	var collider = raycast.get_collider()
 	current_range += 1 * delta
-	velocity = speed * global_basis.z
+	velocity =  transform.basis * Vector3(0,0,speed)
 	if raycast.is_colliding() or current_range >= bullet_range:
 		queue_free()
 		

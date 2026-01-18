@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene load_steps=32 format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
@@ -28,6 +28,13 @@ uv1_triplanar = true
 material = SubResource("StandardMaterial3D_bn4h4")
 size = Vector3(0.75, 0.2, 0.5)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fh3vb"]
+use_z_clip_scale = true
+z_clip_scale = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fh3vb"]
+material = SubResource("StandardMaterial3D_fh3vb")
+
 [sub_resource type="BoxMesh" id="BoxMesh_fh3vb"]
 size = Vector3(0.1, 0.1, 0.7)
 
@@ -49,15 +56,34 @@ radial_segments = 10
 
 [sub_resource type="Animation" id="Animation_fh3vb"]
 length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("head/shoot_point/mesh")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
 
 [sub_resource type="Animation" id="Animation_iq32i"]
 resource_name = "fire"
 length = 0.7
 
+[sub_resource type="Animation" id="Animation_0enxy"]
+resource_name = "shoot"
+length = 0.25
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("head/shoot_point/mesh")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.23333333, 1, 0, 0, -0.3)
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0enxy"]
 _data = {
 &"RESET": SubResource("Animation_fh3vb"),
-&"fire": SubResource("Animation_iq32i")
+&"fire": SubResource("Animation_iq32i"),
+&"shoot": SubResource("Animation_0enxy")
 }
 
 [sub_resource type="Gradient" id="Gradient_iq32i"]
@@ -111,7 +137,6 @@ disabled = true
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.999973, 0)
-visible = false
 mesh = SubResource("CapsuleMesh_bfjn3")
 
 [node name="gun_manager" type="Node" parent="."]
@@ -152,15 +177,39 @@ target_position = Vector3(0, 0, -5)
 hit_from_inside = true
 
 [node name="shoot_point" type="Node3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32153535, -1.1514773)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52828515, -1.0138769)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="head/shoot_point"]
-transform = Transform3D(1.4827573, 0, 0, 0, 1.1563551, 0, 0, 0, 1.0563363, 0, 0, 0)
+[node name="mesh" type="Node3D" parent="head/shoot_point"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="head/shoot_point/mesh"]
+transform = Transform3D(0.28224057, 0, 0, 0, 0.21816616, 0.046778213, 0, -0.038142797, 0.26755834, -0.0037593842, -0.6211518, 0.022265673)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
+transform = Transform3D(0.66858983, 0, 0, 0, 0.90235114, 0.16776048, 0, -0.21624315, 0.46543688, 0, 0.86612463, 0.5090394)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
+transform = Transform3D(0.66858983, 0, 0, 0, 0.8702546, -0.22563335, 0, 0.29084128, 0.44888133, 0, -0.051541805, 0.37821794)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
+transform = Transform3D(0.66858983, 0, 0, 0, -0.39096612, -0.5411117, 0, 0.69749266, -0.20166203, 0, 0.99849415, -0.79747677)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
+transform = Transform3D(5.253523, 0, 0, 0, 4.876087, -1.7051315, 0, 1.5220041, 3.6320462, 0.013319788, 1.7285333, -0.7930937)
 mesh = SubResource("BoxMesh_fh3vb")
+skeleton = NodePath("../../..")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="head/shoot_point/MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 0.8374613, 0.5464967, 0, -0.5464967, 0.8374613, 0, -0.14986265, 0.27079797)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
+transform = Transform3D(5.2535233, 0, 0, 0, 5.0153832, 1.236784, 0, -0.71028167, 3.8734686, 0.0133197885, 0.53604364, -0.03763461)
 mesh = SubResource("BoxMesh_0enxy")
+skeleton = NodePath("../MeshInstance3D")
 
 [node name="extra" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.048, 0)
