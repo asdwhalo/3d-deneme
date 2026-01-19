@@ -11,12 +11,13 @@ extends CharacterBody3D
 #TODO durdurma menüsünü yap silah kamerası yap
 #TODO modüler silah sistemleri yaz
 #TODO basit head bob ekle
+#TODO oyuncu için bir model oluştur ve bu modeli ekle
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
 @export var Mstates:stsm
 @export var current_speed:float = 5.0
-@export var  walk_speed:float = 5.0
+@export var walk_speed:float = 5.0
 @export var crounch_speed:float = 3.0
 @export var run_speed:float = 7.0
 @export var jump_velocity:float = 4.5
@@ -38,6 +39,8 @@ var current_gravity:float
 @onready var stair_check_3: CollisionShape3D = $stair_check3
 @onready var stair_check_4: CollisionShape3D = $stair_check4
 @onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4]
+@onready var model_head : MeshInstance3D = $player_model/head
+
 const default_head_y = 1.536
 
 
@@ -143,7 +146,7 @@ func hudControl()->void:
 
 func fire():
 	var bullet = bullet_scene.instantiate()
-	if Input.is_action_just_pressed("fire"):
+	if Input.is_action_pressed("fire"):
 		if !anim.is_playing():
 			anim.play("shoot")
 			add_child(bullet)
@@ -173,14 +176,14 @@ func tween_denemesi():
 		stsm.CROUCH:
 			degress = 2
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and is_cap == true:
 		self.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
 		head.rotate_x(deg_to_rad(event.relative.y *-mouse_sensivity))
 		head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
 func _physics_process(delta: float) -> void:
 	
 	var input_dir := Input.get_vector("a", "d", "w", "s")
-	# Add the gravity.
+	model_head.global_rotation = head.global_rotation	# Add the gravity.
 	fire()
 	head_bob()
 	stair_control()

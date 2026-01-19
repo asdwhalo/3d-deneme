@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dyts86owng27t"]
+[gd_scene load_steps=7 format=3 uid="uid://dyts86owng27t"]
 
 [ext_resource type="Script" uid="uid://dtxt8ag0tig74" path="res://scripts/bullet.gd" id="1_mkf8s"]
 
@@ -14,15 +14,44 @@ stencil_outline_thickness = 0.032
 material = SubResource("StandardMaterial3D_mkf8s")
 size = Vector3(0.1, 0.1, 1)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mkf8s"]
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 0.7
+initial_velocity_max = 4.0
+gravity = Vector3(0, 0.5, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y25gk"]
+shading_mode = 0
+albedo_color = Color(0.9961131, 0.89594215, 0, 1)
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_l5glv"]
+material = SubResource("StandardMaterial3D_y25gk")
+size = Vector2(0.1, 0.1)
+
 [node name="bullet" type="CharacterBody3D"]
 top_level = true
 script = ExtResource("1_mkf8s")
 speed = -50.0
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.45201516)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.63125145)
 target_position = Vector3(0, 0, 1)
 hit_from_inside = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_y25gk")
+
+[node name="ammoparticels" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25716168)
+emitting = false
+amount = 20
+lifetime = 0.9
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_mkf8s")
+draw_pass_1 = SubResource("QuadMesh_l5glv")
+
+[connection signal="finished" from="ammoparticels" to="." method="_on_ammoparticels_finished"]
