@@ -11,7 +11,7 @@ extends CharacterBody3D
 #TODO durdurma menüsünü yap silah kamerası yap
 #TODO modüler silah sistemleri yaz
 #TODO basit head bob ekle
-#TODO oyuncu için bir model oluştur ve bu modeli ekle
+#TODO oyuncu için bir model oluştur ve bu modeli ekle saldırılar da ekle
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -146,7 +146,7 @@ func hudControl()->void:
 
 func fire():
 	var bullet = bullet_scene.instantiate()
-	if Input.is_action_pressed("fire"):
+	if Input.is_action_pressed("fire") and is_cap:
 		if !anim.is_playing():
 			anim.play("shoot")
 			add_child(bullet)

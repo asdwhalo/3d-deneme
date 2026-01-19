@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dyts86owng27t"]
+[gd_scene load_steps=12 format=3 uid="uid://dyts86owng27t"]
 
 [ext_resource type="Script" uid="uid://dtxt8ag0tig74" path="res://scripts/bullet.gd" id="1_mkf8s"]
 
@@ -31,6 +31,31 @@ billboard_keep_scale = true
 material = SubResource("StandardMaterial3D_y25gk")
 size = Vector2(0.1, 0.1)
 
+[sub_resource type="Curve" id="Curve_mkf8s"]
+_data = [Vector2(0.0017182156, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.14641857), 0.5027757, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_y25gk"]
+curve = SubResource("Curve_mkf8s")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l5glv"]
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+spread = 16.418
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 10)
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_y25gk")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eoqba"]
+albedo_color = Color(0.8037238, 0.9999998, 0.8887398, 1)
+emission_enabled = true
+emission = Color(0.9466737, 0.8787154, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qncy5"]
+material = SubResource("StandardMaterial3D_eoqba")
+size = Vector3(0.1, 0.1, 0.1)
+
 [node name="bullet" type="CharacterBody3D"]
 top_level = true
 script = ExtResource("1_mkf8s")
@@ -53,5 +78,13 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_mkf8s")
 draw_pass_1 = SubResource("QuadMesh_l5glv")
+
+[node name="bullettrail" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08665383, 0, 0.7788993)
+amount = 20
+trail_enabled = true
+trail_lifetime = 5.0
+process_material = SubResource("ParticleProcessMaterial_l5glv")
+draw_pass_1 = SubResource("BoxMesh_qncy5")
 
 [connection signal="finished" from="ammoparticels" to="." method="_on_ammoparticels_finished"]

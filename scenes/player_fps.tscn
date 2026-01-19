@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene load_steps=34 format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
@@ -10,8 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
+radius = 0.44873047
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iq32i"]
+radius = 0.421875
 height = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0gvln"]
@@ -36,7 +38,12 @@ z_clip_scale = 0.35
 [sub_resource type="CylinderMesh" id="CylinderMesh_fh3vb"]
 material = SubResource("StandardMaterial3D_fh3vb")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0enxy"]
+use_z_clip_scale = true
+z_clip_scale = 0.6
+
 [sub_resource type="BoxMesh" id="BoxMesh_fh3vb"]
+material = SubResource("StandardMaterial3D_0enxy")
 size = Vector3(0.1, 0.1, 0.7)
 
 [sub_resource type="BoxMesh" id="BoxMesh_0enxy"]
@@ -115,7 +122,7 @@ collision_bounce = 0.09
 [sub_resource type="SphereMesh" id="SphereMesh_0enxy"]
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_fh3vb"]
-length = 0.5
+length = 0.62
 
 [node name="PlayerFps" type="CharacterBody3D" groups=["player"]]
 collision_layer = 3
@@ -126,7 +133,7 @@ metadata/name = "self"
 [node name="player_model" parent="." instance=ExtResource("8_0enxy")]
 
 [node name="body" parent="player_model" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, 0.084932566)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, -0.017888308)
 
 [node name="head" parent="player_model" index="1"]
 transform = Transform3D(0.53938127, 0, 0, 0, 0.53938127, 0, 0, 0, 0.53938127, 0, 1.872, -0.17036071)
@@ -260,19 +267,19 @@ process_material = SubResource("ParticleProcessMaterial_iq32i")
 draw_pass_1 = SubResource("SphereMesh_0enxy")
 
 [node name="stair_check" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0, 0.5319425, -0.5833064)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.63146544, -0.48190606)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [node name="stair_check2" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0, 0.5319425, 0.5437109)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.63146544, 0.47136182)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [node name="stair_check3" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, 0.59973896, 0.5319425, 0.0072793365)
+transform = Transform3D(0.9999996, 0.00093120337, 3.8630787e-08, 3.8649816e-08, -2.041757e-08, -1, -0.00093120337, 0.9999996, -2.045355e-08, 0.4950012, 0.63146544, 0.0072793365)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [node name="stair_check4" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.031375818, -0.99950767, 0, 0.99950767, 0.031375818, -0.60797906, 0.5319425, 0.0072793365)
+transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, -0.50497943, 0.63146544, 0.0072793365)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [editable path="player_model"]
