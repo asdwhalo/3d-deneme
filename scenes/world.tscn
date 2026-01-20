@@ -72,6 +72,7 @@ directional_shadow_max_distance = 1.0
 
 [node name="PlayerFps" parent="." instance=ExtResource("2_4wyf3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+can_climb = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

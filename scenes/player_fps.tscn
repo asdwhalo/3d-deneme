@@ -127,6 +127,7 @@ length = 0.62
 [node name="PlayerFps" type="CharacterBody3D" groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_xby0o")
+jump_velocity = 5.5
 is_bobable = false
 metadata/name = "self"
 

@@ -93,13 +93,14 @@ func stair_control():
 	if !can_climb:
 		return
 	for ray in stair_check_array:
-		if states == sts.HAVA or Mstates == stsm.CROUCH:
+		if  Mstates == stsm.CROUCH: # states == sts.HAVA or
 			ray.disabled = true
 			continue
 		else:
 			ray.disabled = false
 
 func hudControl()->void:
+
 #	if invertory[1] == null:
 #		hud.inventory.text = "empty"
 #	else:
@@ -139,8 +140,7 @@ func hudControl()->void:
 				collider.drop()
 		elif collider.has_method("on_interac"):
 			if Input.is_action_just_pressed("interac"):
-				collider.call("on_interac")
-				hud.info.text = "+"
+				collider.on_interac()
 		else:
 			hud.info.text = "+"
 		if collider != null and collider.has_meta("name") and collider is not Item:
