@@ -12,6 +12,7 @@ extends CharacterBody3D
 #TODO modüler silah sistemleri yaz
 #TODO basit head bob ekle
 #TODO oyuncu için bir model oluştur ve bu modeli ekle saldırılar da ekle
+#TODO tırmanma ve etkileşim ekle
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -87,7 +88,10 @@ func Mstate_manager():
 		Mstates = stsm.CROUCH
 	else:
 		Mstates = stsm.WALK
+@export var can_climb:bool = false
 func stair_control():
+	if !can_climb:
+		return
 	for ray in stair_check_array:
 		if states == sts.HAVA or Mstates == stsm.CROUCH:
 			ray.disabled = true
@@ -133,7 +137,10 @@ func hudControl()->void:
 						collider.grap()
 			if Input.is_action_just_released("interac") and collider is Item and collider.has_method("drop"):
 				collider.drop()
-					
+		elif collider.has_method("on_interac"):
+			if Input.is_action_just_pressed("interac"):
+				collider.call("on_interac")
+				hud.info.text = "+"
 		else:
 			hud.info.text = "+"
 		if collider != null and collider.has_meta("name") and collider is not Item:

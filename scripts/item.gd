@@ -8,6 +8,7 @@ extends RigidBody3D
 @export var pullable_on_y:bool
 @export var pullable_on_z:bool
 @export var ground_only:bool
+
 signal graped
 signal taked
 func _init() -> void:
