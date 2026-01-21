@@ -12,7 +12,8 @@ extends CharacterBody3D
 #TODO modüler silah sistemleri yaz
 #TODO basit head bob ekle
 #TODO oyuncu için bir model oluştur ve bu modeli ekle saldırılar da ekle
-#TODO tırmanma ve etkileşim ekle
+#TODO tırmanma ve ~etkileşim ekle 
+#TODO Karakterin boyutlarını kapıdan geçebilecek şekilde ayarla
 @export var invertory:Array = []
 @export var is_cap:bool = true
 @export var states:sts 
@@ -75,8 +76,8 @@ enum stsm{
 const normal_height := 2.0
 const cruch_height := 1.3
 @export var is_bobable:bool = true
-func bobbed_y(multipler:float = 0.5)-> float:
-	return sin(multipler * global_position.x)
+func bobbed_y(multipler:float = 1)-> float:
+	return sin(multipler * (8 * global_position.x))
 func head_bob():
 	if !is_bobable:
 		return

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://bqq704m2j208n"]
+[gd_scene load_steps=16 format=4 uid="uid://bqq704m2j208n"]
 
 [ext_resource type="Texture2D" uid="uid://dr8bbqs8r420s" path="res://assets/PNG/Green/texture_08.png" id="1_rwgxs"]
 [ext_resource type="PackedScene" uid="uid://bby0quyyjfjai" path="res://scenes/player_fps.tscn" id="2_4wyf3"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dyts86owng27t" path="res://scenes/bullet.tscn" id="4_k0juu"]
 [ext_resource type="PackedScene" uid="uid://c1bin8gml8r6" path="res://scenes/stairs.tscn" id="5_71j4m"]
 [ext_resource type="PackedScene" uid="uid://b4u5xjs4ywhwb" path="res://scenes/test_interaction.tscn" id="6_qfnet"]
+[ext_resource type="PackedScene" uid="uid://cxxxr7202dfqs" path="res://scenes/env/door.tscn" id="7_i7141"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
@@ -128,3 +129,6 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 
 
 [node name="test_interaction" parent="." instance=ExtResource("6_qfnet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="door" parent="." instance=ExtResource("7_i7141")]
+transform = Transform3D(-0.023123512, 0, -0.9997326, 0, 1, 0, 0.9997326, 0, -0.023123512, 3.7438855, 0, 0)
