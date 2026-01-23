@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=4 uid="uid://bqq704m2j208n"]
+[gd_scene load_steps=17 format=4 uid="uid://bqq704m2j208n"]
 
 [ext_resource type="Texture2D" uid="uid://dr8bbqs8r420s" path="res://assets/PNG/Green/texture_08.png" id="1_rwgxs"]
 [ext_resource type="PackedScene" uid="uid://bby0quyyjfjai" path="res://scenes/player_fps.tscn" id="2_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://c6wnrao755lgc" path="res://scenes/test_item.tscn" id="3_4wyf3"]
+[ext_resource type="PackedScene" uid="uid://of6lfqyh1gde" path="res://scenes/env/stairs_2.tscn" id="4_4mrxx"]
 [ext_resource type="PackedScene" uid="uid://dyts86owng27t" path="res://scenes/bullet.tscn" id="4_k0juu"]
 [ext_resource type="PackedScene" uid="uid://c1bin8gml8r6" path="res://scenes/stairs.tscn" id="5_71j4m"]
 [ext_resource type="PackedScene" uid="uid://b4u5xjs4ywhwb" path="res://scenes/test_interaction.tscn" id="6_qfnet"]
@@ -24,6 +25,10 @@ background_mode = 2
 sky = SubResource("Sky_tlwt5")
 ssao_enabled = true
 glow_enabled = true
+fog_mode = 1
+fog_density = 1.0
+fog_height = 1.0
+volumetric_fog_enabled = true
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4wyf3"]
 _surfaces = [{
@@ -88,7 +93,8 @@ size = Vector2i(253, 234)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
-transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 16, 6, 0)
+transform = Transform3D(1, 0, 0, 0, 0.116012074, 0.9932478, 0, -0.9932478, 0.116012074, -8.918064, 10.365019, 6.54603)
+fov = 120.6
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.84789, 4.3630996, -4.86285)
@@ -120,6 +126,45 @@ shape = SubResource("ConcavePolygonShape3D_71j4m")
 mesh = SubResource("ArrayMesh_qfnet")
 skeleton = NodePath("../..")
 
+[node name="stairs2" parent="StaticBody3D2/CSGBakedMeshInstance3D" instance=ExtResource("4_4mrxx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 1)
+
+[node name="stairs3" parent="StaticBody3D2/CSGBakedMeshInstance3D" instance=ExtResource("4_4mrxx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.117963, 1.4071772, 1)
+
+[node name="stairs4" parent="StaticBody3D2/CSGBakedMeshInstance3D" instance=ExtResource("4_4mrxx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -13.129384, 2.6777632, 1)
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 0)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("ConcavePolygonShape3D_71j4m")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+mesh = SubResource("ArrayMesh_qfnet")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 19.320057)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
+shape = SubResource("ConcavePolygonShape3D_71j4m")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4"]
+mesh = SubResource("ArrayMesh_qfnet")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D5" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4512024, 0, 19.320057)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D5"]
+shape = SubResource("ConcavePolygonShape3D_71j4m")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D5"]
+mesh = SubResource("ArrayMesh_qfnet")
+skeleton = NodePath("../..")
+
 [node name="bullet" parent="." instance=ExtResource("4_k0juu")]
 transform = Transform3D(0.2315102, 0, 0.9728325, 0, 1, 0, -0.9728325, 0, 0.2315102, -3.711723, 2.9049747, 0)
 speed = 1.0
@@ -127,8 +172,17 @@ speed = 1.0
 [node name="stairs" parent="." instance=ExtResource("5_71j4m")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 0)
 
+[node name="stairs2" parent="." instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.972002, 0.8939953, 0)
+
+[node name="stairs3" parent="." instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -14.780987, 1.7430763, 0)
+
 [node name="test_interaction" parent="." instance=ExtResource("6_qfnet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
 
 [node name="door" parent="." instance=ExtResource("7_i7141")]
 transform = Transform3D(-0.023123512, 0, -0.9997326, 0, 1, 0, 0.9997326, 0, -0.023123512, 3.7438855, 0, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -4)

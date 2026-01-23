@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://of6lfqyh1gde"]
+
+[ext_resource type="Texture2D" uid="uid://pyw2a0givsik" path="res://assets/PNG/Orange/texture_08.png" id="1_qxusw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y7tms"]
+albedo_texture = ExtResource("1_qxusw")
+uv1_triplanar = true
+
+[node name="stairs2" type="CSGCombiner3D"]
+material_override = SubResource("StandardMaterial3D_y7tms")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16705322, -0.2732544)
+size = Vector3(1, 0.66589355, 1.5465088)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32139432, -1.0834532)
+size = Vector3(1, 0.66589355, 1.7589111)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7109064, -1.9640257)
+size = Vector3(1, 0.66589355, 2.2768555)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06061, -2.5918949)
+size = Vector3(1, 0.66589355, 2.3105469)

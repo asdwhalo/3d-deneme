@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://0o80mtyloiql"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fh3vb"]
+use_z_clip_scale = true
+z_clip_scale = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fh3vb"]
+material = SubResource("StandardMaterial3D_fh3vb")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0enxy"]
+use_z_clip_scale = true
+z_clip_scale = 0.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_fh3vb"]
+material = SubResource("StandardMaterial3D_0enxy")
+size = Vector3(0.1, 0.1, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0enxy"]
+size = Vector3(0.1, 0.4, 0.1)
+
+[node name="basicPistol" type="Node3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.28224057, 0, 0, 0, 0.21816616, 0.046778213, 0, -0.038142797, 0.26755834, -0.0037593842, -0.6211518, 0.022265673)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="MeshInstance3D2"]
+transform = Transform3D(0.66858983, 0, 0, 0, 0.90235114, 0.16776048, 0, -0.21624315, 0.46543688, 0, 0.86612463, 0.5090394)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="MeshInstance3D2"]
+transform = Transform3D(0.66858983, 0, 0, 0, 0.8702546, -0.22563335, 0, 0.29084128, 0.44888133, 0, -0.051541805, 0.37821794)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="MeshInstance3D2"]
+transform = Transform3D(0.66858983, 0, 0, 0, -0.39096612, -0.5411117, 0, 0.69749266, -0.20166203, 0, 0.99849415, -0.79747677)
+mesh = SubResource("CylinderMesh_fh3vb")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D2"]
+transform = Transform3D(5.253523, 0, 0, 0, 4.876087, -1.7051315, 0, 1.5220041, 3.6320462, 0.013319788, 1.7285333, -0.7930937)
+mesh = SubResource("BoxMesh_fh3vb")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D2"]
+transform = Transform3D(5.2535233, 0, 0, 0, 5.0153832, 1.236784, 0, -0.71028167, 3.8734686, 0.0133197885, 0.53604364, -0.03763461)
+mesh = SubResource("BoxMesh_0enxy")
+skeleton = NodePath("../MeshInstance3D")

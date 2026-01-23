@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene load_steps=29 format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://d3vgvd142746t" path="res://scripts/gun_manager.gd" id="4_3na6w"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
-[ext_resource type="PackedScene" uid="uid://duqatgr4rsk46" path="res://scenes/gun_display.tscn" id="5_iq32i"]
+[ext_resource type="PackedScene" uid="uid://0o80mtyloiql" path="res://scenes/basic_pistol.tscn" id="7_0enxy"]
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
@@ -31,24 +31,6 @@ uv1_triplanar = true
 material = SubResource("StandardMaterial3D_bn4h4")
 size = Vector3(0.75, 0.2, 0.5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fh3vb"]
-use_z_clip_scale = true
-z_clip_scale = 0.35
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_fh3vb"]
-material = SubResource("StandardMaterial3D_fh3vb")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0enxy"]
-use_z_clip_scale = true
-z_clip_scale = 0.6
-
-[sub_resource type="BoxMesh" id="BoxMesh_fh3vb"]
-material = SubResource("StandardMaterial3D_0enxy")
-size = Vector3(0.1, 0.1, 0.7)
-
-[sub_resource type="BoxMesh" id="BoxMesh_0enxy"]
-size = Vector3(0.1, 0.4, 0.1)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iq32i"]
 albedo_texture = ExtResource("4_jgv2g")
 uv1_triplanar = true
@@ -67,7 +49,7 @@ length = 0.001
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("head/shoot_point/mesh")
+tracks/0/path = NodePath("head/shoot_point/basicPistol")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
@@ -82,7 +64,7 @@ length = 0.25
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("head/shoot_point/mesh")
+tracks/0/path = NodePath("head/shoot_point/basicPistol")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.23333333, 1, 0, 0, -0.3)
@@ -131,6 +113,11 @@ jump_velocity = 5.5
 is_bobable = false
 metadata/name = "self"
 
+[node name="Components" type="Node" parent="."]
+
+[node name="gun_manager" type="Node" parent="Components"]
+script = ExtResource("4_3na6w")
+
 [node name="player_model" parent="." instance=ExtResource("8_0enxy")]
 
 [node name="body" parent="player_model" index="0"]
@@ -138,8 +125,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, -0.017888308)
 
 [node name="head" parent="player_model" index="1"]
 transform = Transform3D(0.53938127, 0, 0, 0, 0.53938127, 0, 0, 0, 0.53938127, 0, 1.872, -0.17036071)
-
-[node name="stairCheckParent" type="Node3D" parent="."]
 
 [node name="upper" type="CollisionShape3D" parent="."]
 unique_name_in_owner = true
@@ -158,9 +143,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.999973, 0)
 visible = false
 mesh = SubResource("CapsuleMesh_bfjn3")
 
-[node name="gun_manager" type="Node" parent="."]
-script = ExtResource("4_3na6w")
-
 [node name="head" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53647, 0)
@@ -171,10 +153,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.6710835)
 [node name="Camera3D" type="Camera3D" parent="head"]
 fov = 140.0
 near = 0.2
-
-[node name="gun_display" parent="head/Camera3D" instance=ExtResource("5_iq32i")]
-transform = Transform3D(1, 0, 0, 0, 0.997564, -0.0697565, 0, 0.0697565, 0.997564, 0, -0.43647, -0.268128)
-visible = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="head/Camera3D"]
 
@@ -199,37 +177,7 @@ hit_from_inside = true
 [node name="shoot_point" type="Node3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52828515, -1.0138769)
 
-[node name="mesh" type="Node3D" parent="head/shoot_point"]
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="head/shoot_point/mesh"]
-transform = Transform3D(0.28224057, 0, 0, 0, 0.21816616, 0.046778213, 0, -0.038142797, 0.26755834, -0.0037593842, -0.6211518, 0.022265673)
-mesh = SubResource("CylinderMesh_fh3vb")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
-transform = Transform3D(0.66858983, 0, 0, 0, 0.90235114, 0.16776048, 0, -0.21624315, 0.46543688, 0, 0.86612463, 0.5090394)
-mesh = SubResource("CylinderMesh_fh3vb")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
-transform = Transform3D(0.66858983, 0, 0, 0, 0.8702546, -0.22563335, 0, 0.29084128, 0.44888133, 0, -0.051541805, 0.37821794)
-mesh = SubResource("CylinderMesh_fh3vb")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
-transform = Transform3D(0.66858983, 0, 0, 0, -0.39096612, -0.5411117, 0, 0.69749266, -0.20166203, 0, 0.99849415, -0.79747677)
-mesh = SubResource("CylinderMesh_fh3vb")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
-transform = Transform3D(5.253523, 0, 0, 0, 4.876087, -1.7051315, 0, 1.5220041, 3.6320462, 0.013319788, 1.7285333, -0.7930937)
-mesh = SubResource("BoxMesh_fh3vb")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="head/shoot_point/mesh/MeshInstance3D2"]
-transform = Transform3D(5.2535233, 0, 0, 0, 5.0153832, 1.236784, 0, -0.71028167, 3.8734686, 0.0133197885, 0.53604364, -0.03763461)
-mesh = SubResource("BoxMesh_0enxy")
-skeleton = NodePath("../MeshInstance3D")
+[node name="basicPistol" parent="head/shoot_point" instance=ExtResource("7_0enxy")]
 
 [node name="extra" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.048, 0)
@@ -281,6 +229,22 @@ shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [node name="stair_check4" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, -0.50497943, 0.63146544, 0.0072793365)
+shape = SubResource("SeparationRayShape3D_fh3vb")
+
+[node name="stair_check5" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, -0.50497943, 0.63146544, -0.3510962)
+shape = SubResource("SeparationRayShape3D_fh3vb")
+
+[node name="stair_check6" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, -0.50497943, 0.63146544, 0.32349342)
+shape = SubResource("SeparationRayShape3D_fh3vb")
+
+[node name="stair_check7" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, 0.43312138, 0.63146544, 0.32349342)
+shape = SubResource("SeparationRayShape3D_fh3vb")
+
+[node name="stair_check8" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, 0.43312138, 0.63146544, -0.3510967)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [editable path="player_model"]

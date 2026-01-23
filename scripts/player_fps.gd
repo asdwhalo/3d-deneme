@@ -40,7 +40,12 @@ var current_gravity:float
 @onready var stair_check_2: CollisionShape3D = $stair_check2
 @onready var stair_check_3: CollisionShape3D = $stair_check3
 @onready var stair_check_4: CollisionShape3D = $stair_check4
-@onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4]
+@onready var stair_check_5: CollisionShape3D = $stair_check5
+@onready var stair_check_6: CollisionShape3D = $stair_check6
+@onready var stair_check_7: CollisionShape3D = $stair_check7
+@onready var stair_check_8: CollisionShape3D = $stair_check8
+
+@onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4,stair_check_5,stair_check_6,stair_check_7,stair_check_8]
 @onready var model_head : MeshInstance3D = $player_model/head
 
 const default_head_y = 1.536

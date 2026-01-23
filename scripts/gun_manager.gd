@@ -3,6 +3,5 @@ extends Node
 
 
 
-#@export var gun_array:Array[Gun]
-#var current_gun:= gun_array[cr]
-var cr
+@export var gun_array:Array[Weapon]
+@export var current_weapon:Weapon
