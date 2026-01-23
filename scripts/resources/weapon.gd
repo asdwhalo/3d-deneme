@@ -4,3 +4,4 @@ extends Resource
 @export var damage:float = 1.0
 @export var scene:PackedScene = null
 @export var shoot_position:Vector3
+#@export var anim:AnimationPlayer #resourceler bunu tutamıyor

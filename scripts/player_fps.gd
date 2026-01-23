@@ -158,6 +158,8 @@ func hudControl()->void:
 	
 
 func fire():
+	if self.has_node("Components/gun_manager"):
+		return
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_pressed("fire") and is_cap:
 		if !anim.is_playing():

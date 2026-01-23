@@ -49,3 +49,5 @@ skeleton = NodePath("../../..")
 transform = Transform3D(5.2535233, 0, 0, 0, 5.0153832, 1.236784, 0, -0.71028167, 3.8734686, 0.0133197885, 0.53604364, -0.03763461)
 mesh = SubResource("BoxMesh_0enxy")
 skeleton = NodePath("../MeshInstance3D")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
