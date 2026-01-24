@@ -15,6 +15,12 @@ enum weapon_state {
 @export var parent : Player 
 func _ready() -> void:
 	initilize_weapon()
+func change_weapon()->void:
+	#TODO
+	#numaralara basılınca  array da  o numaralara atanmış silah seçilir 
+	# ancak şuanlık tektuş ile değiştirilcek
+	
+	pass
 func initilize_weapon() -> void:
 	if current_weapon == null:
 		current_weapon = load("res://scripts/resources/basic_pistol.tres")

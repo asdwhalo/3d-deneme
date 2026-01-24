@@ -1,9 +1,12 @@
-[gd_scene load_steps=29 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene load_steps=32 format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
 [ext_resource type="Texture2D" uid="uid://bxta387f04ag1" path="res://assets/PNG/Light/texture_06.png" id="2_r6ftr"]
+[ext_resource type="Resource" uid="uid://dn5ruus81teih" path="res://scripts/resources/basic_pistol.tres" id="3_88axs"]
+[ext_resource type="Script" uid="uid://bcbpr471wgitq" path="res://scripts/resources/weapon.gd" id="3_kkqhm"]
 [ext_resource type="Script" uid="uid://d3vgvd142746t" path="res://scripts/gun_manager.gd" id="4_3na6w"]
+[ext_resource type="Resource" uid="uid://q3c5v8u1iw0c" path="res://scripts/resources/test_weapon.tres" id="4_dgno2"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
@@ -119,6 +122,8 @@ metadata/name = "self"
 
 [node name="gun_manager" type="Node" parent="Components" node_paths=PackedStringArray("anim", "parent")]
 script = ExtResource("4_3na6w")
+gun_array = Array[ExtResource("3_kkqhm")]([ExtResource("4_dgno2"), ExtResource("3_88axs")])
+current_weapon = ExtResource("4_dgno2")
 anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
 

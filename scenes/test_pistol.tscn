@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://xvwbeiqj17xm"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fl1ey"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_363ce"]
+left_to_right = 0.0
+
+[node name="testPistol" type="Node3D"]
+transform = Transform3D(0.0010471714, 0, -0.4999989, 0, 0.5, 0, 0.4999989, 0, 0.0010471714, 0, 0.8946487, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.0055362363, -1.2840538, 0, 0.23881434, -0.029767158, 0, 0, 0, 0.22478527, -1.2617043, 0, -0.08703399)
+mesh = SubResource("CylinderMesh_fl1ey")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.0055362363, -1.2840538, 0, 0.23881434, -0.029767158, 0, 0, 0, 0.22478527, -1.2617043, 0, 0.097803)
+mesh = SubResource("CylinderMesh_fl1ey")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.6994509, -0.022259824, 0, 0.056525152, -0.66925037, 0, 0, 0, 0.431342, 0, -0.38212982, 0)
+mesh = SubResource("PrismMesh_363ce")
