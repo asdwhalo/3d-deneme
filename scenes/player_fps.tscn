@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene load_steps=29 format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
+[ext_resource type="AnimationLibrary" uid="uid://cpggu8wujpmt6" path="res://scripts/resources/basic pistol.res" id="8_88axs"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
 radius = 0.44873047
@@ -44,6 +45,7 @@ height = 1.0
 radial_segments = 10
 
 [sub_resource type="Animation" id="Animation_fh3vb"]
+resource_name = "RESET"
 length = 0.001
 tracks/0/type = "position_3d"
 tracks/0/imported = false
@@ -108,6 +110,7 @@ length = 0.62
 [node name="PlayerFps" type="CharacterBody3D" groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_xby0o")
+walk_speed = 6.0
 jump_velocity = 5.5
 is_bobable = false
 metadata/name = "self"
@@ -116,7 +119,7 @@ metadata/name = "self"
 
 [node name="gun_manager" type="Node" parent="Components" node_paths=PackedStringArray("anim", "parent")]
 script = ExtResource("4_3na6w")
-anim = NodePath("../../player_model/AnimationPlayer")
+anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
 
 [node name="player_model" parent="." instance=ExtResource("8_0enxy")]
@@ -195,7 +198,8 @@ mesh = SubResource("CylinderMesh_r6ftr")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_0enxy")
+&"": SubResource("AnimationLibrary_0enxy"),
+&"basic pistol": ExtResource("8_88axs")
 }
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
