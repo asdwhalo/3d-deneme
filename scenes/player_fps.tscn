@@ -13,7 +13,8 @@
 [ext_resource type="AnimationLibrary" uid="uid://cpggu8wujpmt6" path="res://scripts/resources/basic pistol.res" id="8_88axs"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
-radius = 0.44873047
+radius = 0.33935547
+height = 1.7832031
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iq32i"]
 radius = 0.421875
@@ -113,8 +114,10 @@ length = 0.62
 [node name="PlayerFps" type="CharacterBody3D" groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_xby0o")
-walk_speed = 6.0
-jump_velocity = 5.5
+walk_speed = 10.0
+crounch_speed = 7.0
+run_speed = 15.0
+jump_velocity = 7.5
 is_bobable = false
 metadata/name = "self"
 
@@ -122,22 +125,23 @@ metadata/name = "self"
 
 [node name="gun_manager" type="Node" parent="Components" node_paths=PackedStringArray("anim", "parent")]
 script = ExtResource("4_3na6w")
-gun_array = Array[ExtResource("3_kkqhm")]([ExtResource("4_dgno2"), ExtResource("3_88axs")])
-current_weapon = ExtResource("4_dgno2")
+weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("4_dgno2"), ExtResource("3_88axs")])
+current_weapon = ExtResource("3_88axs")
 anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
 
 [node name="player_model" parent="." instance=ExtResource("8_0enxy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12689963, 0)
 
 [node name="body" parent="player_model" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, -0.017888308)
 
 [node name="head" parent="player_model" index="1"]
-transform = Transform3D(0.53938127, 0, 0, 0, 0.53938127, 0, 0, 0, 0.53938127, 0, 1.872, -0.17036071)
+transform = Transform3D(0.53938127, 0, 0, 0, 0.53938127, 0, 0, 0, 0.53938127, 0, 1.7218666, -0.17036071)
 
 [node name="upper" type="CollisionShape3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06469, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95629156, 0)
 shape = SubResource("CapsuleShape3D_uo3gr")
 
 [node name="lower" type="CollisionShape3D" parent="."]

@@ -78,11 +78,11 @@ enum stsm{
 	CROUCH
 }
 
-const normal_height := 2.0
+const normal_height := 1.7
 const cruch_height := 1.3
 @export var is_bobable:bool = true
 func bobbed_y(multipler:float = 1)-> float:
-	return sin(multipler * (8 * global_position.x))
+	return sin(multipler * (10 * global_position.x))
 func head_bob():
 	if !is_bobable:
 		return
