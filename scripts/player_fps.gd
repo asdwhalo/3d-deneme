@@ -1,5 +1,5 @@
 class_name Player
-extends CharacterBody3D
+extends Entity
 
 ## FPS player base
 #signal dead

@@ -34,11 +34,9 @@ func change_weapon()->void:
 			current_state = weapon_state.IDLE
 func init_vars():
 		current_weapon.shoot_position = shoot_point.global_position
+		
 func initilize_weapon() -> void:
 	var weapon_scene = current_weapon.scene.instantiate()
-	if current_weapon == null:
-		current_weapon = weapon_array[1]
-	
 	init_vars()
 	shoot_point.add_child(weapon_scene)
 	if current_state == weapon_state.CHANGE:
@@ -47,7 +45,8 @@ func initilize_weapon() -> void:
 		current_state = weapon_state.IDLE
 #endregion 
 func fire():
-	
+	if current_state == weapon_state.CHANGE:
+		return
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_pressed("fire") and parent.is_cap:
 		if  anim == null  or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
