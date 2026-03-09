@@ -7,16 +7,18 @@ extends CharacterBody3D
 var current_range:float
 @onready var raycast: RayCast3D = $RayCast3D
 @onready var particles: GPUParticles3D = $ammoparticels
-
+func _ready() -> void:
+	raycast.collide_with_areas = true
 func _process(delta: float) -> void:
 	var collider = raycast.get_collider()
-	if particles.emitting == false:
+	if particles.emitting == false :
 		current_range += 1 * delta
 		velocity =  transform.basis * Vector3(0,0,speed)
 	if raycast.is_colliding() or current_range >= bullet_range:
 		particles.emitting = true
 		if collider.has_method("take_damage"):
-			print("")
+			print("hit")
+			collider.take_damage(damage)
 	move_and_slide()
 
 

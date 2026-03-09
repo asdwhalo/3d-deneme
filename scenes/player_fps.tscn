@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bby0quyyjfjai"]
+[gd_scene format=3 uid="uid://bby0quyyjfjai"]
 
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
@@ -9,8 +9,10 @@
 [ext_resource type="Resource" uid="uid://q3c5v8u1iw0c" path="res://scripts/resources/test_weapon.tres" id="4_dgno2"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
+[ext_resource type="Script" uid="uid://byx38015ocq27" path="res://scripts/health_system/health_manager.gd" id="6_maesr"]
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
 [ext_resource type="AnimationLibrary" uid="uid://cpggu8wujpmt6" path="res://scripts/resources/basic pistol.res" id="8_88axs"]
+[ext_resource type="Texture2D" uid="uid://ddfuxnvt0w32y" path="res://oha.png" id="11_dgno2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
 radius = 0.33935547
@@ -111,7 +113,7 @@ collision_bounce = 0.09
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_fh3vb"]
 length = 0.62
 
-[node name="PlayerFps" type="CharacterBody3D" groups=["player"]]
+[node name="PlayerFps" type="CharacterBody3D" unique_id=755557605 groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_xby0o")
 walk_speed = 10.0
@@ -119,18 +121,24 @@ crounch_speed = 7.0
 run_speed = 15.0
 jump_velocity = 7.5
 is_bobable = false
+hp = 10.0
 metadata/name = "self"
 
-[node name="Components" type="Node" parent="."]
+[node name="Components" type="Node" parent="." unique_id=1053506328]
 
-[node name="gun_manager" type="Node" parent="Components" node_paths=PackedStringArray("anim", "parent")]
+[node name="gun_manager" type="Node" parent="Components" unique_id=792572384 node_paths=PackedStringArray("anim", "parent")]
 script = ExtResource("4_3na6w")
-weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("4_dgno2"), ExtResource("3_88axs")])
+weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("3_88axs"), ExtResource("4_dgno2")])
 current_weapon = ExtResource("3_88axs")
 anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
 
-[node name="player_model" parent="." instance=ExtResource("8_0enxy")]
+[node name="healthManager" type="Node" parent="Components" unique_id=744189995 node_paths=PackedStringArray("parent")]
+script = ExtResource("6_maesr")
+parent = NodePath("../..")
+standart_hp = 10.0
+
+[node name="player_model" parent="." unique_id=1881803560 instance=ExtResource("8_0enxy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12689963, 0)
 
 [node name="body" parent="player_model" index="0"]
@@ -139,79 +147,104 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, -0.017888308)
 [node name="head" parent="player_model" index="1"]
 transform = Transform3D(0.53938127, 0, 0, 0, 0.53938127, 0, 0, 0, 0.53938127, 0, 1.7218666, -0.17036071)
 
-[node name="upper" type="CollisionShape3D" parent="."]
+[node name="upper" type="CollisionShape3D" parent="." unique_id=1007819279]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95629156, 0)
 shape = SubResource("CapsuleShape3D_uo3gr")
 
-[node name="lower" type="CollisionShape3D" parent="."]
+[node name="lower" type="CollisionShape3D" parent="." unique_id=11998370]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.506594, 0)
 shape = SubResource("CapsuleShape3D_iq32i")
 disabled = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1565515898]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.999973, 0)
 visible = false
 mesh = SubResource("CapsuleMesh_bfjn3")
 
-[node name="head" type="Node3D" parent="."]
+[node name="head" type="Node3D" parent="." unique_id=272007608]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53647, 0)
 
-[node name="grapPoint" type="Node3D" parent="head"]
+[node name="grapPoint" type="Node3D" parent="head" unique_id=1891450035]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.6710835)
 
-[node name="Camera3D" type="Camera3D" parent="head"]
+[node name="Camera3D" type="Camera3D" parent="head" unique_id=1496618252]
 fov = 140.0
 near = 0.2
 
-[node name="CanvasLayer" type="CanvasLayer" parent="head/Camera3D"]
+[node name="CanvasLayer" type="CanvasLayer" parent="head/Camera3D" unique_id=52558900]
 
-[node name="hud" parent="head/Camera3D/CanvasLayer" instance=ExtResource("5_fh3vb")]
+[node name="hud" parent="head/Camera3D/CanvasLayer" unique_id=1579434716 instance=ExtResource("5_fh3vb")]
 unique_name_in_owner = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="head"]
+[node name="info" parent="head/Camera3D/CanvasLayer/hud" index="1"]
+horizontal_alignment = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head" unique_id=1696154731]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.409015)
 visible = false
 mesh = SubResource("BoxMesh_sen8m")
 
-[node name="SubViewport" type="SubViewport" parent="head"]
+[node name="SubViewport" type="SubViewport" parent="head" unique_id=724229457]
 
-[node name="Camera3D" type="Camera3D" parent="head/SubViewport"]
+[node name="Camera3D" type="Camera3D" parent="head/SubViewport" unique_id=77990201]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.268128)
 
-[node name="RayCast3D" type="RayCast3D" parent="head"]
+[node name="RayCast3D" type="RayCast3D" parent="head" unique_id=1209178799]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6172138)
 target_position = Vector3(0, 0, -5)
+collision_mask = 4
 hit_from_inside = true
+collide_with_areas = true
 
-[node name="shoot_point" type="Node3D" parent="head"]
+[node name="shoot_point" type="Node3D" parent="head" unique_id=169550495]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52828515, -1.0138769)
 
-[node name="extra" type="Node3D" parent="."]
+[node name="extra" type="Node3D" parent="." unique_id=472505193]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.048, 0)
 visible = false
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="extra"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="extra" unique_id=1767483835]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.414909)
 mesh = SubResource("BoxMesh_rxiej")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="extra"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="extra" unique_id=564450506]
 transform = Transform3D(0.5, 0, 0, 0, 0.012251, 0.49985, 0, -0.49985, 0.012251, 0.315606, -0.0519292, 0.279064)
 mesh = SubResource("CylinderMesh_r6ftr")
 
-[node name="hud" type="CanvasLayer" parent="."]
+[node name="hud" type="CanvasLayer" parent="." unique_id=530248503]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_0enxy"),
-&"basic pistol": ExtResource("8_88axs")
-}
+[node name="2dUiComponents" type="Control" parent="hud" unique_id=335367007]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+[node name="headSprite" type="Sprite2D" parent="hud/2dUiComponents" unique_id=1305112438]
+unique_name_in_owner = true
+position = Vector2(92, -36)
+texture = ExtResource("11_dgno2")
+
+[node name="hand_anims" type="AnimationPlayer" parent="hud/2dUiComponents" unique_id=835578189]
+unique_name_in_owner = true
+root_node = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=50005537]
+libraries/ = SubResource("AnimationLibrary_0enxy")
+"libraries/basic pistol" = ExtResource("8_88axs")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1402051917]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212078, 0)
 emitting = false
 amount = 10
@@ -220,7 +253,7 @@ trail_lifetime = 0.23
 process_material = SubResource("ParticleProcessMaterial_0enxy")
 draw_pass_1 = SubResource("SphereMesh_88axs")
 
-[node name="jump_particels" type="GPUParticles3D" parent="."]
+[node name="jump_particels" type="GPUParticles3D" parent="." unique_id=771766073]
 emitting = false
 amount = 10
 lifetime = 0.35
@@ -228,36 +261,37 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_iq32i")
 draw_pass_1 = SubResource("SphereMesh_0enxy")
 
-[node name="stair_check" type="CollisionShape3D" parent="."]
+[node name="stair_check" type="CollisionShape3D" parent="." unique_id=255980566]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.63146544, -0.48190606)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
-[node name="stair_check2" type="CollisionShape3D" parent="."]
+[node name="stair_check2" type="CollisionShape3D" parent="." unique_id=1327787294]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.63146544, 0.47136182)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
-[node name="stair_check3" type="CollisionShape3D" parent="."]
+[node name="stair_check3" type="CollisionShape3D" parent="." unique_id=387667322]
 transform = Transform3D(0.9999996, 0.00093120337, 3.8630787e-08, 3.8649816e-08, -2.041757e-08, -1, -0.00093120337, 0.9999996, -2.045355e-08, 0.4950012, 0.63146544, 0.0072793365)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
-[node name="stair_check4" type="CollisionShape3D" parent="."]
+[node name="stair_check4" type="CollisionShape3D" parent="." unique_id=775858184]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, -0.50497943, 0.63146544, 0.0072793365)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
-[node name="stair_check5" type="CollisionShape3D" parent="."]
+[node name="stair_check5" type="CollisionShape3D" parent="." unique_id=112893006]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, -0.50497943, 0.63146544, -0.3510962)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
-[node name="stair_check6" type="CollisionShape3D" parent="."]
+[node name="stair_check6" type="CollisionShape3D" parent="." unique_id=1926975185]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, -0.50497943, 0.63146544, 0.32349342)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
-[node name="stair_check7" type="CollisionShape3D" parent="."]
+[node name="stair_check7" type="CollisionShape3D" parent="." unique_id=1060932457]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, 0.43312138, 0.63146544, 0.32349342)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
-[node name="stair_check8" type="CollisionShape3D" parent="."]
+[node name="stair_check8" type="CollisionShape3D" parent="." unique_id=1684331107]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, 0.43312138, 0.63146544, -0.3510967)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [editable path="player_model"]
+[editable path="head/Camera3D/CanvasLayer/hud"]

@@ -65,6 +65,7 @@ speed = -50.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.63125145)
 target_position = Vector3(0, 0, 1)
 hit_from_inside = true
+collide_with_areas = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_y25gk")

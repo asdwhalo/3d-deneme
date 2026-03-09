@@ -25,6 +25,8 @@ extends Entity
 @export var jump_velocity:float = 4.5
 @export var mouse_sensivity:float = 0.3
 @export var slam_multiper:float = 1
+@export var is_bobable:bool = true
+@export var can_climb:bool = false
 @onready var particels: GPUParticles3D = $GPUParticles3D
 #@onready var hand: Node3D = %hand
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -49,15 +51,16 @@ var current_gravity:float
 @onready var model_head : MeshInstance3D = $player_model/head
 
 const default_head_y = 1.536
+const normal_height := 1.7
+const cruch_height := 1.3
 
 
 
 @onready var head: Node3D = %head
 @onready var coll: CollisionShape3D = %upper
 @onready var lower: CollisionShape3D = %lower
-
 @onready var mesh: MeshInstance3D = %MeshInstance3D
-#@onready var gun: Node3D = %gun_display
+
 
 #			TODO
 # daha sulu bir sistem yaz
@@ -78,9 +81,7 @@ enum stsm{
 	CROUCH
 }
 
-const normal_height := 1.7
-const cruch_height := 1.3
-@export var is_bobable:bool = true
+
 func bobbed_y(multipler:float = 1)-> float:
 	return sin(multipler * (10 * global_position.x))
 func head_bob():
@@ -94,7 +95,9 @@ func Mstate_manager():
 		Mstates = stsm.CROUCH
 	else:
 		Mstates = stsm.WALK
-@export var can_climb:bool = false
+
+
+
 func stair_control():
 	if !can_climb:
 		return
@@ -105,6 +108,7 @@ func stair_control():
 		else:
 			ray.disabled = false
 
+
 func hudControl()->void:
 
 #	if invertory[1] == null:
@@ -113,7 +117,7 @@ func hudControl()->void:
 #		hud.inventory.text = str(invertory[0])
 	#var input_dir := Input.get_vector("a", "d", "w", "s")
 	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	var collider = raycast.get_collider()
+	var collider = raycast.get_collider() as Node3D
 	#var collide_point = raycast.get_collision_point()
 	#grap_point.global_position = collide_point.global_position
 	hud.speed.text = str(velocity.x)
@@ -128,6 +132,7 @@ func hudControl()->void:
 				if collider.grapable == false:
 					if collider.has_method("take"):
 						collider.take()
+				
 				#refaktor yap
 				elif collider.has_method("grap"):
 					if collider.pullable_on_x == true:
@@ -142,11 +147,16 @@ func hudControl()->void:
 					else:
 						collider.global_position = grap_point.global_position
 						collider.grap()
+		elif collider.has_node("$interacableArea3D") != null or collider is interacableArea3D:
+			if Input.is_action_just_pressed("interac") and collider.has_signal("on_interac"):
+				print("interac object found and request input")
+				collider.on_interac.emit()
+			
 			if Input.is_action_just_released("interac") and collider is Item and collider.has_method("drop"):
 				collider.drop()
-		elif collider.has_method("on_interac"):
-			if Input.is_action_just_pressed("interac"):
-				collider.on_interac()
+		#elif collider.has_method("on_interac"):
+			#if Input.is_action_just_pressed("interac"):
+				#collider.on_interac() # çalışıyor
 		else:
 			hud.info.text = "+"
 		if collider != null and collider.has_meta("name") and collider is not Item:
@@ -156,7 +166,14 @@ func hudControl()->void:
 		
 	
 	
-
+func get_interac(object:Node3D)->void:
+	if not object.has_signal(object.on_interac) or not object.has_method(object.on_interac) :
+		return
+	if object.has_signal(object.on_interac):
+		object.on_interac.emit()
+		return
+	object.on_interac()
+	
 func fire():
 	if self.has_node("Components/gun_manager"):
 		return

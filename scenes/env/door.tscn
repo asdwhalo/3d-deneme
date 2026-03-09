@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxxxr7202dfqs"]
+[gd_scene format=3 uid="uid://cxxxr7202dfqs"]
 
 [ext_resource type="Script" uid="uid://chp4m7dsuqudq" path="res://scripts/door.gd" id="1_5gqxo"]
+[ext_resource type="Script" uid="uid://b3br43s40lcob" path="res://scripts/interaction.gd" id="2_y5o4o"]
 
 [sub_resource type="Animation" id="Animation_y5o4o"]
 length = 0.001
@@ -218,29 +219,42 @@ _data = {
 &"open": SubResource("Animation_swvhv")
 }
 
-[node name="door" type="CSGCombiner3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1a07a"]
+size = Vector3(1, 2, 0.1)
+
+[node name="door" type="CSGCombiner3D" unique_id=1083186607]
 use_collision = true
 script = ExtResource("1_5gqxo")
 metadata/name = "kapı"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_1a07a")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=920281578]
+libraries/ = SubResource("AnimationLibrary_1a07a")
 
-[node name="cerceve" type="CSGCombiner3D" parent="."]
+[node name="cerceve" type="CSGCombiner3D" parent="." unique_id=153267656]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="cerceve"]
+[node name="CSGBox3D" type="CSGBox3D" parent="cerceve" unique_id=1435674357]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.057373, 0)
 size = Vector3(2, 2.135254, 0.1)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="cerceve/CSGBox3D"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="cerceve/CSGBox3D" unique_id=1960080368]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.057373047, 0)
 operation = 2
 size = Vector3(1, 2, 0.1)
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=2020989411]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=149820776]
 transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, 0, 1, -0.04299736)
 size = Vector3(1, 2, 0.1)
+
+[node name="interacableArea3D" type="Area3D" parent="." unique_id=1446791693]
+collision_layer = 5
+collision_mask = 5
+script = ExtResource("2_y5o4o")
+metadata/_custom_type_script = "uid://b3br43s40lcob"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="interacableArea3D" unique_id=1353186037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_1a07a")
+
+[connection signal="on_interac" from="interacableArea3D" to="." method="on_interac"]

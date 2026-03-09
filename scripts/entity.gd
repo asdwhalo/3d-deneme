@@ -14,6 +14,8 @@ func _init() -> void:
 
 func take_damage(amount:float):
 	hp -= amount
+	if hp <= 0:
+		is_dead.emit()
 
 
 func on_dead():

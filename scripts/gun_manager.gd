@@ -12,6 +12,9 @@ enum weapon_state {
 @export var weapon_array:Array[Weapon]
 @export var current_weapon:Weapon
 @onready var shoot_point: Node3D = %shoot_point
+#@onready var arm_sprite: Sprite2D = %armSprite
+@onready var hand_anims: AnimationPlayer = %hand_anims
+
 @export var anim:AnimationPlayer
 #@onready var anim: AnimationPlayer = current_weapon.ins_scene.get_node("basicPistol/AnimationPlayer")
 @export var parent : Player 
@@ -50,7 +53,7 @@ func fire():
 	var bullet = bullet_scene.instantiate()
 	if Input.is_action_pressed("fire") and parent.is_cap:
 		if  anim == null  or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
-			anim.play("shoot") # animasyon bulunamıyor 
+			anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak
 			add_child(bullet)
 			bullet.global_transform.basis = shoot_point.global_transform.basis
 			bullet.global_position = shoot_point.global_position
