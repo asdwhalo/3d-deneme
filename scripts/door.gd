@@ -1,13 +1,23 @@
 extends CSGCombiner3D
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var timer: Timer = $Timer
+
 var is_on:bool = false
 
+signal opened
+signal closed
 
 func  on_interac():
+	if not timer.is_stopped():
+		return
 	if is_on == false:
 		animation_player.play("open")
-		await animation_player.animation_finished
+		timer.start()
+		await timer.timeout
 		is_on = true
-	animation_player.play("close")
-	await animation_player.animation_finished
-	is_on = true
+	else:
+		animation_player.play("close")
+		timer.start()
+		await timer.timeout
+		is_on = false

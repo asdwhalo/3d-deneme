@@ -23,13 +23,7 @@ func on_iframe_ended():
 	on_iframe = false
 
 
-func _process(delta:float):
-	pass
-
-
 func on_hit(area:Area3D):
-	if area is not Hitbox  or not on_iframe:
+	if area is not Hitbox:
 		return
 	parent.take_damage(area.damage)
-	on_iframe = true
-	iframe_timer.start()

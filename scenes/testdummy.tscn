@@ -17,6 +17,7 @@ material = SubResource("StandardMaterial3D_pb85n")
 
 [node name="Entity" type="CharacterBody3D" unique_id=750418799]
 script = ExtResource("1_nwmpt")
+hp = 10.0
 metadata/_custom_type_script = "uid://68bxg5yw32xv"
 
 [node name="Hurtbox" type="Area3D" parent="." unique_id=2005471036 node_paths=PackedStringArray("parent")]

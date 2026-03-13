@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://q3c5v8u1iw0c" path="res://scripts/resources/test_weapon.tres" id="4_dgno2"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
-[ext_resource type="Script" uid="uid://byx38015ocq27" path="res://scripts/health_system/health_manager.gd" id="6_maesr"]
+[ext_resource type="Script" uid="uid://3h234tnakpv7" path="res://scripts/arm_system/arm_manager.gd" id="6_maesr"]
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
 [ext_resource type="AnimationLibrary" uid="uid://cpggu8wujpmt6" path="res://scripts/resources/basic pistol.res" id="8_88axs"]
 [ext_resource type="Texture2D" uid="uid://ddfuxnvt0w32y" path="res://oha.png" id="11_dgno2"]
@@ -28,6 +28,9 @@ uv1_triplanar = true
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_bfjn3"]
 material = SubResource("StandardMaterial3D_0gvln")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rf6kb"]
+size = Vector3(0.8391113, 0.62402344, 0.89367676)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bn4h4"]
 albedo_texture = ExtResource("2_r6ftr")
@@ -121,7 +124,9 @@ crounch_speed = 7.0
 run_speed = 15.0
 jump_velocity = 7.5
 is_bobable = false
+hard_damage = 5.0
 hp = 10.0
+max_hp = 20.0
 metadata/name = "self"
 
 [node name="Components" type="Node" parent="." unique_id=1053506328]
@@ -133,10 +138,8 @@ current_weapon = ExtResource("3_88axs")
 anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
 
-[node name="healthManager" type="Node" parent="Components" unique_id=744189995 node_paths=PackedStringArray("parent")]
+[node name="armManager" type="Node" parent="Components" unique_id=814134739]
 script = ExtResource("6_maesr")
-parent = NodePath("../..")
-standart_hp = 10.0
 
 [node name="player_model" parent="." unique_id=1881803560 instance=ExtResource("8_0enxy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12689963, 0)
@@ -168,6 +171,15 @@ mesh = SubResource("CapsuleMesh_bfjn3")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53647, 0)
 
+[node name="parryArea" type="Area3D" parent="head" unique_id=1742045803]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7723422)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="head/parryArea" unique_id=935003809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0030517578, -0.057128906, -0.05316162)
+shape = SubResource("BoxShape3D_rf6kb")
+debug_color = Color(0.63614213, 0.5271829, 0, 0.41960785)
+
 [node name="grapPoint" type="Node3D" parent="head" unique_id=1891450035]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.6710835)
 
@@ -177,11 +189,17 @@ near = 0.2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="head/Camera3D" unique_id=52558900]
 
-[node name="hud" parent="head/Camera3D/CanvasLayer" unique_id=1579434716 instance=ExtResource("5_fh3vb")]
+[node name="hud" parent="head/Camera3D/CanvasLayer" unique_id=1579434716 node_paths=PackedStringArray("player") instance=ExtResource("5_fh3vb")]
 unique_name_in_owner = true
+player = NodePath("../../../..")
 
 [node name="info" parent="head/Camera3D/CanvasLayer/hud" index="1"]
 horizontal_alignment = 1
+
+[node name="hpLabel" type="Label" parent="head/Camera3D/CanvasLayer/hud" unique_id=377722252]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="head" unique_id=1696154731]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.409015)

@@ -257,4 +257,8 @@ metadata/_custom_type_script = "uid://b3br43s40lcob"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_1a07a")
 
+[node name="Timer" type="Timer" parent="." unique_id=68421314]
+wait_time = 0.5
+one_shot = true
+
 [connection signal="on_interac" from="interacableArea3D" to="." method="on_interac"]

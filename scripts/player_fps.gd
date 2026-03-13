@@ -1,12 +1,12 @@
 class_name Player
-extends Entity
+extends PlayerEntity
 
 ## FPS player base
 #signal dead
 #TODO item +alma +yakalama +bırakma ve ~çekme  sistemi yaz +giti ayarla+ FIXME merminin oyuncunun baktığı yöne dönme sini sağla
 #TODO  ##+merdiven basamak fiziklerini+ ekle ve +eğilmeyi düzelt##
 #TODO noclip ve debug kameraları ekle
-#TODO mermileri düzelt +garp sistemini düzelt
+#TODO mermileri düzelt +grap sistemini düzelt
 #TODO ~eşya fiziklerini onar 
 #TODO durdurma menüsünü yap silah kamerası yap
 #TODO modüler silah sistemleri yaz
@@ -147,6 +147,8 @@ func hudControl()->void:
 					else:
 						collider.global_position = grap_point.global_position
 						collider.grap()
+				else:
+					collider.drop()
 		elif collider.has_node("$interacableArea3D") != null or collider is interacableArea3D:
 			if Input.is_action_just_pressed("interac") and collider.has_signal("on_interac"):
 				print("interac object found and request input")
