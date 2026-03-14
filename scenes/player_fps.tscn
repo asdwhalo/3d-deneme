@@ -141,6 +141,10 @@ parent = NodePath("../..")
 [node name="armManager" type="Node" parent="Components" unique_id=814134739]
 script = ExtResource("6_maesr")
 
+[node name="slowingTimer" type="Timer" parent="." unique_id=1409248887]
+wait_time = 0.05
+one_shot = true
+
 [node name="player_model" parent="." unique_id=1881803560 instance=ExtResource("8_0enxy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12689963, 0)
 
@@ -310,6 +314,8 @@ shape = SubResource("SeparationRayShape3D_fh3vb")
 [node name="stair_check8" type="CollisionShape3D" parent="." unique_id=1684331107]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, 0.43312138, 0.63146544, -0.3510967)
 shape = SubResource("SeparationRayShape3D_fh3vb")
+
+[connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]
 
 [editable path="player_model"]
 [editable path="head/Camera3D/CanvasLayer/hud"]

@@ -22,6 +22,7 @@ extends PlayerEntity
 @export var walk_speed:float = 5.0
 @export var crounch_speed:float = 3.0
 @export var run_speed:float = 7.0
+@export var slowing_speed:float = 0.5
 @export var jump_velocity:float = 4.5
 @export var mouse_sensivity:float = 0.3
 @export var slam_multiper:float = 1
@@ -35,9 +36,20 @@ extends PlayerEntity
 @onready var grap_point: Node3D = $head/grapPoint
 @onready var bullet_scene = preload("res://scenes/bullet.tscn")
 @onready var shoot_point : Node3D = $head/shoot_point
+@onready var slowing_timer: Timer = $slowingTimer
+
 #@onready var ground_check :RayCast3D= $groundCheck
 #@onready var is_on_ground :bool = ground_check.is_colliding() and ground_check.get_collider() is not Player
+var input_dir:Vector2
 var current_gravity:float
+var is_slowing:bool = false
+var previus_speed:float
+var previus_dir:Vector2 :
+	get:
+		if Engine.get_physics_frames() % 2 == 0:
+			return input_dir
+		else:
+			return input_dir
 @onready var stair_check: CollisionShape3D = $stair_check
 @onready var stair_check_2: CollisionShape3D = $stair_check2
 @onready var stair_check_3: CollisionShape3D = $stair_check3
@@ -216,8 +228,8 @@ func _input(event: InputEvent) -> void:
 		head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
 func _physics_process(delta: float) -> void:
 	
-	var input_dir := Input.get_vector("a", "d", "w", "s")
-	model_head.global_rotation = head.global_rotation	# Add the gravity.
+	input_dir = Input.get_vector("a", "d", "w", "s")
+	model_head.global_rotation = head.global_rotation	
 	fire()
 	head_bob()
 	stair_control()
@@ -255,16 +267,26 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("space") and states == sts.YER:
 		velocity.y = jump_velocity
 		$jump_particels.emitting = true
-
+	if states == sts.HAVA and Input.is_action_just_released("space") and input_dir == Vector2.ZERO:
+		input_dir = previus_dir
+		velocity.z = sin(-velocity.z) + cos(-velocity.y)
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * current_speed
-		velocity.z = direction.z * current_speed
+		velocity.x = direction.x * current_speed if not is_slowing else slowing_speed
+		velocity.z = direction.z * current_speed if not is_slowing else slowing_speed
 	else:
 		velocity.x = move_toward(velocity.x, 0, current_speed)
 		velocity.z = move_toward(velocity.z, 0, current_speed)
-
+	if input_dir == Vector2.ZERO:
+		input_dir = Vector2.ONE
+		slowing_timer.start()
+		is_slowing = true
 	move_and_slide()
+
+
+func _on_slowing_timer_timeout() -> void:
+	is_slowing = false
