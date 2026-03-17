@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Arm" format=3 uid="uid://dbuwo4admrhyw"]
+
+[ext_resource type="Script" uid="uid://c26yxsoor51al" path="res://scripts/arm_system/arm_resource.gd" id="1_2i22k"]
+
+[resource]
+script = ExtResource("1_2i22k")
+arm_name = "default"
+metadata/_custom_type_script = "uid://c26yxsoor51al"

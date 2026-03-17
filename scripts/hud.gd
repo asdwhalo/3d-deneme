@@ -5,9 +5,11 @@ extends Control
 @onready var is_ground: Label = $playerInfo/groundCheck
 @onready var inventory: Label = $inventory
 @onready var hp_label: Label = $hpLabel
+@onready var current_weapon: Label = $playerInfo/currentWeapon
 
 @export var player:Player
+@export var gun_manager:GunManager
 
 func _process(_delta: float) -> void:
 	hp_label.text = str(player.hp) + "/" + str(player.max_hp - player.hard_damage)
-	
+	current_weapon.text = str(gun_manager.current_weapon_id)

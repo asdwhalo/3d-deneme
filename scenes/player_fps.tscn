@@ -30,7 +30,7 @@ uv1_triplanar = true
 material = SubResource("StandardMaterial3D_0gvln")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rf6kb"]
-size = Vector3(0.8391113, 0.62402344, 0.89367676)
+size = Vector3(0.8391113, 0.99658203, 1.4909973)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bn4h4"]
 albedo_texture = ExtResource("2_r6ftr")
@@ -142,8 +142,10 @@ parent = NodePath("../..")
 script = ExtResource("6_maesr")
 
 [node name="slowingTimer" type="Timer" parent="." unique_id=1409248887]
-wait_time = 0.05
+wait_time = 0.00999999999999999
 one_shot = true
+
+[node name="parryTimer" type="Timer" parent="." unique_id=462012610]
 
 [node name="player_model" parent="." unique_id=1881803560 instance=ExtResource("8_0enxy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12689963, 0)
@@ -180,7 +182,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7723422)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="head/parryArea" unique_id=935003809]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0030517578, -0.057128906, -0.05316162)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0030517578, -0.2434082, -0.3518219)
 shape = SubResource("BoxShape3D_rf6kb")
 debug_color = Color(0.63614213, 0.5271829, 0, 0.41960785)
 
@@ -193,12 +195,16 @@ near = 0.2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="head/Camera3D" unique_id=52558900]
 
-[node name="hud" parent="head/Camera3D/CanvasLayer" unique_id=1579434716 node_paths=PackedStringArray("player") instance=ExtResource("5_fh3vb")]
+[node name="hud" parent="head/Camera3D/CanvasLayer" unique_id=1579434716 node_paths=PackedStringArray("player", "gun_manager") instance=ExtResource("5_fh3vb")]
 unique_name_in_owner = true
 player = NodePath("../../../..")
+gun_manager = NodePath("../../../../Components/gun_manager")
 
 [node name="info" parent="head/Camera3D/CanvasLayer/hud" index="1"]
 horizontal_alignment = 1
+
+[node name="currentWeapon" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" index="2" unique_id=1883967082]
+layout_mode = 2
 
 [node name="hpLabel" type="Label" parent="head/Camera3D/CanvasLayer/hud" unique_id=377722252]
 layout_mode = 0
@@ -316,6 +322,8 @@ transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]
+[connection signal="area_entered" from="head/parryArea" to="Components/armManager" method="_on_parry_area_entered"]
+[connection signal="area_exited" from="head/parryArea" to="Components/armManager" method="_on_parry_area_exited"]
 
 [editable path="player_model"]
 [editable path="head/Camera3D/CanvasLayer/hud"]

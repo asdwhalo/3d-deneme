@@ -4,6 +4,8 @@ extends Node
 #FIXME silahlar değişmiyor
 
 var current_state:weapon_state
+var current_weapon_id:int = 0
+var weapon_scene
 enum weapon_state {
 	IDLE,
 	CHANGE
@@ -17,7 +19,16 @@ enum weapon_state {
 
 @export var anim:AnimationPlayer
 #@onready var anim: AnimationPlayer = current_weapon.ins_scene.get_node("basicPistol/AnimationPlayer")
-@export var parent : Player 
+@export var parent : Player
+func weapon_control() -> void:
+	if Input.is_action_just_pressed("change"):
+		if current_weapon_id >= weapon_array.size():
+			current_weapon_id = 0
+			initilize_weapon()
+			return
+		current_weapon = weapon_array[current_weapon_id]
+		current_weapon_id += 1
+		initilize_weapon()
 func _ready() -> void:
 	initilize_weapon()
 #region bugged 
@@ -37,9 +48,11 @@ func change_weapon()->void:
 			current_state = weapon_state.IDLE
 func init_vars():
 		current_weapon.shoot_position = shoot_point.global_position
-		
+		current_weapon.shoot_position.y = shoot_point.global_position.y + 5
 func initilize_weapon() -> void:
-	var weapon_scene = current_weapon.scene.instantiate()
+	if weapon_scene:
+		weapon_scene.queue_free()
+	weapon_scene = current_weapon.scene.instantiate()
 	init_vars()
 	shoot_point.add_child(weapon_scene)
 	if current_state == weapon_state.CHANGE:
@@ -58,8 +71,9 @@ func fire():
 			bullet.global_transform.basis = shoot_point.global_transform.basis
 			bullet.global_position = shoot_point.global_position
 func _physics_process(_delta: float) -> void:
-	var weapon_scene = current_weapon.scene.instantiate()
-	if current_state == weapon_state.CHANGE:
-		weapon_scene.queue_free()
+	#var weapon_scene = current_weapon.scene.instantiate()
+	#if current_state == weapon_state.CHANGE:
+		#weapon_scene.queue_free()
+	weapon_control()
 	fire()
-	change_weapon()
+	#change_weapon()

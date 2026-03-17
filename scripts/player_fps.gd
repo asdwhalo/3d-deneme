@@ -37,13 +37,20 @@ extends PlayerEntity
 @onready var bullet_scene = preload("res://scenes/bullet.tscn")
 @onready var shoot_point : Node3D = $head/shoot_point
 @onready var slowing_timer: Timer = $slowingTimer
+@onready var parry_timer: Timer = $parryTimer
 
 #@onready var ground_check :RayCast3D= $groundCheck
 #@onready var is_on_ground :bool = ground_check.is_colliding() and ground_check.get_collider() is not Player
 var input_dir:Vector2
 var current_gravity:float
 var is_slowing:bool = false
-var previus_speed:float
+var previus_speed:float:
+	get:
+		if Engine.get_physics_frames() % 2 == 0:
+			return current_speed
+		else:
+			return current_speed
+
 var previus_dir:Vector2 :
 	get:
 		if Engine.get_physics_frames() % 2 == 0:
@@ -222,10 +229,15 @@ func tween_denemesi():
 		stsm.CROUCH:
 			degress = 2
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and is_cap == true:
-		self.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
-		head.rotate_x(deg_to_rad(event.relative.y *-mouse_sensivity))
-		head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
+	cap_mouse()
+	if  is_cap == true:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		if event is InputEventMouseMotion :
+			self.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
+			head.rotate_x(deg_to_rad(event.relative.y *-mouse_sensivity))
+			head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 func _physics_process(delta: float) -> void:
 	
 	input_dir = Input.get_vector("a", "d", "w", "s")
@@ -238,7 +250,7 @@ func _physics_process(delta: float) -> void:
 		particels.emitting = true
 	else:
 		particels.emitting = false
-	cap_mouse()
+	
 	state_manager()
 	Mstate_manager()
 	
@@ -267,24 +279,29 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("space") and states == sts.YER:
 		velocity.y = jump_velocity
 		$jump_particels.emitting = true
-	if states == sts.HAVA and Input.is_action_just_released("space") and input_dir == Vector2.ZERO:
-		input_dir = previus_dir
-		velocity.z = sin(-velocity.z) + cos(-velocity.y)
+	
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * current_speed if not is_slowing else slowing_speed
-		velocity.z = direction.z * current_speed if not is_slowing else slowing_speed
+		velocity.x = direction.x * current_speed #if not is_slowing else slowing_speed
+		velocity.z = direction.z * current_speed #if not is_slowing else slowing_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, current_speed)
-		velocity.z = move_toward(velocity.z, 0, current_speed)
-	if input_dir == Vector2.ZERO:
-		input_dir = Vector2.ONE
-		slowing_timer.start()
 		is_slowing = true
+		if states == sts.HAVA:
+			current_speed =  1 * -cos(velocity.y) #sin(walk_speed/5) #/ cos(velocity.y)
+			#await get_tree().create_timer(0.1).timeout
+			#velocity.y = current_gravity * cos(velocity.x * 5)
+		else:
+			velocity.x = move_toward(velocity.x, 0, current_speed)
+			velocity.z = move_toward(velocity.z, 0, current_speed)
+	#if input_dir == Vector2.ZERO:
+		#input_dir = Vector2.ONE
+		#slowing_timer.start()
+		#is_slowing = true
+	
 	move_and_slide()
 
 

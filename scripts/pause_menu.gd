@@ -6,6 +6,7 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("escape"):
 			if visible == true:
+				
 				visible = false
 				get_tree().paused = false
 				player.is_cap = true
