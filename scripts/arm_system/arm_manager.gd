@@ -26,6 +26,7 @@ func punch() -> void:
 				print("parry requested")
 				if object is ParryableArea:
 					object.parry()
+					await get_tree().create_timer(0.1).timeout
 					print("i parry" + str(object.parent.name))
 				
 

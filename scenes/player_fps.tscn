@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dvtmdgcwcyxmk" path="res://assets/PNG/Dark/texture_03.png" id="1_rxiej"]
 [ext_resource type="Script" uid="uid://buxje3md7twd4" path="res://scripts/player_fps.gd" id="1_xby0o"]
 [ext_resource type="Texture2D" uid="uid://bxta387f04ag1" path="res://assets/PNG/Light/texture_06.png" id="2_r6ftr"]
+[ext_resource type="Script" uid="uid://dp0vjcbpr8pwa" path="res://scripts/damage_system/hurt_box.gd" id="2_rf6kb"]
 [ext_resource type="Resource" uid="uid://dn5ruus81teih" path="res://scripts/resources/basic_pistol.tres" id="3_88axs"]
 [ext_resource type="Script" uid="uid://bcbpr471wgitq" path="res://scripts/resources/weapon.gd" id="3_kkqhm"]
 [ext_resource type="Script" uid="uid://d3vgvd142746t" path="res://scripts/gun_manager.gd" id="4_3na6w"]
@@ -14,8 +15,12 @@
 [ext_resource type="AnimationLibrary" uid="uid://cpggu8wujpmt6" path="res://scripts/resources/basic pistol.res" id="8_88axs"]
 [ext_resource type="Texture2D" uid="uid://ddfuxnvt0w32y" path="res://oha.png" id="11_dgno2"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qx1m4"]
+radius = 0.3720703
+height = 1.8901367
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
-radius = 0.33935547
+radius = 0.3173828
 height = 1.7832031
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iq32i"]
@@ -128,6 +133,16 @@ hard_damage = 5.0
 hp = 10.0
 max_hp = 20.0
 metadata/name = "self"
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=737729696 node_paths=PackedStringArray("parent")]
+script = ExtResource("2_rf6kb")
+parent = NodePath("..")
+metadata/_custom_type_script = "uid://dp0vjcbpr8pwa"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=833529500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8989322, 0)
+shape = SubResource("CapsuleShape3D_qx1m4")
+debug_color = Color(0.70555377, 0.48929888, 0, 0.41960785)
 
 [node name="Components" type="Node" parent="." unique_id=1053506328]
 

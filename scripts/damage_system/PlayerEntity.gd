@@ -7,6 +7,7 @@ class_name PlayerEntity
 
 var on_iframe:bool
 var max_hp_with_hard_damage : float = max_hp - hard_damage 
+var damage:float = 0.0
 func on_iframe_ended():
 	on_iframe = false
 
@@ -22,5 +23,8 @@ func _ready() -> void:
 func take_damage(amount:float):
 	if not on_iframe:
 		return
+	super.take_damage(damage)
+	print("damaged")
+	damage = 0.0
 	on_iframe = true
 	iframe_timer.start()

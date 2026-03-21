@@ -10,7 +10,7 @@ var on_iframe:bool
 
 
 
-func _init() -> void:
+func _ready() -> void:
 	iframe_timer.wait_time = max_iframes
 	iframe_timer.one_shot = true
 	iframe_timer.timeout.connect(on_iframe_ended)
@@ -24,6 +24,8 @@ func on_iframe_ended():
 
 
 func on_hit(area:Area3D):
-	if area is not Hitbox:
-		return
-	parent.take_damage(area.damage)
+	if area is  Hitbox:
+		if parent is PlayerEntity:
+			parent.damage = area.damage
+			parent.take_damage(parent.damage)
+		parent.take_damage(area.damage)

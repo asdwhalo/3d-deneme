@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c1bin8gml8r6" path="res://scenes/stairs.tscn" id="5_71j4m"]
 [ext_resource type="PackedScene" uid="uid://b4u5xjs4ywhwb" path="res://scenes/test_interaction.tscn" id="6_qfnet"]
 [ext_resource type="PackedScene" uid="uid://cxxxr7202dfqs" path="res://scenes/env/door.tscn" id="7_i7141"]
+[ext_resource type="Script" uid="uid://dc2oe0os4ril2" path="res://scripts/damage_system/hitbox.gd" id="9_7r4gi"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
@@ -63,6 +64,8 @@ _surfaces = [{
 "vertex_count": 36,
 "vertex_data": PackedByteArray("AAAgwQAAgL4AACBBAAAgwQAAgL4AACDBAAAgwQAAgD4AACDBAAAgQQAAgL4AACDBAAAgwQAAgL4AACDBAAAgwQAAgL4AACBBAAAgwQAAgD4AACDBAAAgwQAAgL4AACDBAAAgQQAAgL4AACDBAAAgwQAAgD4AACDBAAAgwQAAgD4AACBBAAAgwQAAgL4AACBBAAAgwQAAgL4AACBBAAAgwQAAgD4AACBBAAAgQQAAgD4AACBBAAAgQQAAgD4AACBBAAAgwQAAgD4AACBBAAAgwQAAgD4AACDBAAAgwQAAgL4AACBBAAAgQQAAgL4AACBBAAAgQQAAgL4AACDBAAAgQQAAgD4AACBBAAAgQQAAgL4AACBBAAAgwQAAgL4AACBBAAAgQQAAgL4AACDBAAAgQQAAgL4AACBBAAAgQQAAgD4AACBBAAAgQQAAgL4AACDBAAAgQQAAgD4AACDBAAAgwQAAgD4AACDBAAAgwQAAgD4AACDBAAAgQQAAgD4AACDBAAAgQQAAgD4AACBBAAAgQQAAgD4AACBBAAAgQQAAgD4AACDBAAAgQQAAgL4AACDBAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
 }]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_w7kh3"]
 
 [node name="world" type="Node3D" unique_id=619601625]
 
@@ -188,5 +191,15 @@ transform = Transform3D(-0.023123512, 0, -0.9997326, 0, 1, 0, 0.9997326, 0, -0.0
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=845727711]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -4)
+
+[node name="Hitbox" type="Area3D" parent="." unique_id=1405769743 node_paths=PackedStringArray("coll")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9921346, 6.0164137)
+script = ExtResource("9_7r4gi")
+coll = NodePath("CollisionShape3D")
+metadata/_custom_type_script = "uid://dc2oe0os4ril2"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox" unique_id=1096643702]
+shape = SubResource("SphereShape3D_w7kh3")
+debug_color = Color(0.99844414, 0, 0.1533528, 0.41960785)
 
 [editable path="Item"]

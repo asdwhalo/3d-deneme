@@ -2,9 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://0o80mtyloiql" path="res://scenes/basic_pistol.tscn" id="1_6cpdj"]
 [ext_resource type="Script" uid="uid://bcbpr471wgitq" path="res://scripts/resources/weapon.gd" id="1_e8plm"]
+[ext_resource type="PackedScene" uid="uid://dyts86owng27t" path="res://scenes/bullet.tscn" id="1_udqqt"]
 
 [resource]
 script = ExtResource("1_e8plm")
 Name = "düz"
 scene = ExtResource("1_6cpdj")
+bullet_scene = ExtResource("1_udqqt")
 metadata/_custom_type_script = "uid://bcbpr471wgitq"
