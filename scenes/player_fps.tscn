@@ -129,6 +129,7 @@ crounch_speed = 7.0
 run_speed = 15.0
 jump_velocity = 7.5
 is_bobable = false
+max_iframes = 1.0
 hard_damage = 5.0
 hp = 10.0
 max_hp = 20.0
@@ -219,6 +220,9 @@ gun_manager = NodePath("../../../../Components/gun_manager")
 horizontal_alignment = 1
 
 [node name="currentWeapon" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" index="2" unique_id=1883967082]
+layout_mode = 2
+
+[node name="iframeleftTime" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" index="3" unique_id=701869383]
 layout_mode = 2
 
 [node name="hpLabel" type="Label" parent="head/Camera3D/CanvasLayer/hud" unique_id=377722252]

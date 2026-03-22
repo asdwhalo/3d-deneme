@@ -16,6 +16,7 @@ func _ready() -> void:
 	iframe_timer.timeout.connect(on_iframe_ended)
 	
 	connect("area_entered",on_hit)
+	connect("area_exited",on_hitbox_exit)
 	#connect("area_entered",parent.take_damage)
 
 
@@ -27,5 +28,11 @@ func on_hit(area:Area3D):
 	if area is  Hitbox:
 		if parent is PlayerEntity:
 			parent.damage = area.damage
-			parent.take_damage(parent.damage)
+			parent.hitbox = area
+			parent.take_damage(area.damage)
 		parent.take_damage(area.damage)
+func on_hitbox_exit(area:Area3D):
+	if area is Hitbox:
+		if parent is PlayerEntity:
+			parent.damage = 0.0
+			parent.hitbox = null
