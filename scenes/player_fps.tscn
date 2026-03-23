@@ -19,6 +19,9 @@
 radius = 0.3720703
 height = 1.8901367
 
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_rf6kb"]
+length = 0.5
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo3gr"]
 radius = 0.3173828
 height = 1.7832031
@@ -172,10 +175,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, -0.017888308)
 [node name="head" parent="player_model" index="1"]
 transform = Transform3D(0.53938127, 0, 0, 0, 0.53938127, 0, 0, 0, 0.53938127, 0, 1.7218666, -0.17036071)
 
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="." unique_id=2108938841]
+
+[node name="crouchTest" type="CollisionShape3D" parent="." unique_id=1383323288]
+transform = Transform3D(1, 0, 0, 0, 0.0015358481, 0.9999988, 0, -0.9999988, 0.0015358481, 0, 1.8315403, 0)
+shape = SubResource("SeparationRayShape3D_rf6kb")
+
 [node name="upper" type="CollisionShape3D" parent="." unique_id=1007819279]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95629156, 0)
 shape = SubResource("CapsuleShape3D_uo3gr")
+
+[node name="crouchHeightChecker" type="RayCast3D" parent="upper" unique_id=334103090]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8883337, 0)
+enabled = false
+target_position = Vector3(0, 0.5, 0)
+hit_from_inside = true
 
 [node name="lower" type="CollisionShape3D" parent="." unique_id=11998370]
 unique_name_in_owner = true

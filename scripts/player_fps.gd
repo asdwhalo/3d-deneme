@@ -69,6 +69,8 @@ var previus_dir:Vector2 :
 @onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4,stair_check_5,stair_check_6,stair_check_7,stair_check_8]
 @onready var model_head : MeshInstance3D = $player_model/head
 
+@onready var crouch_height_checker: RayCast3D = %crouchHeightChecker
+
 const default_head_y = 1.536
 const normal_height := 1.7
 const cruch_height := 1.3
@@ -85,8 +87,7 @@ const cruch_height := 1.3
 # daha sulu bir sistem yaz
 # eğilmeyi iyileştir
 # animasyolar ekle
-# 
-# silah silah sistemi ekle
+
 
 
 
@@ -115,7 +116,29 @@ func Mstate_manager():
 	else:
 		Mstates = stsm.WALK
 
-
+func change_stateM(new_state:stsm)-> void:
+	var old_state := Mstates
+	Mstates = new_state
+	match old_state:
+		stsm.RUN:
+			pass
+		stsm.WALK:
+			pass
+		stsm.CROUCH:
+			if new_state != stsm.CROUCH:
+				coll.shape.height =  normal_height + crouch_height_checker.get_collision_point().y
+				mesh.mesh.height = normal_height + crouch_height_checker.get_collision_point().y
+			else:
+				#coll.shape.height = normal_height
+				#mesh.mesh.height = normal_height
+				pass
+	match new_state:
+		stsm.RUN:
+			pass
+		stsm.WALK:
+			pass
+		stsm.CROUCH:
+			pass
 
 func stair_control():
 	if !can_climb:
@@ -126,8 +149,6 @@ func stair_control():
 			continue
 		else:
 			ray.disabled = false
-
-
 func hudControl()->void:
 
 #	if invertory[1] == null:
@@ -184,9 +205,6 @@ func hudControl()->void:
 			hud.info.text = str(collider.get_meta("name"))
 		else:
 			hud.info.text = "+"
-		
-	
-	
 func get_interac(object:Node3D)->void:
 	if not object.has_signal(object.on_interac) or not object.has_method(object.on_interac) :
 		return
@@ -194,7 +212,6 @@ func get_interac(object:Node3D)->void:
 		object.on_interac.emit()
 		return
 	object.on_interac()
-	
 func fire():
 	if self.has_node("Components/gun_manager"):
 		return
@@ -303,7 +320,5 @@ func _physics_process(delta: float) -> void:
 		#is_slowing = true
 	
 	move_and_slide()
-
-
 func _on_slowing_timer_timeout() -> void:
 	is_slowing = false
