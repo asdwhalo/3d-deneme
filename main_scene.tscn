@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://c3kq876a1wys8"]
+
+[ext_resource type="Material" uid="uid://p3kbgbp6rtes" path="res://assets/materials/ground.tres" id="1_2c62f"]
+[ext_resource type="Texture2D" uid="uid://dbnwtnwjdh4rr" path="res://assets/PNG/WhatsApp Image 2026-03-19 at 17.32.31.jpeg" id="2_gyfs4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x1h"]
+sky_top_color = Color(0.24165836, 0.23937628, 0.22481677, 1)
+sky_horizon_color = Color(0.44499105, 0.4493439, 0.44595957, 1)
+ground_bottom_color = Color(0.15934026, 0.17903379, 0.1800561, 1)
+ground_horizon_color = Color(0.44499105, 0.4493439, 0.44595957, 1)
+
+[sub_resource type="Sky" id="Sky_8mm7a"]
+sky_material = SubResource("ProceduralSkyMaterial_d5x1h")
+
+[sub_resource type="Environment" id="Environment_hq1ik"]
+background_mode = 2
+sky = SubResource("Sky_8mm7a")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nfk4m"]
+albedo_texture = ExtResource("2_gyfs4")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_66tet"]
+albedo_texture = ExtResource("2_gyfs4")
+uv1_triplanar = true
+
+[node name="MainScene" type="Node3D" unique_id=1142838135]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=642950507]
+transform = Transform3D(-0.9509832, 0.30624002, 0.042987105, 0.24335733, 0.65533686, 0.71506006, 0.19080897, 0.69047135, -0.69774014, 0, 5.9107075, 0)
+shadow_enabled = true
+sky_mode = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2008528213]
+environment = SubResource("Environment_hq1ik")
+
+[node name="env" type="CSGCombiner3D" parent="." unique_id=551029794]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="env" unique_id=1872561084]
+size = Vector3(20, 0.1, 20)
+material = ExtResource("1_2c62f")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="env" unique_id=66246099]
+transform = Transform3D(0.973227, 0, -0.22984591, 0, 1, 0, 0.22984591, 0, 0.973227, -0.2103169, 1.9677849, 6.7730002)
+size = Vector3(3.3063965, 4.4908447, 1)
+material = SubResource("StandardMaterial3D_nfk4m")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="env" unique_id=2114282422]
+transform = Transform3D(0.9781621, 0, 0.20784338, 0, 1, 0, -0.20784338, 0, 0.9781621, -2.2407625, 1.9677849, 6.7730002)
+size = Vector3(3.3063965, 4.4908447, 1)
+material = SubResource("StandardMaterial3D_nfk4m")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="env" unique_id=1693837905]
+transform = Transform3D(0.8550477, 0, -0.51854944, 0, 1, 0, 0.51854944, 0, 0.8550477, -4.149269, 0.6392009, 6.7730002)
+size = Vector3(3.3063965, 4.4908447, 1)
+material = SubResource("StandardMaterial3D_nfk4m")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="env" unique_id=1744013188]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.004137, 0.20380759, 6.1544814)
+size = Vector3(4.524292, 4.4908447, 1)
+material = SubResource("StandardMaterial3D_nfk4m")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="env" unique_id=1925333955]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8989496, 0.20380759, 6.1544814)
+size = Vector3(3.3063965, 4.4908447, 1)
+material = SubResource("StandardMaterial3D_66tet")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="env" unique_id=888743972]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 2.5748153, 0.20380759, 6.814423)
+size = Vector3(3.3063965, 4.4908447, 1)
+material = SubResource("StandardMaterial3D_nfk4m")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="env" unique_id=1609576658]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 5.8639054, 0.8127652, 6.814423)
+size = Vector3(3.3063965, 5.715149, 1)
+material = SubResource("StandardMaterial3D_66tet")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="env" unique_id=715078995]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 8.2907, 0.8127652, 6.814423)
+size = Vector3(4.1071777, 5.715149, 1)
+material = SubResource("StandardMaterial3D_nfk4m")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1743757293]
+transform = Transform3D(-0.96120876, 0, 0.2758218, 0, 1, 0, -0.2758218, 0, -0.96120876, 4.971439, 0.54477, 0)
+
+[node name="menu" type="CanvasLayer" parent="Camera3D" unique_id=1628540674]
+
+[node name="Control" type="Control" parent="Camera3D/menu" unique_id=547882333]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

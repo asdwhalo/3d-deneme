@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://dx75u2tf0jhog"
+path="res://.godot/imported/WhatsApp Image 2026-03-19 at 17.32.32bitmap?.jpeg-ab09769e8ed80c0b048997620475f47c.res"
+
+[deps]
+
+source_file="res://assets/WhatsApp Image 2026-03-19 at 17.32.32bitmap?.jpeg"
+dest_files=["res://.godot/imported/WhatsApp Image 2026-03-19 at 17.32.32bitmap?.jpeg-ab09769e8ed80c0b048997620475f47c.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

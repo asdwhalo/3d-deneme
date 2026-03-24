@@ -125,9 +125,9 @@ func change_stateM(new_state:stsm)-> void:
 		stsm.WALK:
 			pass
 		stsm.CROUCH:
-			if new_state != stsm.CROUCH:
-				coll.shape.height =  normal_height + crouch_height_checker.get_collision_point().y
-				mesh.mesh.height = normal_height + crouch_height_checker.get_collision_point().y
+			if new_state != stsm.CROUCH and crouch_height_checker.is_colliding():
+				coll.shape.height =  cruch_height + abs(crouch_height_checker.get_collision_point().y)
+				mesh.mesh.height = cruch_height + abs(crouch_height_checker.get_collision_point().y)
 			else:
 				#coll.shape.height = normal_height
 				#mesh.mesh.height = normal_height
@@ -284,6 +284,11 @@ func _physics_process(delta: float) -> void:
 			slam_multiper = 3
 		elif states == sts.YER:
 			slam_multiper = 1
+	elif Input.is_action_just_released("crouch"):
+		if Mstates != stsm.CROUCH and crouch_height_checker.is_colliding():
+				coll.shape.height =  cruch_height - (crouch_height_checker.get_collision_point().y)
+				mesh.mesh.height = cruch_height - (crouch_height_checker.get_collision_point().y)
+		
 	else:
 		current_speed = walk_speed
 		coll.shape.height = normal_height

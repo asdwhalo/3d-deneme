@@ -80,8 +80,15 @@ shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
 [node name="PlayerFps" parent="." unique_id=1880917842 instance=ExtResource("2_4wyf3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, -2.9802322e-08, 0, 0.99999994, -1.1920929e-07, 0.79119873, 2.3841858e-07)
 can_climb = true
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="PlayerFps/head" parent_id_path=PackedInt32Array(1880917842, 272007608) index="7" unique_id=2108527850]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, -1.73647, 0)
+remote_path = NodePath("../../../CanvasLayer/SubViewportContainer/SubViewport/Camera3D")
+update_position = false
+update_rotation = false
+update_scale = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=426986428]
 
@@ -96,7 +103,7 @@ size = Vector2i(253, 234)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport" unique_id=1650283371]
-transform = Transform3D(1, 0, 0, 0, 0.116012074, 0.9932478, 0, -0.9932478, 0.116012074, -8.918064, 10.365019, 6.54603)
+transform = Transform3D(1, 0, 2.9802326e-08, -2.9787865e-08, 0.031149073, 0.99951476, -9.283148e-10, -0.99951476, 0.031149073, -1.1920929e-07, 8.879956, 5.3571577)
 fov = 120.6
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=340447794]
@@ -202,4 +209,7 @@ metadata/_custom_type_script = "uid://dc2oe0os4ril2"
 shape = SubResource("SphereShape3D_w7kh3")
 debug_color = Color(0.99844414, 0, 0.1533528, 0.41960785)
 
+[editable path="PlayerFps"]
+[editable path="PlayerFps/player_model"]
+[editable path="PlayerFps/head/Camera3D/CanvasLayer/hud"]
 [editable path="Item"]

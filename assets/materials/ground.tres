@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://p3kbgbp6rtes"]
+
+[ext_resource type="Texture2D" uid="uid://cxpphbeljcvnw" path="res://assets/WhatsApp Image 2026-03-19 at 17.32.32.jpeg" id="1_jgrjp"]
+[ext_resource type="Texture2D" uid="uid://cjnm0d3b062w7" path="res://assets/eh.jpeg" id="2_47y7m"]
+
+[resource]
+albedo_texture = ExtResource("1_jgrjp")
+normal_enabled = true
+normal_texture = ExtResource("2_47y7m")
+heightmap_enabled = true
+heightmap_texture = ExtResource("2_47y7m")
+uv1_triplanar = true
