@@ -161,7 +161,7 @@ parent = NodePath("../..")
 script = ExtResource("6_maesr")
 
 [node name="slowingTimer" type="Timer" parent="." unique_id=1409248887]
-wait_time = 0.00999999999999999
+wait_time = 0.05
 one_shot = true
 
 [node name="parryTimer" type="Timer" parent="." unique_id=462012610]
@@ -230,13 +230,13 @@ unique_name_in_owner = true
 player = NodePath("../../../..")
 gun_manager = NodePath("../../../../Components/gun_manager")
 
-[node name="info" parent="head/Camera3D/CanvasLayer/hud" index="1"]
+[node name="info" parent="head/Camera3D/CanvasLayer/hud" index="1" unique_id=2036851755]
 horizontal_alignment = 1
 
-[node name="currentWeapon" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" index="2" unique_id=1883967082]
+[node name="currentWeapon" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="2" unique_id=1883967082]
 layout_mode = 2
 
-[node name="iframeleftTime" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" index="3" unique_id=701869383]
+[node name="iframeleftTime" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="3" unique_id=701869383]
 layout_mode = 2
 
 [node name="hpLabel" type="Label" parent="head/Camera3D/CanvasLayer/hud" unique_id=377722252]

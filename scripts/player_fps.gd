@@ -50,7 +50,7 @@ var previus_speed:float:
 			return current_speed
 		else:
 			return current_speed
-
+var mass:float = 1
 var previus_dir:Vector2 :
 	get:
 		if Engine.get_physics_frames() % 2 == 0:
@@ -126,19 +126,28 @@ func change_stateM(new_state:stsm)-> void:
 			pass
 		stsm.CROUCH:
 			if new_state != stsm.CROUCH and crouch_height_checker.is_colliding():
-				coll.shape.height =  cruch_height + abs(crouch_height_checker.get_collision_point().y)
-				mesh.mesh.height = cruch_height + abs(crouch_height_checker.get_collision_point().y)
+				coll.shape.height =  cruch_height + abs(crouch_height_checker.get_collision_point().y) - crouch_height_checker.global_position.y
+				mesh.mesh.height = cruch_height + abs(crouch_height_checker.get_collision_point().y) - crouch_height_checker.global_position.y
 			else:
 				#coll.shape.height = normal_height
 				#mesh.mesh.height = normal_height
 				pass
 	match new_state:
 		stsm.RUN:
-			pass
+			current_speed = run_speed
+			coll.shape.height = normal_height
+			mesh.mesh.height = normal_height
+			mass = 0.3 
 		stsm.WALK:
-			pass
+			current_speed = walk_speed
+			coll.shape.height = normal_height
+			mesh.mesh.height = normal_height
+			mass = 1.25
 		stsm.CROUCH:
-			pass
+			current_speed = crounch_speed
+			coll.shape.height = cruch_height
+			mesh.mesh.height = cruch_height
+			mass = 2
 
 func stair_control():
 	if !can_climb:
@@ -272,30 +281,35 @@ func _physics_process(delta: float) -> void:
 	Mstate_manager()
 	
 	if Input.is_action_pressed("run"):
-
-		current_speed = run_speed
-		coll.shape.height = normal_height
-		mesh.mesh.height = normal_height
+		change_stateM(stsm.RUN)
+		#current_speed = run_speed
+		#coll.shape.height = normal_height
+		#mesh.mesh.height = normal_height
 	elif Input.is_action_pressed("crouch"):
-		current_speed = crounch_speed
-		coll.shape.height = cruch_height
-		mesh.mesh.height = cruch_height
+		change_stateM(stsm.CROUCH)
+		#current_speed = crounch_speed
+		#coll.shape.height = cruch_height
+		#mesh.mesh.height = cruch_height
 		if states == sts.HAVA:
 			slam_multiper = 3
 		elif states == sts.YER:
 			slam_multiper = 1
 	elif Input.is_action_just_released("crouch"):
-		if Mstates != stsm.CROUCH and crouch_height_checker.is_colliding():
-				coll.shape.height =  cruch_height - (crouch_height_checker.get_collision_point().y)
-				mesh.mesh.height = cruch_height - (crouch_height_checker.get_collision_point().y)
-		
+		#if Mstates != stsm.CROUCH and crouch_height_checker.is_colliding():
+				#coll.shape.height =  cruch_height - (crouch_height_checker.get_collision_point().y)
+				#mesh.mesh.height = cruch_height - (crouch_height_checker.get_collision_point().y)
+		#if Mstates != stsm.CROUCH and crouch_height_checker.is_colliding():
+			#coll.shape.height =  cruch_height + abs(crouch_height_checker.get_collision_point().y) - crouch_height_checker.global_position.y
+			#mesh.mesh.height = cruch_height + abs(crouch_height_checker.get_collision_point().y) - crouch_height_checker.global_position.y
+		pass
 	else:
-		current_speed = walk_speed
-		coll.shape.height = normal_height
-		mesh.mesh.height = normal_height
-		slam_multiper = 1
+		change_stateM(stsm.WALK)
+		#current_speed = walk_speed
+		#coll.shape.height = normal_height
+		#mesh.mesh.height = normal_height
+		#slam_multiper = 1
 	if states == sts.HAVA:
-		velocity += get_gravity() * slam_multiper * delta
+		velocity += get_gravity() * mass * delta
 
 	# Handle jump.
 	if Input.is_action_just_pressed("space") and states == sts.YER:
@@ -313,7 +327,8 @@ func _physics_process(delta: float) -> void:
 	else:
 		is_slowing = true
 		if states == sts.HAVA:
-			current_speed =  1 * -cos(velocity.y) #sin(walk_speed/5) #/ cos(velocity.y)
+			current_speed *= -cos(velocity.y) #sin(walk_speed/5) #/ cos(velocity.y)
+			
 			#await get_tree().create_timer(0.1).timeout
 			#velocity.y = current_gravity * cos(velocity.x * 5)
 		else:

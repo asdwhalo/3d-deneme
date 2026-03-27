@@ -2,6 +2,7 @@
 
 [ext_resource type="Material" uid="uid://p3kbgbp6rtes" path="res://assets/materials/ground.tres" id="1_2c62f"]
 [ext_resource type="Texture2D" uid="uid://dbnwtnwjdh4rr" path="res://assets/PNG/WhatsApp Image 2026-03-19 at 17.32.31.jpeg" id="2_gyfs4"]
+[ext_resource type="Script" uid="uid://d3hppqw2diu77" path="res://control.gd" id="3_gyfs4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x1h"]
 sky_top_color = Color(0.24165836, 0.23937628, 0.22481677, 1)
@@ -83,12 +84,45 @@ size = Vector3(4.1071777, 5.715149, 1)
 material = SubResource("StandardMaterial3D_nfk4m")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1743757293]
-transform = Transform3D(-0.96120876, 0, 0.2758218, 0, 1, 0, -0.2758218, 0, -0.96120876, 4.971439, 0.54477, 0)
+transform = Transform3D(-0.8072505, 0.045091003, 0.5884843, -0.10655117, 0.96956086, -0.22045098, -0.58051157, -0.24066277, -0.7778739, 4.971439, 0.54477, 0)
 
 [node name="menu" type="CanvasLayer" parent="Camera3D" unique_id=1628540674]
 
 [node name="Control" type="Control" parent="Camera3D/menu" unique_id=547882333]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_gyfs4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera3D/menu/Control" unique_id=1376918179]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="beginButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer" unique_id=732102659]
+layout_mode = 2
+text = "Begin"
+
+[node name="configButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer" unique_id=1194742453]
+layout_mode = 2
+text = "Configure"
+
+[node name="exitButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer" unique_id=2016263882]
+layout_mode = 2
+text = "Exit"
+
+[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/beginButton" to="Camera3D/menu/Control" method="_on_begin_button_pressed"]
+[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/configButton" to="Camera3D/menu/Control" method="_on_config_button_pressed"]
+[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/exitButton" to="Camera3D/menu/Control" method="_on_exit_button_pressed"]
