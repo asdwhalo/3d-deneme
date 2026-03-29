@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FireArmWeapon" format=3 uid="uid://dqg07vjm3ughe"]
+
+[ext_resource type="Script" uid="uid://oea6fdn1ied1" path="res://scripts/firearm_class.gd" id="1_s7bst"]
+[ext_resource type="PackedScene" uid="uid://dyts86owng27t" path="res://scenes/bullet.tscn" id="2_c0pgv"]
+[ext_resource type="PackedScene" uid="uid://0o80mtyloiql" path="res://scenes/basic_pistol.tscn" id="3_q3ipg"]
+
+[resource]
+script = ExtResource("1_s7bst")
+bullet_scene = ExtResource("2_c0pgv")
+scene = ExtResource("3_q3ipg")
+metadata/_custom_type_script = "uid://oea6fdn1ied1"

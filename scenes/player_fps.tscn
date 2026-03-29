@@ -7,9 +7,9 @@
 [ext_resource type="Resource" uid="uid://dn5ruus81teih" path="res://scripts/resources/basic_pistol.tres" id="3_88axs"]
 [ext_resource type="Script" uid="uid://bcbpr471wgitq" path="res://scripts/resources/weapon.gd" id="3_kkqhm"]
 [ext_resource type="Script" uid="uid://d3vgvd142746t" path="res://scripts/gun_manager.gd" id="4_3na6w"]
-[ext_resource type="Resource" uid="uid://q3c5v8u1iw0c" path="res://scripts/resources/test_weapon.tres" id="4_dgno2"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
+[ext_resource type="Resource" uid="uid://dqg07vjm3ughe" path="res://scripts/resources/idkmanitstest.tres" id="5_rf6kb"]
 [ext_resource type="Script" uid="uid://3h234tnakpv7" path="res://scripts/arm_system/arm_manager.gd" id="6_maesr"]
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
 [ext_resource type="AnimationLibrary" uid="uid://cpggu8wujpmt6" path="res://scripts/resources/basic pistol.res" id="8_88axs"]
@@ -152,10 +152,14 @@ debug_color = Color(0.70555377, 0.48929888, 0, 0.41960785)
 
 [node name="gun_manager" type="Node" parent="Components" unique_id=792572384 node_paths=PackedStringArray("anim", "parent")]
 script = ExtResource("4_3na6w")
-weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("3_88axs"), ExtResource("4_dgno2")])
+weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("5_rf6kb")])
 current_weapon = ExtResource("3_88axs")
 anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
+
+[node name="coolDownTimer" type="Timer" parent="Components/gun_manager" unique_id=1843360715]
+
+[node name="timesOnAttackTimer" type="Timer" parent="Components/gun_manager" unique_id=1656991361]
 
 [node name="armManager" type="Node" parent="Components" unique_id=814134739]
 script = ExtResource("6_maesr")

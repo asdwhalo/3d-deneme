@@ -14,8 +14,10 @@ enum weapon_state {
 @export var weapon_array:Array[Weapon]
 @export var current_weapon:Weapon
 @onready var shoot_point: Node3D = %shoot_point
-#@onready var arm_sprite: Sprite2D = %armSprite
 @onready var hand_anims: AnimationPlayer = %hand_anims
+#@onready var arm_sprite: Sprite2D = %armSprite
+@onready var cool_down_timer: Timer = $coolDownTimer
+@onready var times_on_attack_timer: Timer = $timesOnAttackTimer
 
 @export var anim:AnimationPlayer
 #@onready var anim: AnimationPlayer = current_weapon.ins_scene.get_node("basicPistol/AnimationPlayer")
@@ -32,6 +34,8 @@ func weapon_control() -> void:
 		initilize_weapon()
 func _ready() -> void:
 	initilize_weapon()
+	cool_down_timer.wait_time = current_weapon.cooldown if current_weapon is MeleeWeapon else 0.0
+	times_on_attack_timer.wait_time = current_weapon.times_on_attack if current_weapon is MeleeWeapon else 0.0
 #region bugged 
 func change_weapon()->void:
 	#TODO
@@ -48,6 +52,7 @@ func change_weapon()->void:
 			initilize_weapon()
 			current_state = weapon_state.IDLE
 func init_vars():
+	if current_weapon is FireArmWeapon:
 		current_weapon.shoot_position = shoot_point.global_position
 		current_weapon.shoot_position = shoot_point.global_position
 func initilize_weapon() -> void:
@@ -64,24 +69,32 @@ func initilize_weapon() -> void:
 func fire():
 	if current_state == weapon_state.CHANGE:
 		return
-	
-	if Input.is_action_pressed("fire") and parent.is_cap:
-		if  anim == null  or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
-			
-			anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak
-			if current_weapon.shoot_point_array == null or current_weapon.shoot_point_array.size() <= 1:
-				var bullet = current_weapon.bullet_scene.instantiate()
-				add_child(bullet)
-				bullet.global_transform.basis = shoot_point.global_transform.basis
-				bullet.global_position = shoot_point.global_position
-				return
-			else:
-				for point in current_weapon.shoot_point_array:
-					var bullet = current_weapon.bullet_scene.instantiate()
-					owner.add_child(bullet)
-					bullet.global_transform.basis = shoot_point.global_transform.basis
-					bullet.global_position = point + parent.global_position
-				return
+
+	elif Input.is_action_pressed("fire") and parent.is_cap:
+		match current_weapon:
+			FireArmWeapon:
+				if  anim == null  or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
+					
+					anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak
+					if current_weapon.shoot_point_array == null or current_weapon.shoot_point_array.size() <= 1:
+						var bullet = current_weapon.bullet_scene.instantiate()
+						add_child(bullet)
+						bullet.global_transform.basis = shoot_point.global_transform.basis
+						bullet.global_position = shoot_point.global_position
+						return
+					else:
+						for point in current_weapon.shoot_point_array:
+							var bullet = current_weapon.bullet_scene.instantiate()
+							owner.add_child(bullet)
+							bullet.global_transform.basis = shoot_point.global_transform.basis
+							bullet.global_position = point + parent.global_position
+					return
+			MeleeWeapon:
+				if current_weapon.shoot_animation_name != null: anim.play(current_weapon.shoot_animation_name)
+				if  not current_weapon.is_on_attack and current_weapon.can_attack:
+					current_weapon.is_on_attack = true
+					
+					
 func _physics_process(_delta: float) -> void:
 	#var weapon_scene = current_weapon.scene.instantiate()
 	#if current_state == weapon_state.CHANGE:
