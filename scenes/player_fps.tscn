@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
 [ext_resource type="Resource" uid="uid://dqg07vjm3ughe" path="res://scripts/resources/idkmanitstest.tres" id="5_rf6kb"]
 [ext_resource type="Script" uid="uid://3h234tnakpv7" path="res://scripts/arm_system/arm_manager.gd" id="6_maesr"]
+[ext_resource type="PackedScene" uid="uid://xvwbeiqj17xm" path="res://scenes/test_pistol.tscn" id="6_ts7aj"]
+[ext_resource type="Script" uid="uid://oea6fdn1ied1" path="res://scripts/firearm_class.gd" id="7_odr4i"]
 [ext_resource type="PackedScene" uid="uid://cqpd854i5ybnh" path="res://scenes/player_model.tscn" id="8_0enxy"]
 [ext_resource type="AnimationLibrary" uid="uid://cpggu8wujpmt6" path="res://scripts/resources/basic pistol.res" id="8_88axs"]
 [ext_resource type="Texture2D" uid="uid://ddfuxnvt0w32y" path="res://oha.png" id="11_dgno2"]
@@ -18,6 +20,11 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qx1m4"]
 radius = 0.3720703
 height = 1.8901367
+
+[sub_resource type="Resource" id="Resource_ey7il"]
+script = ExtResource("7_odr4i")
+scene = ExtResource("6_ts7aj")
+metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_rf6kb"]
 length = 0.5
@@ -152,12 +159,13 @@ debug_color = Color(0.70555377, 0.48929888, 0, 0.41960785)
 
 [node name="gun_manager" type="Node" parent="Components" unique_id=792572384 node_paths=PackedStringArray("anim", "parent")]
 script = ExtResource("4_3na6w")
-weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("5_rf6kb")])
+weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("5_rf6kb"), SubResource("Resource_ey7il")])
 current_weapon = ExtResource("3_88axs")
 anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
 
 [node name="coolDownTimer" type="Timer" parent="Components/gun_manager" unique_id=1843360715]
+one_shot = true
 
 [node name="timesOnAttackTimer" type="Timer" parent="Components/gun_manager" unique_id=1656991361]
 

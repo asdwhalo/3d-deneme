@@ -79,6 +79,9 @@ transform = Transform3D(-0.866004, -0.499992, 0.00671762, 0.0058192, 0.0033561, 
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="env" unique_id=1321815911]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45097983, 0)
+
 [node name="PlayerFps" parent="." unique_id=1880917842 instance=ExtResource("2_4wyf3")]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, -2.9802322e-08, 0, 0.99999994, -1.1920929e-07, 0.79119873, 2.3841858e-07)
 can_climb = true

@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_s7bst")
-bullet_scene = ExtResource("2_c0pgv")
 scene = ExtResource("3_q3ipg")
+cooldown = 0.5
+bullet_scene = ExtResource("2_c0pgv")
 metadata/_custom_type_script = "uid://oea6fdn1ied1"

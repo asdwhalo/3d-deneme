@@ -8,17 +8,11 @@ extends CharacterBody3D
 @export var max_hp:float
 
 
-
-
 var can_die:bool = true
-
-
-
 
 
 signal is_dead
 signal health_is_zero
-
 
 
 
@@ -31,6 +25,7 @@ func take_damage(amount:float):
 
 	if hp <= 0:
 		health_is_zero.emit()
+
 
 func on_zero_health():
 	if can_die:
