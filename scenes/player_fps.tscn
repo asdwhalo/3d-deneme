@@ -9,7 +9,8 @@
 [ext_resource type="Script" uid="uid://d3vgvd142746t" path="res://scripts/gun_manager.gd" id="4_3na6w"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
 [ext_resource type="PackedScene" uid="uid://dp8cr2degehu4" path="res://scenes/hud.tscn" id="5_fh3vb"]
-[ext_resource type="Resource" uid="uid://dqg07vjm3ughe" path="res://scripts/resources/idkmanitstest.tres" id="5_rf6kb"]
+[ext_resource type="PackedScene" uid="uid://dyts86owng27t" path="res://scenes/bullet.tscn" id="5_odr4i"]
+[ext_resource type="PackedScene" uid="uid://0o80mtyloiql" path="res://scenes/basic_pistol.tscn" id="6_ey7il"]
 [ext_resource type="Script" uid="uid://3h234tnakpv7" path="res://scripts/arm_system/arm_manager.gd" id="6_maesr"]
 [ext_resource type="PackedScene" uid="uid://xvwbeiqj17xm" path="res://scenes/test_pistol.tscn" id="6_ts7aj"]
 [ext_resource type="Script" uid="uid://oea6fdn1ied1" path="res://scripts/firearm_class.gd" id="7_odr4i"]
@@ -21,9 +22,17 @@
 radius = 0.3720703
 height = 1.8901367
 
+[sub_resource type="Resource" id="Resource_fryia"]
+script = ExtResource("7_odr4i")
+scene = ExtResource("6_ey7il")
+cooldown = 5.0
+bullet_scene = ExtResource("5_odr4i")
+metadata/_custom_type_script = "uid://oea6fdn1ied1"
+
 [sub_resource type="Resource" id="Resource_ey7il"]
 script = ExtResource("7_odr4i")
 scene = ExtResource("6_ts7aj")
+cooldown = 0.1
 metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_rf6kb"]
@@ -159,7 +168,7 @@ debug_color = Color(0.70555377, 0.48929888, 0, 0.41960785)
 
 [node name="gun_manager" type="Node" parent="Components" unique_id=792572384 node_paths=PackedStringArray("anim", "parent")]
 script = ExtResource("4_3na6w")
-weapon_array = Array[ExtResource("3_kkqhm")]([ExtResource("5_rf6kb"), SubResource("Resource_ey7il")])
+weapon_array = Array[ExtResource("3_kkqhm")]([SubResource("Resource_fryia"), SubResource("Resource_ey7il")])
 current_weapon = ExtResource("3_88axs")
 anim = NodePath("../../AnimationPlayer")
 parent = NodePath("../..")
@@ -366,6 +375,7 @@ shape = SubResource("SeparationRayShape3D_fh3vb")
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, 0.43312138, 0.63146544, -0.3510967)
 shape = SubResource("SeparationRayShape3D_fh3vb")
 
+[connection signal="timeout" from="Components/gun_manager/coolDownTimer" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]
 [connection signal="area_entered" from="head/parryArea" to="Components/armManager" method="_on_parry_area_entered"]
 [connection signal="area_exited" from="head/parryArea" to="Components/armManager" method="_on_parry_area_exited"]

@@ -6,6 +6,7 @@ extends Node
 var current_state:weapon_state
 var current_weapon_id:int = 0
 var weapon_scene
+var is_attacking:bool = false
 
 enum weapon_state {
 	FIRE = 0,
@@ -14,6 +15,7 @@ enum weapon_state {
 }
 @export var bullet_scene = preload("res://scenes/bullet.tscn")
 @export var weapon_array:Array[Weapon]
+var current_weapon_array:Array[Weapon]
 @export var current_weapon:Weapon
 @onready var shoot_point: Node3D = %shoot_point
 @onready var hand_anims: AnimationPlayer = %hand_anims
@@ -26,17 +28,24 @@ enum weapon_state {
 @export var parent : Player
 func weapon_control() -> void:
 	if Input.is_action_just_pressed("change"):
-		if current_weapon_id == weapon_array.size() -1 :
+		if current_weapon_id == current_weapon_array.size() -1 :
 			current_weapon_id = 0
-			current_weapon = weapon_array[current_weapon_id]
+			current_weapon = current_weapon_array[current_weapon_id]
 			initilize_weapon()
 			return
 		current_weapon_id += 1
-		current_weapon = weapon_array[current_weapon_id]
+		current_weapon = current_weapon_array[current_weapon_id]
+		
 		initilize_weapon()
 func _ready() -> void:
+	for resource in weapon_array:
+		current_weapon_array.append(resource.duplicate())
+		print(str(resource.cooldown))
+	print(str(current_weapon_array))
+	
 	initilize_weapon()
-	cool_down_timer.wait_time = current_weapon.cooldown 
+	
+	cool_down_timer.wait_time = current_weapon.cooldown
 	if current_weapon is MeleeWeapon:
 		times_on_attack_timer.wait_time = current_weapon.times_on_attack 
 #region bugged 
@@ -64,6 +73,8 @@ func initilize_weapon() -> void:
 	weapon_scene = current_weapon.scene.instantiate()
 	init_vars()
 	shoot_point.add_child(weapon_scene)
+	is_attacking = false
+	cool_down_timer.wait_time = current_weapon.cooldown
 	if current_state == weapon_state.CHANGE:
 		weapon_scene.queue_free()
 		init_vars()
@@ -74,7 +85,7 @@ func fire():
 	if current_state == weapon_state.CHANGE:
 		return
 
-	elif Input.is_action_pressed("fire") and parent.is_cap and  cool_down_timer.is_stopped():
+	elif Input.is_action_pressed("fire") and parent.is_cap and not is_attacking:
 		cool_down_timer.start()
 		if current_weapon:
 				#if not anim == null or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
@@ -85,6 +96,7 @@ func fire():
 					add_child(bullet)
 					bullet.global_transform.basis = shoot_point.global_transform.basis
 					bullet.global_position = shoot_point.global_position
+					is_attacking = true
 					return
 				else:
 					for point in current_weapon.shoot_point_array:
@@ -92,7 +104,10 @@ func fire():
 						owner.add_child(bullet)
 						bullet.global_transform.basis = shoot_point.global_transform.basis
 						bullet.global_position = point + parent.global_position
+					
+					is_attacking = true
 			
+		
 
 func _physics_process(_delta: float) -> void:
 	#var weapon_scene = current_weapon.scene.instantiate()
@@ -101,3 +116,12 @@ func _physics_process(_delta: float) -> void:
 	weapon_control()
 	fire()
 	#change_weapon()
+
+
+func _on_cool_down_timer_timeout() -> void:
+	if cool_down_timer.is_stopped():
+		is_attacking = false
+	else:
+		await cool_down_timer.timeout
+		is_attacking = false
+	is_attacking = false
