@@ -43,6 +43,8 @@ func _ready() -> void:
 		print(str(resource.cooldown))
 	print(str(current_weapon_array))
 	
+	current_weapon_id = 0
+	current_weapon = current_weapon_array[current_weapon_id]
 	initilize_weapon()
 	
 	cool_down_timer.wait_time = current_weapon.cooldown

@@ -35,6 +35,39 @@ scene = ExtResource("6_ts7aj")
 cooldown = 0.1
 metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
+[sub_resource type="Animation" id="Animation_fh3vb"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("head/shoot_point/basicPistol")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_iq32i"]
+resource_name = "fire"
+length = 0.7
+
+[sub_resource type="Animation" id="Animation_0enxy"]
+resource_name = "shoot"
+length = 0.25
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("head/shoot_point/basicPistol")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.23333333, 1, 0, 0, -0.3)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0enxy"]
+_data = {
+&"RESET": SubResource("Animation_fh3vb"),
+&"fire": SubResource("Animation_iq32i"),
+&"shoot": SubResource("Animation_0enxy")
+}
+
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_rf6kb"]
 length = 0.5
 
@@ -76,39 +109,6 @@ size = Vector3(1, 1, 0.25)
 material = SubResource("StandardMaterial3D_iq32i")
 height = 1.0
 radial_segments = 10
-
-[sub_resource type="Animation" id="Animation_fh3vb"]
-resource_name = "RESET"
-length = 0.001
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("head/shoot_point/basicPistol")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
-
-[sub_resource type="Animation" id="Animation_iq32i"]
-resource_name = "fire"
-length = 0.7
-
-[sub_resource type="Animation" id="Animation_0enxy"]
-resource_name = "shoot"
-length = 0.25
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("head/shoot_point/basicPistol")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.23333333, 1, 0, 0, -0.3)
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_0enxy"]
-_data = {
-&"RESET": SubResource("Animation_fh3vb"),
-&"fire": SubResource("Animation_iq32i"),
-&"shoot": SubResource("Animation_0enxy")
-}
 
 [sub_resource type="Gradient" id="Gradient_iq32i"]
 offsets = PackedFloat32Array(0.247423, 0.757732)
@@ -170,7 +170,7 @@ debug_color = Color(0.70555377, 0.48929888, 0, 0.41960785)
 script = ExtResource("4_3na6w")
 weapon_array = Array[ExtResource("3_kkqhm")]([SubResource("Resource_fryia"), SubResource("Resource_ey7il")])
 current_weapon = ExtResource("3_88axs")
-anim = NodePath("../../AnimationPlayer")
+anim = NodePath("../animHolder/AnimationPlayer")
 parent = NodePath("../..")
 
 [node name="coolDownTimer" type="Timer" parent="Components/gun_manager" unique_id=1843360715]
@@ -180,6 +180,18 @@ one_shot = true
 
 [node name="armManager" type="Node" parent="Components" unique_id=814134739]
 script = ExtResource("6_maesr")
+
+[node name="animHolder" type="Node" parent="Components" unique_id=1207869611]
+
+[node name="AnimationTree" type="AnimationTree" parent="Components/animHolder" unique_id=1943947344]
+root_node = NodePath("../../..")
+advance_expression_base_node = NodePath("../../..")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Components/animHolder" unique_id=50005537]
+root_node = NodePath("../../..")
+libraries/ = SubResource("AnimationLibrary_0enxy")
+"libraries/basic pistol" = ExtResource("8_88axs")
 
 [node name="slowingTimer" type="Timer" parent="." unique_id=1409248887]
 wait_time = 0.05
@@ -322,10 +334,6 @@ texture = ExtResource("11_dgno2")
 unique_name_in_owner = true
 root_node = NodePath("../..")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=50005537]
-libraries/ = SubResource("AnimationLibrary_0enxy")
-"libraries/basic pistol" = ExtResource("8_88axs")
-
 [node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1402051917]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212078, 0)
 emitting = false
@@ -374,6 +382,9 @@ shape = SubResource("SeparationRayShape3D_fh3vb")
 [node name="stair_check8" type="CollisionShape3D" parent="." unique_id=1684331107]
 transform = Transform3D(0.9999995, -0.00089231133, -3.825983e-08, -3.8278678e-08, -2.1105162e-08, -0.99999994, 0.0008923113, 0.9999996, -2.1139309e-08, 0.43312138, 0.63146544, -0.3510967)
 shape = SubResource("SeparationRayShape3D_fh3vb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=886275331]
+root_node = NodePath("../Components/animHolder/AnimationTree")
 
 [connection signal="timeout" from="Components/gun_manager/coolDownTimer" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]
