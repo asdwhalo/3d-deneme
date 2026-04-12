@@ -10,7 +10,6 @@ extends CharacterBody3D
 
 var can_die:bool = true
 
-
 signal is_dead
 signal health_is_zero
 

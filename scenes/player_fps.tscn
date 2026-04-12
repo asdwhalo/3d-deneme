@@ -33,6 +33,7 @@ metadata/_custom_type_script = "uid://oea6fdn1ied1"
 script = ExtResource("7_odr4i")
 scene = ExtResource("6_ts7aj")
 cooldown = 0.1
+shoot_point_array = Array[Vector3]([Vector3(0.2, 0.2, 0.2), Vector3(-0.2, -0.2, -0.2), Vector3(0, 0, 0)])
 metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
 [sub_resource type="Animation" id="Animation_fh3vb"]

@@ -1,10 +1,27 @@
 [gd_scene format=3 uid="uid://xvwbeiqj17xm"]
 
+[ext_resource type="Texture2D" uid="uid://dbnwtnwjdh4rr" path="res://assets/PNG/WhatsApp Image 2026-03-19 at 17.32.31.jpeg" id="1_363ce"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a30bu"]
+albedo_texture = ExtResource("1_363ce")
+uv1_triplanar = true
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_fl1ey"]
+material = SubResource("StandardMaterial3D_a30bu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmx00"]
+albedo_texture = ExtResource("1_363ce")
+uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_fl1ey"]
+material = SubResource("StandardMaterial3D_dmx00")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g2bt7"]
+albedo_texture = ExtResource("1_363ce")
+uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_363ce"]
+material = SubResource("StandardMaterial3D_g2bt7")
 size = Vector3(1, 0.5, 0.5)
 
 [node name="testPistol" type="Node3D" unique_id=1018864501]

@@ -1,7 +1,9 @@
 extends CanvasLayer
 
 @onready var world := get_tree().current_scene
-@onready var player:Player = world.get_node("PlayerFps")
+@onready var _player:Player = world.get_node("PlayerFps")
+@onready var player = $/root/world/PlayerFps
+
 #FIXME oyun durdurulunca fare gözükmüyor
 func _ready() -> void:
 	world = get_tree().current_scene

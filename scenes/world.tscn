@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dr8bbqs8r420s" path="res://assets/PNG/Green/texture_08.png" id="1_rwgxs"]
 [ext_resource type="PackedScene" uid="uid://bby0quyyjfjai" path="res://scenes/player_fps.tscn" id="2_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://c6wnrao755lgc" path="res://scenes/test_item.tscn" id="3_4wyf3"]
+[ext_resource type="Material" uid="uid://p3kbgbp6rtes" path="res://assets/materials/ground.tres" id="3_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://of6lfqyh1gde" path="res://scenes/env/stairs_2.tscn" id="4_4mrxx"]
 [ext_resource type="PackedScene" uid="uid://dyts86owng27t" path="res://scenes/bullet.tscn" id="4_k0juu"]
 [ext_resource type="PackedScene" uid="uid://c1bin8gml8r6" path="res://scenes/stairs.tscn" id="5_71j4m"]
@@ -26,10 +27,10 @@ background_mode = 2
 sky = SubResource("Sky_tlwt5")
 ssao_enabled = true
 glow_enabled = true
+fog_enabled = true
 fog_mode = 1
 fog_density = 1.0
 fog_height = 1.0
-volumetric_fog_enabled = true
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4wyf3"]
 _surfaces = [{
@@ -138,6 +139,7 @@ shape = SubResource("ConcavePolygonShape3D_k0juu")
 shape = SubResource("ConcavePolygonShape3D_71j4m")
 
 [node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=467268727]
+material_override = ExtResource("3_w7kh3")
 mesh = SubResource("ArrayMesh_qfnet")
 skeleton = NodePath("../..")
 
@@ -157,6 +159,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_71j4m")
 
 [node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3" unique_id=132617141]
+material_override = ExtResource("3_w7kh3")
 mesh = SubResource("ArrayMesh_qfnet")
 skeleton = NodePath("../..")
 
@@ -167,6 +170,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 19.320057)
 shape = SubResource("ConcavePolygonShape3D_71j4m")
 
 [node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4" unique_id=1816867193]
+material_override = ExtResource("3_w7kh3")
 mesh = SubResource("ArrayMesh_qfnet")
 skeleton = NodePath("../..")
 
@@ -177,12 +181,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4512024, 0, 19.320057)
 shape = SubResource("ConcavePolygonShape3D_71j4m")
 
 [node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D5" unique_id=1251194564]
+material_override = ExtResource("3_w7kh3")
 mesh = SubResource("ArrayMesh_qfnet")
 skeleton = NodePath("../..")
 
 [node name="bullet" parent="." unique_id=1376065768 instance=ExtResource("4_k0juu")]
 transform = Transform3D(0.2315102, 0, 0.9728325, 0, 1, 0, -0.9728325, 0, 0.2315102, -5.7687044, 1.5563154, 0)
-speed = 1.0
 
 [node name="stairs" parent="." unique_id=182041286 instance=ExtResource("5_71j4m")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 0)

@@ -41,7 +41,7 @@ func _ready() -> void:
 	for resource in weapon_array:
 		current_weapon_array.append(resource.duplicate())
 		print(str(resource.cooldown))
-	print(str(current_weapon_array))
+	print(str(current_weapon_array[0].Name))
 	
 	current_weapon_id = 0
 	current_weapon = current_weapon_array[current_weapon_id]
@@ -105,7 +105,7 @@ func fire():
 						var bullet = current_weapon.bullet_scene.instantiate()
 						owner.add_child(bullet)
 						bullet.global_transform.basis = shoot_point.global_transform.basis
-						bullet.global_position = point + parent.global_position
+						bullet.global_position = point + shoot_point.global_position
 					
 					is_attacking = true
 			
