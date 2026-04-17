@@ -1,42 +1,76 @@
+## silahları kontrol eden sınıf
+
 class_name GunManager
 extends Node
 
-#FIXME silahlar değişmiyor
+#TODO Düğüm tabanlı ve kaynak tabanlı silah sistemlerini ayır
 
 var current_state:weapon_state
 var current_weapon_id:int = 0
+var previus_weapon:Weapon
+var previus_weapon_id:int
 var weapon_scene
 var is_attacking:bool = false
+
 
 enum weapon_state {
 	FIRE = 0,
 	IDLE = 1,
 	CHANGE = 2
 }
+
+
 @export var bullet_scene = preload("res://scenes/bullet.tscn")
 @export var weapon_array:Array[Weapon]
-var current_weapon_array:Array[Weapon]
 @export var current_weapon:Weapon
+@export var anim:AnimationPlayer
+@export var parent : Player
+
+
+var current_weapon_array:Array[Weapon]
+var gun_array:Array = []
+var current_gun:Gun
+var current_gun_id:int = 0
+
+
 @onready var shoot_point: Node3D = %shoot_point
 @onready var hand_anims: AnimationPlayer = %hand_anims
 #@onready var arm_sprite: Sprite2D = %armSprite
 @onready var cool_down_timer: Timer = $coolDownTimer
 @onready var times_on_attack_timer: Timer = $timesOnAttackTimer
+@onready var gun_holder : Node = $gunHolder
 
-@export var anim:AnimationPlayer
-#@onready var anim: AnimationPlayer = current_weapon.ins_scene.get_node("basicPistol/AnimationPlayer")
-@export var parent : Player
+
+func get_guns() -> void:
+	gun_array = gun_holder.get_children()
+
+
+## Node tabanlı silahları initler
+func init_gun() ->void:
+	if current_gun:
+		current_gun.un_take()
+	current_gun = gun_array[current_gun_id]
+	current_gun.take()
+
+
+## Resource tabanlı silah değiştirme fonksiyonu
 func weapon_control() -> void:
 	if Input.is_action_just_pressed("change"):
 		if current_weapon_id == current_weapon_array.size() -1 :
 			current_weapon_id = 0
+			previus_weapon = current_weapon_array[current_weapon_array.size() -1]
 			current_weapon = current_weapon_array[current_weapon_id]
 			initilize_weapon()
 			return
+		previus_weapon = current_weapon_array[current_weapon_id]
 		current_weapon_id += 1
 		current_weapon = current_weapon_array[current_weapon_id]
+	
 		
-		initilize_weapon()
+		
+	initilize_weapon()
+
+
 func _ready() -> void:
 	for resource in weapon_array:
 		current_weapon_array.append(resource.duplicate())
@@ -50,6 +84,8 @@ func _ready() -> void:
 	cool_down_timer.wait_time = current_weapon.cooldown
 	if current_weapon is MeleeWeapon:
 		times_on_attack_timer.wait_time = current_weapon.times_on_attack 
+
+
 #region bugged 
 func change_weapon()->void:
 	#TODO
@@ -65,23 +101,29 @@ func change_weapon()->void:
 			current_weapon = weapon_array[0]
 			initilize_weapon()
 			current_state = weapon_state.IDLE
+
+
 func init_vars():
 	if current_weapon is FireArmWeapon:
 		current_weapon.shoot_position = shoot_point.global_position
 		current_weapon.shoot_position = shoot_point.global_position
+
+## kaynak tabanlı silahları initleme fonksiyonu
 func initilize_weapon() -> void:
 	if weapon_scene:
 		weapon_scene.queue_free()
 	weapon_scene = current_weapon.scene.instantiate()
 	init_vars()
 	shoot_point.add_child(weapon_scene)
-	is_attacking = false
+	if current_weapon.overide_swap == false: is_attacking = false
 	cool_down_timer.wait_time = current_weapon.cooldown
 	if current_state == weapon_state.CHANGE:
 		weapon_scene.queue_free()
 		init_vars()
 		current_state = weapon_state.IDLE
-#endregion 
+#endregion
+
+
 #firearm resourcunu düzenle (sadece şarjrü fln olsun mk)
 func fire():
 	if current_state == weapon_state.CHANGE:

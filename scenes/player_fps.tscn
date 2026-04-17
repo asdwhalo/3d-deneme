@@ -27,6 +27,7 @@ script = ExtResource("7_odr4i")
 scene = ExtResource("6_ey7il")
 cooldown = 5.0
 bullet_scene = ExtResource("5_odr4i")
+overide_swap = true
 metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
 [sub_resource type="Resource" id="Resource_ey7il"]
@@ -178,6 +179,8 @@ parent = NodePath("../..")
 one_shot = true
 
 [node name="timesOnAttackTimer" type="Timer" parent="Components/gun_manager" unique_id=1656991361]
+
+[node name="gunHolder" type="Node" parent="Components/gun_manager" unique_id=611304593]
 
 [node name="armManager" type="Node" parent="Components" unique_id=814134739]
 script = ExtResource("6_maesr")

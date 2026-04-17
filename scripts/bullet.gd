@@ -6,6 +6,7 @@ extends CharacterBody3D
 @export var time_to_max_speed:float = 0.1
 @export var normal_speed:float = 100
 @export var starting_speed:float = 10
+
 var speed:float
 var current_range:float
 var dir = 1
