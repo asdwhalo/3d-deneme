@@ -9,6 +9,8 @@ var current_state:weapon_state
 var current_weapon_id:int = 0
 var previus_weapon:Weapon
 var previus_weapon_id:int
+var next_weapon:Weapon
+var next_weapon_id:int
 var weapon_scene
 var is_attacking:bool = false
 
@@ -39,6 +41,8 @@ var current_gun_id:int = 0
 @onready var cool_down_timer: Timer = $coolDownTimer
 @onready var times_on_attack_timer: Timer = $timesOnAttackTimer
 @onready var gun_holder : Node = $gunHolder
+@onready var take_timer: Timer = $TakeTimer
+@onready var previus_cooldown_timer: Timer = $previusCooldownTimer # TODO bu nodu kullnanarak swap sorunu çz tmm mı :D yaparsın sen mk
 
 
 func get_guns() -> void:
@@ -60,14 +64,16 @@ func weapon_control() -> void:
 			current_weapon_id = 0
 			previus_weapon = current_weapon_array[current_weapon_array.size() -1]
 			current_weapon = current_weapon_array[current_weapon_id]
+			next_weapon_id = current_weapon_id +1
+			next_weapon = current_weapon_array[current_weapon_id +1]
+
 			initilize_weapon()
 			return
 		previus_weapon = current_weapon_array[current_weapon_id]
 		current_weapon_id += 1
 		current_weapon = current_weapon_array[current_weapon_id]
-	
-		
-		
+		next_weapon_id = current_weapon_id + 1 if not current_weapon_id +1 == current_weapon_array.size() -1 else 0
+		next_weapon = current_weapon_array[current_weapon_id + 1 if  current_weapon_id +1 == current_weapon_array.size() -1 else 0]  	
 	initilize_weapon()
 
 
@@ -115,12 +121,23 @@ func initilize_weapon() -> void:
 	weapon_scene = current_weapon.scene.instantiate()
 	init_vars()
 	shoot_point.add_child(weapon_scene)
-	if current_weapon.overide_swap == false: is_attacking = false
+	
+	
 	cool_down_timer.wait_time = current_weapon.cooldown
+	is_attacking = false
+	cool_down_timer.start()
+	if current_weapon.can_swap == true or cool_down_timer.is_stopped(): 
+		is_attacking = false
+		cool_down_timer.start() 
+	else:
+		await cool_down_timer.timeout 
+		is_attacking = false
+	
 	if current_state == weapon_state.CHANGE:
 		weapon_scene.queue_free()
 		init_vars()
 		current_state = weapon_state.IDLE
+	
 #endregion
 
 
@@ -130,8 +147,9 @@ func fire():
 		return
 
 	elif Input.is_action_pressed("fire") and parent.is_cap and not is_attacking:
-		cool_down_timer.start()
+		
 		if current_weapon:
+				cool_down_timer.start()
 				#if not anim == null or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
 					#
 					#anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak

@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqpd854i5ybnh"]
+[gd_scene format=3 uid="uid://cqpd854i5ybnh"]
 
 [ext_resource type="Texture2D" uid="uid://dhuw4lbr8375f" path="res://assets/PNG/Light/texture_07.png" id="1_cggpe"]
-[ext_resource type="Texture2D" uid="uid://bxta387f04ag1" path="res://assets/PNG/Light/texture_06.png" id="2_73kw6"]
+[ext_resource type="Texture2D" uid="uid://dbnwtnwjdh4rr" path="res://assets/PNG/WhatsApp Image 2026-03-19 at 17.32.31.jpeg" id="2_cggpe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aw2h2"]
 albedo_texture = ExtResource("1_cggpe")
@@ -13,25 +13,39 @@ radius = 0.35
 height = 1.25
 rings = 9
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_73kw6"]
+render_priority = 1
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+metadata/_stencil_owned = true
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hdi6l"]
-albedo_texture = ExtResource("2_73kw6")
+next_pass = SubResource("StandardMaterial3D_73kw6")
+albedo_texture = ExtResource("2_cggpe")
 uv1_triplanar = true
+stencil_mode = 2
+stencil_flags = 2
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fr7j6"]
 material = SubResource("StandardMaterial3D_hdi6l")
 radius = 0.325
 height = 0.975
 
-[node name="player_model" type="Node3D"]
+[node name="player_model" type="Node3D" unique_id=422203499]
 
-[node name="body" type="MeshInstance3D" parent="."]
+[node name="body" type="MeshInstance3D" parent="." unique_id=897603574]
 transform = Transform3D(1, 0, 0, 0, 1.2149941, 0, 0, 0, 1, 0, 0.72998905, 0.14420688)
 mesh = SubResource("CapsuleMesh_fw28p")
 
-[node name="head" type="MeshInstance3D" parent="."]
+[node name="head" type="MeshInstance3D" parent="." unique_id=1245025767]
 transform = Transform3D(0.6526351, 0, 0, 0, 0.6526351, 0, 0, 0, 0.6526351, 0, 1.872, -0.12817338)
 mesh = SubResource("CapsuleMesh_fr7j6")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1483340010]
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1573923678]

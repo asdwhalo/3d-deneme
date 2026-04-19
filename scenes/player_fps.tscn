@@ -27,14 +27,13 @@ script = ExtResource("7_odr4i")
 scene = ExtResource("6_ey7il")
 cooldown = 5.0
 bullet_scene = ExtResource("5_odr4i")
-overide_swap = true
 metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
 [sub_resource type="Resource" id="Resource_ey7il"]
 script = ExtResource("7_odr4i")
 scene = ExtResource("6_ts7aj")
-cooldown = 0.1
 shoot_point_array = Array[Vector3]([Vector3(0.2, 0.2, 0.2), Vector3(-0.2, -0.2, -0.2), Vector3(0, 0, 0)])
+can_swap = true
 metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
 [sub_resource type="Animation" id="Animation_fh3vb"]
@@ -178,9 +177,14 @@ parent = NodePath("../..")
 [node name="coolDownTimer" type="Timer" parent="Components/gun_manager" unique_id=1843360715]
 one_shot = true
 
+[node name="previusCooldownTimer" type="Timer" parent="Components/gun_manager" unique_id=149919288]
+
 [node name="timesOnAttackTimer" type="Timer" parent="Components/gun_manager" unique_id=1656991361]
 
 [node name="gunHolder" type="Node" parent="Components/gun_manager" unique_id=611304593]
+
+[node name="TakeTimer" type="Timer" parent="Components/gun_manager" unique_id=1152249430]
+one_shot = true
 
 [node name="armManager" type="Node" parent="Components" unique_id=814134739]
 script = ExtResource("6_maesr")
@@ -206,10 +210,10 @@ one_shot = true
 [node name="player_model" parent="." unique_id=1881803560 instance=ExtResource("8_0enxy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12689963, 0)
 
-[node name="body" parent="player_model" index="0"]
+[node name="body" parent="player_model" index="0" unique_id=897603574]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, -0.017888308)
 
-[node name="head" parent="player_model" index="1"]
+[node name="head" parent="player_model" index="1" unique_id=1245025767]
 transform = Transform3D(0.53938127, 0, 0, 0, 0.53938127, 0, 0, 0, 0.53938127, 0, 1.7218666, -0.17036071)
 
 [node name="crouchTest" type="CollisionShape3D" parent="." unique_id=1383323288]

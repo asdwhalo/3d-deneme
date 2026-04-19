@@ -11,4 +11,5 @@ extends Resource
 @export var shoot_position:Vector3
 @export var bullet_scene : PackedScene
 @export var shoot_point_array:Array[Vector3]
-@export var overide_swap:bool = false 
+@export var can_swap:bool = false 
+@export var take_time:float = 0.1
