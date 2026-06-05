@@ -1,5 +1,5 @@
 ## silahları kontrol eden sınıf
-
+# TODO bunu baştan yaz
 class_name GunManager
 extends Node
 
@@ -42,9 +42,10 @@ var current_gun_id:int = 0
 @onready var times_on_attack_timer: Timer = $timesOnAttackTimer
 @onready var gun_holder : Node = $gunHolder
 @onready var take_timer: Timer = $TakeTimer
-@onready var previus_cooldown_timer: Timer = $previusCooldownTimer # TODO bu nodu kullnanarak swap sorunu çz tmm mı :D yaparsın sen mk
+@onready var previus_cooldown_timer: Timer = $previusCooldownTimer # TODO bu nodu kullnanarak swap sorunu çz tmm mı :D yaparsın sen AMK
 
-
+func reset_timers()->void:
+	pass
 func get_guns() -> void:
 	gun_array = gun_holder.get_children()
 
@@ -73,26 +74,27 @@ func weapon_control() -> void:
 		current_weapon_id += 1
 		current_weapon = current_weapon_array[current_weapon_id]
 		next_weapon_id = current_weapon_id + 1 if not current_weapon_id +1 == current_weapon_array.size() -1 else 0
-		next_weapon = current_weapon_array[current_weapon_id + 1 if  current_weapon_id +1 == current_weapon_array.size() -1 else 0]  	
+		next_weapon = current_weapon_array[current_weapon_id + 1 if  current_weapon_id +1 == current_weapon_array.size() -1 else 0]
 	initilize_weapon()
 
 
 func _ready() -> void:
+	cool_down_timer.stop()
 	for resource in weapon_array:
 		current_weapon_array.append(resource.duplicate())
 		print(str(resource.cooldown))
 	print(str(current_weapon_array[0].Name))
-	
+
 	current_weapon_id = 0
 	current_weapon = current_weapon_array[current_weapon_id]
 	initilize_weapon()
-	
+
 	cool_down_timer.wait_time = current_weapon.cooldown
 	if current_weapon is MeleeWeapon:
-		times_on_attack_timer.wait_time = current_weapon.times_on_attack 
+		times_on_attack_timer.wait_time = current_weapon.times_on_attack
 
 
-#region bugged 
+#region bugged
 func change_weapon()->void:
 	#TODO
 	#numaralara basılınca  array da  o numaralara atanmış silah seçilir bu bir for döngüsüyle yazılacak
@@ -121,23 +123,23 @@ func initilize_weapon() -> void:
 	weapon_scene = current_weapon.scene.instantiate()
 	init_vars()
 	shoot_point.add_child(weapon_scene)
-	
-	
+
+
 	cool_down_timer.wait_time = current_weapon.cooldown
 	is_attacking = false
 	cool_down_timer.start()
-	if current_weapon.can_swap == true or cool_down_timer.is_stopped(): 
+	if current_weapon.can_swap == true or cool_down_timer.is_stopped():
 		is_attacking = false
-		cool_down_timer.start() 
+		cool_down_timer.start()
 	else:
-		await cool_down_timer.timeout 
+		await cool_down_timer.timeout
 		is_attacking = false
-	
+
 	if current_state == weapon_state.CHANGE:
 		weapon_scene.queue_free()
 		init_vars()
 		current_state = weapon_state.IDLE
-	
+
 #endregion
 
 
@@ -146,30 +148,35 @@ func fire():
 	if current_state == weapon_state.CHANGE:
 		return
 
-	elif Input.is_action_pressed("fire") and parent.is_cap and not is_attacking:
-		
+	elif Input.is_action_pressed("fire") and parent.is_cap and is_attacking == false and cool_down_timer.is_stopped():
 		if current_weapon:
-				cool_down_timer.start()
+			
 				#if not anim == null or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
 					#
-					#anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak
-				if current_weapon.shoot_point_array == null or current_weapon.shoot_point_array.size() <= 1:
+				#anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak
+			if current_weapon.shoot_point_array == null or current_weapon.shoot_point_array.size() <= 1:
+				cool_down_timer.start()
+				var bullet = current_weapon.bullet_scene.instantiate()
+				add_child(bullet)
+				bullet.global_transform.basis = shoot_point.global_transform.basis
+				bullet.global_position = shoot_point.global_position
+				is_attacking = true
+				cool_down_timer.start()
+				await cool_down_timer.timeout
+				cool_down_timer.stop()
+				return
+			else:
+				for point in current_weapon.shoot_point_array:
 					var bullet = current_weapon.bullet_scene.instantiate()
-					add_child(bullet)
+					owner.add_child(bullet)
 					bullet.global_transform.basis = shoot_point.global_transform.basis
-					bullet.global_position = shoot_point.global_position
-					is_attacking = true
-					return
-				else:
-					for point in current_weapon.shoot_point_array:
-						var bullet = current_weapon.bullet_scene.instantiate()
-						owner.add_child(bullet)
-						bullet.global_transform.basis = shoot_point.global_transform.basis
-						bullet.global_position = point + shoot_point.global_position
-					
-					is_attacking = true
-			
-		
+					bullet.global_position = point + shoot_point.global_position
+				is_attacking = true
+				cool_down_timer.start()
+				await cool_down_timer.timeout
+				cool_down_timer.stop()
+
+
 
 func _physics_process(_delta: float) -> void:
 	#var weapon_scene = current_weapon.scene.instantiate()
@@ -181,9 +188,9 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_cool_down_timer_timeout() -> void:
-	if cool_down_timer.is_stopped():
-		is_attacking = false
-	else:
-		await cool_down_timer.timeout
-		is_attacking = false
+	#if cool_down_timer.is_stopped():
+		#is_attacking = false
+	#else:
+		#await cool_down_timer.timeout
+		#is_attacking = false
 	is_attacking = false

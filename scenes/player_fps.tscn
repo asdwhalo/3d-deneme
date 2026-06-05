@@ -149,6 +149,7 @@ crounch_speed = 7.0
 run_speed = 15.0
 jump_velocity = 7.5
 is_bobable = false
+lerp_value = 4.0
 max_iframes = 1.0
 hard_damage = 5.0
 hp = 10.0
@@ -178,8 +179,10 @@ parent = NodePath("../..")
 one_shot = true
 
 [node name="previusCooldownTimer" type="Timer" parent="Components/gun_manager" unique_id=149919288]
+one_shot = true
 
 [node name="timesOnAttackTimer" type="Timer" parent="Components/gun_manager" unique_id=1656991361]
+one_shot = true
 
 [node name="gunHolder" type="Node" parent="Components/gun_manager" unique_id=611304593]
 
@@ -244,65 +247,68 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.999973, 0)
 visible = false
 mesh = SubResource("CapsuleMesh_bfjn3")
 
-[node name="head" type="Node3D" parent="." unique_id=272007608]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53647, 0)
+[node name="neck" type="Node3D" parent="." unique_id=604241015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.536, 0)
 
-[node name="parryArea" type="Area3D" parent="head" unique_id=1742045803]
+[node name="head" type="Node3D" parent="neck" unique_id=272007608]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00047004223, 0)
+
+[node name="parryArea" type="Area3D" parent="neck/head" unique_id=1742045803]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7723422)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="head/parryArea" unique_id=935003809]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="neck/head/parryArea" unique_id=935003809]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0030517578, -0.2434082, -0.3518219)
 shape = SubResource("BoxShape3D_rf6kb")
 debug_color = Color(0.63614213, 0.5271829, 0, 0.41960785)
 
-[node name="grapPoint" type="Node3D" parent="head" unique_id=1891450035]
+[node name="grapPoint" type="Node3D" parent="neck/head" unique_id=1891450035]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.6710835)
 
-[node name="Camera3D" type="Camera3D" parent="head" unique_id=1496618252]
+[node name="Camera3D" type="Camera3D" parent="neck/head" unique_id=1496618252]
 fov = 140.0
 near = 0.2
 
-[node name="CanvasLayer" type="CanvasLayer" parent="head/Camera3D" unique_id=52558900]
+[node name="CanvasLayer" type="CanvasLayer" parent="neck/head/Camera3D" unique_id=52558900]
 
-[node name="hud" parent="head/Camera3D/CanvasLayer" unique_id=1579434716 node_paths=PackedStringArray("player", "gun_manager") instance=ExtResource("5_fh3vb")]
+[node name="hud" parent="neck/head/Camera3D/CanvasLayer" unique_id=1579434716 node_paths=PackedStringArray("player", "gun_manager") instance=ExtResource("5_fh3vb")]
 unique_name_in_owner = true
-player = NodePath("../../../..")
-gun_manager = NodePath("../../../../Components/gun_manager")
+player = NodePath("../../../../..")
+gun_manager = NodePath("../../../../../Components/gun_manager")
 
-[node name="info" parent="head/Camera3D/CanvasLayer/hud" index="1" unique_id=2036851755]
+[node name="info" parent="neck/head/Camera3D/CanvasLayer/hud" index="1" unique_id=2036851755]
 horizontal_alignment = 1
 
-[node name="currentWeapon" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="2" unique_id=1883967082]
+[node name="currentWeapon" type="Label" parent="neck/head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="2" unique_id=1883967082]
 layout_mode = 2
 
-[node name="iframeleftTime" type="Label" parent="head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="3" unique_id=701869383]
+[node name="iframeleftTime" type="Label" parent="neck/head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="3" unique_id=701869383]
 layout_mode = 2
 
-[node name="hpLabel" type="Label" parent="head/Camera3D/CanvasLayer/hud" unique_id=377722252]
+[node name="hpLabel" type="Label" parent="neck/head/Camera3D/CanvasLayer/hud" unique_id=377722252]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="head" unique_id=1696154731]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="neck/head" unique_id=1696154731]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.409015)
 visible = false
 mesh = SubResource("BoxMesh_sen8m")
 
-[node name="SubViewport" type="SubViewport" parent="head" unique_id=724229457]
+[node name="SubViewport" type="SubViewport" parent="neck/head" unique_id=724229457]
 
-[node name="Camera3D" type="Camera3D" parent="head/SubViewport" unique_id=77990201]
+[node name="Camera3D" type="Camera3D" parent="neck/head/SubViewport" unique_id=77990201]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.268128)
 
-[node name="RayCast3D" type="RayCast3D" parent="head" unique_id=1209178799]
+[node name="RayCast3D" type="RayCast3D" parent="neck/head" unique_id=1209178799]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6172138)
 target_position = Vector3(0, 0, -5)
 collision_mask = 4
 hit_from_inside = true
 collide_with_areas = true
 
-[node name="shoot_point" type="Node3D" parent="head" unique_id=169550495]
+[node name="shoot_point" type="Node3D" parent="neck/head" unique_id=169550495]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52828515, -1.0138769)
 
@@ -394,10 +400,21 @@ shape = SubResource("SeparationRayShape3D_fh3vb")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=886275331]
 root_node = NodePath("../Components/animHolder/AnimationTree")
 
+[node name="dashRoot" type="Node3D" parent="." unique_id=262427229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8673388, -0.744539)
+
+[node name="springarm" type="SpringArm3D" parent="dashRoot" unique_id=150647090]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0.7051518)
+spring_length = 2.5
+
+[node name="dashPos" type="Marker3D" parent="dashRoot/springarm" unique_id=1972547490]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1222897e-07, -0.3836699, 2.4276168)
+
 [connection signal="timeout" from="Components/gun_manager/coolDownTimer" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]
-[connection signal="area_entered" from="head/parryArea" to="Components/armManager" method="_on_parry_area_entered"]
-[connection signal="area_exited" from="head/parryArea" to="Components/armManager" method="_on_parry_area_exited"]
+[connection signal="area_entered" from="neck/head/parryArea" to="Components/armManager" method="_on_parry_area_entered"]
+[connection signal="area_exited" from="neck/head/parryArea" to="Components/armManager" method="_on_parry_area_exited"]
 
 [editable path="player_model"]
-[editable path="head/Camera3D/CanvasLayer/hud"]
+[editable path="neck/head/Camera3D/CanvasLayer/hud"]

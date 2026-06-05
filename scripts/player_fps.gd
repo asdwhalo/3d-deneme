@@ -28,14 +28,16 @@ extends PlayerEntity
 @export var slam_multiper:float = 1
 @export var is_bobable:bool = true
 @export var can_climb:bool = false
+@export var lerp_value:float = 0.5
+@export var can_lerp:bool = true
 @onready var particels: GPUParticles3D = $GPUParticles3D
 #@onready var hand: Node3D = %hand
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var raycast: RayCast3D = $head/RayCast3D
+@onready var raycast: RayCast3D = $neck/head/RayCast3D
 @onready var hud: Control = %hud
-@onready var grap_point: Node3D = $head/grapPoint
+@onready var grap_point: Node3D = $neck/head/grapPoint
 @onready var bullet_scene = preload("res://scenes/bullet.tscn")
-@onready var shoot_point : Node3D = $head/shoot_point
+@onready var shoot_point : Node3D = $neck/head/shoot_point
 @onready var slowing_timer: Timer = $slowingTimer
 @onready var parry_timer: Timer = $parryTimer
 
@@ -51,6 +53,7 @@ var previus_speed:float:
 		else:
 			return current_speed
 var mass:float = 1
+var direction := Vector3.ZERO
 var previus_dir:Vector2 :
 	get:
 		if Engine.get_physics_frames() % 2 == 0:
@@ -65,6 +68,8 @@ var previus_dir:Vector2 :
 @onready var stair_check_6: CollisionShape3D = $stair_check6
 @onready var stair_check_7: CollisionShape3D = $stair_check7
 @onready var stair_check_8: CollisionShape3D = $stair_check8
+@onready var dash_pos: Node3D = %dashPos
+@onready var spring_arm: SpringArm3D = $dashRoot/springarm
 
 @onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4,stair_check_5,stair_check_6,stair_check_7,stair_check_8]
 @onready var model_head : MeshInstance3D = $player_model/head
@@ -78,6 +83,7 @@ const cruch_height := 1.3
 
 
 @onready var head: Node3D = %head
+@onready var neck: Node3D = $neck
 @onready var coll: CollisionShape3D = %upper
 @onready var lower: CollisionShape3D = %lower
 @onready var mesh: MeshInstance3D = %MeshInstance3D
@@ -89,6 +95,7 @@ const cruch_height := 1.3
 # animasyolar ekle
 
 
+signal dash
 
 
 enum sts{
@@ -98,10 +105,21 @@ enum sts{
 enum stsm{
 	RUN,
 	WALK,
-	CROUCH
+	CROUCH,
+	Slide
 }
-
-
+func calc_dash_pos():
+	if Input.is_action_pressed("w"):
+		spring_arm.rotation.z = -180
+	if Input.is_action_pressed("s"):
+		spring_arm.rotation.z = 0
+	if Input.is_action_pressed("a"):
+		spring_arm.rotation.z = -90
+	if Input.is_action_pressed("d"):
+		spring_arm.rotation.z = 90
+func _ready() -> void:
+	dash.connect(dash_to_dash_pos)
+	
 func bobbed_y(multipler:float = 1)-> float:
 	return sin(multipler * (10 * global_position.x))
 func head_bob():
@@ -109,13 +127,18 @@ func head_bob():
 		return
 	head.position.y = bobbed_y() + default_head_y
 func Mstate_manager():
-	if Input.is_action_pressed("run"):
+	if Input.is_action_just_pressed("run"):
+		dash.emit()
+		print("dash_request")
+	elif Input.is_action_pressed("run"):
 		Mstates = stsm.RUN
 	elif Input.is_action_pressed("crouch"):
 		Mstates = stsm.CROUCH
 	else:
 		Mstates = stsm.WALK
-
+func dash_to_dash_pos():
+	global_position = dash_pos.global_position
+	print("dashed")
 func change_stateM(new_state:stsm)-> void:
 	var old_state := Mstates
 	Mstates = new_state
@@ -134,7 +157,7 @@ func change_stateM(new_state:stsm)-> void:
 				pass
 	match new_state:
 		stsm.RUN:
-			current_speed = run_speed
+			current_speed = walk_speed#run_speed
 			coll.shape.height = normal_height
 			mesh.mesh.height = normal_height
 			mass = 0.3 
@@ -148,7 +171,13 @@ func change_stateM(new_state:stsm)-> void:
 			coll.shape.height = cruch_height
 			mesh.mesh.height = cruch_height
 			mass = 2
-
+		stsm.Slide:
+			current_speed = 10
+			coll.shape.height = cruch_height
+			mesh.mesh.height = cruch_height
+			if Input.is_action_just_released("crouch"):
+				change_stateM(stsm.WALK)
+var collider
 func stair_control():
 	if !can_climb:
 		return
@@ -166,7 +195,7 @@ func hudControl()->void:
 #		hud.inventory.text = str(invertory[0])
 	#var input_dir := Input.get_vector("a", "d", "w", "s")
 	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	var collider = raycast.get_collider() as Node3D
+	collider = raycast.get_collider() as Node3D
 	#var collide_point = raycast.get_collision_point()
 	#grap_point.global_position = collide_point.global_position
 	hud.speed.text = str(velocity.x)
@@ -259,13 +288,16 @@ func _input(event: InputEvent) -> void:
 	if  is_cap == true:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if event is InputEventMouseMotion :
-			self.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
+			if  not Mstates == stsm.Slide:
+				self.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
+			else:
+				neck.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
 			head.rotate_x(deg_to_rad(event.relative.y *-mouse_sensivity))
 			head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 func _physics_process(delta: float) -> void:
-	
+	calc_dash_pos()
 	input_dir = Input.get_vector("a", "d", "w", "s")
 	model_head.global_rotation = head.global_rotation	
 	fire()
@@ -282,6 +314,8 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_pressed("run"):
 		change_stateM(stsm.RUN)
+		if Input.is_action_just_pressed("crouch"):
+			change_stateM(stsm.Slide)
 		#current_speed = run_speed
 		#coll.shape.height = normal_height
 		#mesh.mesh.height = normal_height
@@ -319,15 +353,20 @@ func _physics_process(delta: float) -> void:
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if can_lerp:
+		direction = lerp(direction,(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(),delta * lerp_value)
+	else:
+		direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * current_speed #if not is_slowing else slowing_speed
 		velocity.z = direction.z * current_speed #if not is_slowing else slowing_speed
 	else:
 		is_slowing = true
 		if states == sts.HAVA:
-			current_speed *= -cos(velocity.y) #sin(walk_speed/5) #/ cos(velocity.y)
+			if can_lerp:
+				current_speed = lerp(current_speed,0.0,lerp_value*0.1*delta)
+			else:
+				current_speed *= -cos(velocity.y) #sin(walk_speed/5) #/ cos(velocity.y)
 			
 			#await get_tree().create_timer(0.1).timeout
 			#velocity.y = current_gravity * cos(velocity.x * 5)
