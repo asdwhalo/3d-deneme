@@ -141,6 +141,8 @@ collision_bounce = 0.09
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_fh3vb"]
 length = 0.62
 
+[sub_resource type="BoxMesh" id="BoxMesh_odr4i"]
+
 [node name="PlayerFps" type="CharacterBody3D" unique_id=755557605 groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_xby0o")
@@ -401,15 +403,19 @@ shape = SubResource("SeparationRayShape3D_fh3vb")
 root_node = NodePath("../Components/animHolder/AnimationTree")
 
 [node name="dashRoot" type="Node3D" parent="." unique_id=262427229]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8673388, -0.744539)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8673388, -0.031945348)
 
 [node name="springarm" type="SpringArm3D" parent="dashRoot" unique_id=150647090]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0.7051518)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -0.0074664354)
 spring_length = 2.5
 
 [node name="dashPos" type="Marker3D" parent="dashRoot/springarm" unique_id=1972547490]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1222897e-07, -0.3836699, 2.4276168)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="dashRoot/springarm/dashPos" unique_id=1555634479]
+transform = Transform3D(0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0)
+mesh = SubResource("BoxMesh_odr4i")
 
 [connection signal="timeout" from="Components/gun_manager/coolDownTimer" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]

@@ -53,6 +53,7 @@ var previus_speed:float:
 		else:
 			return current_speed
 var mass:float = 1
+var player_delta:float = 0
 var direction := Vector3.ZERO
 var previus_dir:Vector2 :
 	get:
@@ -108,15 +109,22 @@ enum stsm{
 	CROUCH,
 	Slide
 }
+#ön dash posu düzelt
 func calc_dash_pos():
 	if Input.is_action_pressed("w"):
-		spring_arm.rotation.z = -180
-	if Input.is_action_pressed("s"):
-		spring_arm.rotation.z = 0
-	if Input.is_action_pressed("a"):
-		spring_arm.rotation.z = -90
-	if Input.is_action_pressed("d"):
-		spring_arm.rotation.z = 90
+		spring_arm.rotation.y = deg_to_rad(180)
+		
+	elif Input.is_action_pressed("s"):
+		spring_arm.rotation.y = deg_to_rad(0)
+		
+	elif Input.is_action_pressed("a"):
+		spring_arm.rotation.y = deg_to_rad(-90)
+		
+	elif Input.is_action_pressed("d"):
+		spring_arm.rotation.y = deg_to_rad(90)
+	else:
+		spring_arm.rotation.y = deg_to_rad(180)
+		
 func _ready() -> void:
 	dash.connect(dash_to_dash_pos)
 	
@@ -137,7 +145,7 @@ func Mstate_manager():
 	else:
 		Mstates = stsm.WALK
 func dash_to_dash_pos():
-	global_position = dash_pos.global_position
+	global_position = lerp(global_position,dash_pos.global_position,player_delta*lerp_value*15)
 	print("dashed")
 func change_stateM(new_state:stsm)-> void:
 	var old_state := Mstates
@@ -297,6 +305,7 @@ func _input(event: InputEvent) -> void:
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 func _physics_process(delta: float) -> void:
+	player_delta = delta
 	calc_dash_pos()
 	input_dir = Input.get_vector("a", "d", "w", "s")
 	model_head.global_rotation = head.global_rotation	

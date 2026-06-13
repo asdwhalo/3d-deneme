@@ -25,9 +25,8 @@ sky_material = SubResource("ProceduralSkyMaterial_fj7yv")
 [sub_resource type="Environment" id="Environment_aqk2v"]
 background_mode = 2
 sky = SubResource("Sky_tlwt5")
-ssao_enabled = true
-glow_enabled = true
-fog_enabled = true
+ambient_light_source = 1
+reflected_light_source = 1
 fog_mode = 1
 fog_density = 1.0
 fog_height = 1.0
@@ -90,7 +89,7 @@ can_climb = true
 [node name="gun_manager" parent="PlayerFps/Components" parent_id_path=PackedInt32Array(1880917842, 1053506328) index="0" unique_id=792572384]
 bullet_scene = null
 
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="PlayerFps/head" parent_id_path=PackedInt32Array(1880917842, 272007608) index="7" unique_id=2108527850]
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="PlayerFps/neck/head" parent_id_path=PackedInt32Array(1880917842, 272007608) index="7" unique_id=2108527850]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, -1.73647, 0)
 remote_path = NodePath("../../../CanvasLayer/SubViewportContainer/SubViewport/Camera3D")
 update_position = false
@@ -221,5 +220,5 @@ debug_color = Color(0.99844414, 0, 0.1533528, 0.41960785)
 
 [editable path="PlayerFps"]
 [editable path="PlayerFps/player_model"]
-[editable path="PlayerFps/head/Camera3D/CanvasLayer/hud"]
+[editable path="PlayerFps/neck/head/Camera3D/CanvasLayer/hud"]
 [editable path="Item"]
