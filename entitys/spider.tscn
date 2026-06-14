@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://b1exwdki5maya"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_whfpp"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tg4ca"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_trwh6"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ar3hh"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="spider" type="CharacterBody3D" unique_id=1201471172]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2090105767]
+transform = Transform3D(1.3034955, 0, 0, 0, 0.2376281, 0, 0, 0, 3.2190306, 0, 0.12663639, 0)
+mesh = SubResource("BoxMesh_whfpp")
+
+[node name="platform" type="AnimatableBody3D" parent="." unique_id=106632360]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12663639, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="platform" unique_id=1719791916]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="platform" unique_id=555889690]
+transform = Transform3D(0.8493872, 0, 0, 0, 1, 0, 0, 0, 1.7011731, 0, 0.18604499, 0)
+mesh = SubResource("PlaneMesh_tg4ca")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="platform" unique_id=1411276698]
+transform = Transform3D(0.8493872, 0, 0, 0, 1, 0, 0, 0, 1.7011731, 0, 0.18604499, 0)
+shape = SubResource("ConcavePolygonShape3D_trwh6")
+
+[node name="IKRoot" type="Node3D" parent="." unique_id=2054415000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0032286644, 0)
+
+[node name="backwardRight" type="Marker3D" parent="IKRoot" unique_id=693874924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82916987, 0, 1.6512655)
+
+[node name="backwardLeft" type="Marker3D" parent="IKRoot" unique_id=603791249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.832345, 0, 1.6378404)
+
+[node name="forwardRight" type="Marker3D" parent="IKRoot" unique_id=1681105567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9128933, 0, -1.651266)
+
+[node name="forwardLeft" type="Marker3D" parent="IKRoot" unique_id=410230802]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8860445, 0, -1.7049652)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=2044794228]
+transform = Transform3D(1.3034955, 0, 0, 0, 0.2376281, 0, 0, 0, 3.2190306, 0, 0.12663639, 0)
+shape = SubResource("ConcavePolygonShape3D_ar3hh")

@@ -30,6 +30,9 @@ extends PlayerEntity
 @export var can_climb:bool = false
 @export var lerp_value:float = 0.5
 @export var can_lerp:bool = true
+@export var dash_cooldown:float = 1.0
+@export var dash_count:int = 3
+@export var max_dash_count:int = 3
 @onready var particels: GPUParticles3D = $GPUParticles3D
 #@onready var hand: Node3D = %hand
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -40,6 +43,7 @@ extends PlayerEntity
 @onready var shoot_point : Node3D = $neck/head/shoot_point
 @onready var slowing_timer: Timer = $slowingTimer
 @onready var parry_timer: Timer = $parryTimer
+@onready var dash_timer: Timer = $dashTimer
 
 #@onready var ground_check :RayCast3D= $groundCheck
 #@onready var is_on_ground :bool = ground_check.is_colliding() and ground_check.get_collider() is not Player
@@ -145,8 +149,33 @@ func Mstate_manager():
 	else:
 		Mstates = stsm.WALK
 func dash_to_dash_pos():
+	if not can_dash():
+		print("out of dash")
+		return
 	global_position = lerp(global_position,dash_pos.global_position,player_delta*lerp_value*15)
 	print("dashed")
+	dash_count -= 1
+
+
+func dash_control():
+	if dash_count == max_dash_count:
+		return
+	else:
+		dash_timer.start()
+		if dash_timer.is_stopped():
+			if Mstates != stsm.RUN:
+				dash_count += 1
+			else:
+				return
+
+
+func can_dash():
+	if dash_count != 0:
+		return true
+	else:
+		return false
+
+
 func change_stateM(new_state:stsm)-> void:
 	var old_state := Mstates
 	Mstates = new_state
@@ -304,8 +333,12 @@ func _input(event: InputEvent) -> void:
 			head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+
 func _physics_process(delta: float) -> void:
 	player_delta = delta
+	dash_control()
 	calc_dash_pos()
 	input_dir = Input.get_vector("a", "d", "w", "s")
 	model_head.global_rotation = head.global_rotation	

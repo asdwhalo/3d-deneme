@@ -21,7 +21,7 @@ config/icon="uid://ddfuxnvt0w32y"
 
 [autoload]
 
-PauseMenu="*res://scenes/pause_menu.tscn"
+PauseMenu="res://scenes/pause_menu.tscn"
 
 [input]
 

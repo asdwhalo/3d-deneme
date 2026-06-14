@@ -12,8 +12,13 @@ func fade_screen() -> void:
         return
     if faded == true:
         fade_anim.play("defade")
+        faded = false
     else :
         fade_anim.play("fade")
+        faded = true
 
 func _process(delta) -> void:
     global_delta = delta
+    if Input.is_action_just_pressed("change"):
+        fade_screen()
+

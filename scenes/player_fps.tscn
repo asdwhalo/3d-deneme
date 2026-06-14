@@ -417,6 +417,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1222897e-07, -0.3836699, 2
 transform = Transform3D(0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0)
 mesh = SubResource("BoxMesh_odr4i")
 
+[node name="dashTimer" type="Timer" parent="." unique_id=1603076506]
+one_shot = true
+
 [connection signal="timeout" from="Components/gun_manager/coolDownTimer" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]
 [connection signal="area_entered" from="neck/head/parryArea" to="Components/armManager" method="_on_parry_area_entered"]

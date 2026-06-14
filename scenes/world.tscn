@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://b4u5xjs4ywhwb" path="res://scenes/test_interaction.tscn" id="6_qfnet"]
 [ext_resource type="PackedScene" uid="uid://cxxxr7202dfqs" path="res://scenes/env/door.tscn" id="7_i7141"]
 [ext_resource type="Script" uid="uid://dc2oe0os4ril2" path="res://scripts/damage_system/hitbox.gd" id="9_7r4gi"]
+[ext_resource type="Script" uid="uid://dy3686j21hfco" path="res://scripts/pause_menu.gd" id="12_q5onr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
@@ -31,6 +32,8 @@ reflected_light_source = 1
 fog_mode = 1
 fog_density = 1.0
 fog_height = 1.0
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_e3hyu"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4wyf3"]
 _surfaces = [{
@@ -123,6 +126,10 @@ _data = {
 [node name="world" type="Node3D" unique_id=619601625]
 script = ExtResource("1_e3hyu")
 
+[node name="entityRoot" type="Node3D" parent="." unique_id=1038045749]
+
+[node name="levelRoot" type="Node3D" parent="." unique_id=266126378]
+
 [node name="env" type="Node" parent="." unique_id=1262920566]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="env" unique_id=19875502]
@@ -135,8 +142,12 @@ directional_shadow_max_distance = 1.0
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="env" unique_id=1321815911]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45097983, 0)
+navigation_mesh = SubResource("NavigationMesh_e3hyu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="env/NavigationRegion3D" unique_id=248578461]
 
 [node name="PlayerFps" parent="." unique_id=1880917842 instance=ExtResource("2_4wyf3")]
+unique_name_in_owner = true
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, -2.9802322e-08, 0, 0.99999994, -1.1920929e-07, 0.79119873, 2.3841858e-07)
 can_climb = true
 
@@ -294,6 +305,54 @@ color = Color(1, 1, 1, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="fadeRoot" unique_id=131335593]
 libraries/ = SubResource("AnimationLibrary_o8fc1")
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=2138600475 node_paths=PackedStringArray("player")]
+process_mode = 3
+visible = false
+script = ExtResource("12_q5onr")
+player = NodePath("../PlayerFps")
+
+[node name="Control" type="Control" parent="PauseMenu" unique_id=1632384995]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Control" unique_id=1357831763]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="resume" type="Button" parent="PauseMenu/Control/VBoxContainer" unique_id=651983015]
+layout_mode = 2
+text = "resume"
+flat = true
+
+[node name="Button2" type="Button" parent="PauseMenu/Control/VBoxContainer" unique_id=827766380]
+layout_mode = 2
+text = "optinos
+"
+flat = true
+
+[node name="menu" type="Button" parent="PauseMenu/Control/VBoxContainer" unique_id=650854440]
+layout_mode = 2
+text = "menu"
+flat = true
+
+[connection signal="pressed" from="PauseMenu/Control/VBoxContainer/resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Control/VBoxContainer/Button2" to="PauseMenu" method="_on_button_2_pressed"]
+[connection signal="pressed" from="PauseMenu/Control/VBoxContainer/menu" to="PauseMenu" method="_on_menu_pressed"]
 
 [editable path="PlayerFps"]
 [editable path="PlayerFps/player_model"]

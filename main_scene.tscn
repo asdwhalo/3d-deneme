@@ -3,6 +3,7 @@
 [ext_resource type="Material" uid="uid://p3kbgbp6rtes" path="res://assets/materials/ground.tres" id="1_2c62f"]
 [ext_resource type="Texture2D" uid="uid://dbnwtnwjdh4rr" path="res://assets/PNG/WhatsApp Image 2026-03-19 at 17.32.31.jpeg" id="2_gyfs4"]
 [ext_resource type="Script" uid="uid://d3hppqw2diu77" path="res://control.gd" id="3_gyfs4"]
+[ext_resource type="AudioStream" uid="uid://cohh8mb6uf4c0" path="res://assets/click1.ogg" id="4_d5x1h"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x1h"]
 sky_top_color = Color(0.24165836, 0.23937628, 0.22481677, 1)
@@ -26,6 +27,20 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_66tet"]
 albedo_texture = ExtResource("2_gyfs4")
 uv1_triplanar = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_gyfs4"]
+exposure_multiplier = 1.075
+dof_blur_far_enabled = true
+dof_blur_far_distance = 1.25
+dof_blur_near_enabled = true
+
+[sub_resource type="Animation" id="Animation_d5x1h"]
+resource_name = "begin_focus"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8mm7a"]
+_data = {
+&"begin_focus": SubResource("Animation_d5x1h")
+}
 
 [node name="MainScene" type="Node3D" unique_id=1142838135]
 
@@ -85,6 +100,7 @@ material = SubResource("StandardMaterial3D_nfk4m")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1743757293]
 transform = Transform3D(-0.8072505, 0.045091003, 0.5884843, -0.10655117, 0.96956086, -0.22045098, -0.58051157, -0.24066277, -0.7778739, 4.971439, 0.54477, 0)
+attributes = SubResource("CameraAttributesPractical_gyfs4")
 
 [node name="menu" type="CanvasLayer" parent="Camera3D" unique_id=1628540674]
 
@@ -111,18 +127,58 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="beginButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer" unique_id=732102659]
+[node name="begin" type="Control" parent="Camera3D/menu/Control/VBoxContainer" unique_id=588746511]
 layout_mode = 2
+
+[node name="beginButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer/begin" unique_id=732102659]
+layout_mode = 0
+offset_top = -105.0
+offset_right = 84.0
+offset_bottom = -74.0
+tooltip_text = "starts game"
 text = "Begin"
 
-[node name="configButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer" unique_id=1194742453]
+[node name="beginAudio" type="AudioStreamPlayer" parent="Camera3D/menu/Control/VBoxContainer/begin/beginButton" unique_id=246015530]
+unique_name_in_owner = true
+stream = ExtResource("4_d5x1h")
+
+[node name="config" type="Control" parent="Camera3D/menu/Control/VBoxContainer" unique_id=278426772]
 layout_mode = 2
+
+[node name="configButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer/config" unique_id=1194742453]
+layout_mode = 0
+offset_top = -74.0
+offset_right = 84.0
+offset_bottom = -43.0
 text = "Configure"
 
-[node name="exitButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer" unique_id=2016263882]
+[node name="configAudio" type="AudioStreamPlayer" parent="Camera3D/menu/Control/VBoxContainer/config/configButton" unique_id=7306247]
+unique_name_in_owner = true
+stream = ExtResource("4_d5x1h")
+
+[node name="exit" type="Control" parent="Camera3D/menu/Control/VBoxContainer" unique_id=909319393]
 layout_mode = 2
+
+[node name="exitButton" type="Button" parent="Camera3D/menu/Control/VBoxContainer/exit" unique_id=2016263882]
+layout_mode = 0
+offset_top = -43.0
+offset_right = 82.0
+offset_bottom = -12.0
 text = "Exit"
 
-[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/beginButton" to="Camera3D/menu/Control" method="_on_begin_button_pressed"]
-[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/configButton" to="Camera3D/menu/Control" method="_on_config_button_pressed"]
-[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/exitButton" to="Camera3D/menu/Control" method="_on_exit_button_pressed"]
+[node name="exitAudio" type="AudioStreamPlayer" parent="Camera3D/menu/Control/VBoxContainer/exit/exitButton" unique_id=509600536]
+unique_name_in_owner = true
+stream = ExtResource("4_d5x1h")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D/menu/Control" unique_id=241224541]
+libraries/ = SubResource("AnimationLibrary_8mm7a")
+
+[connection signal="mouse_entered" from="Camera3D/menu/Control/VBoxContainer/begin/beginButton" to="Camera3D/menu/Control" method="_on_begin_button_mouse_entered"]
+[connection signal="mouse_exited" from="Camera3D/menu/Control/VBoxContainer/begin/beginButton" to="Camera3D/menu/Control" method="_on_begin_button_mouse_exited"]
+[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/begin/beginButton" to="Camera3D/menu/Control" method="_on_begin_button_pressed"]
+[connection signal="mouse_entered" from="Camera3D/menu/Control/VBoxContainer/config/configButton" to="Camera3D/menu/Control" method="_on_config_button_mouse_entered"]
+[connection signal="mouse_exited" from="Camera3D/menu/Control/VBoxContainer/config/configButton" to="Camera3D/menu/Control" method="_on_config_button_mouse_exited"]
+[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/config/configButton" to="Camera3D/menu/Control" method="_on_config_button_pressed"]
+[connection signal="mouse_entered" from="Camera3D/menu/Control/VBoxContainer/exit/exitButton" to="Camera3D/menu/Control" method="_on_exit_button_mouse_entered"]
+[connection signal="mouse_exited" from="Camera3D/menu/Control/VBoxContainer/exit/exitButton" to="Camera3D/menu/Control" method="_on_exit_button_mouse_exited"]
+[connection signal="pressed" from="Camera3D/menu/Control/VBoxContainer/exit/exitButton" to="Camera3D/menu/Control" method="_on_exit_button_pressed"]
