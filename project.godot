@@ -17,6 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="3d deneme"
 run/main_scene="uid://bqq704m2j208n"
 config/features=PackedStringArray("4.6", "Forward Plus")
+boot_splash/image="uid://ddfuxnvt0w32y"
 config/icon="uid://ddfuxnvt0w32y"
 
 [autoload]

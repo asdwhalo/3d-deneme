@@ -343,6 +343,16 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="versionLabel" type="Label" parent="neck/head/Camera3D/CanvasLayer/hud" unique_id=1635422502]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+text = "pre-pre-pre-Alpha"
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="neck/head" unique_id=1696154731]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.409015)
 visible = false
