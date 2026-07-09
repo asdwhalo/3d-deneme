@@ -23,6 +23,10 @@ config/icon="uid://ddfuxnvt0w32y"
 
 PauseMenu="res://scenes/pause_menu.tscn"
 
+[global_group]
+
+player=""
+
 [input]
 
 a={

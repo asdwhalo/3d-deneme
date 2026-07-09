@@ -7,6 +7,8 @@ var faded:bool = false
 var fading:bool = false
 var global_delta:float = 0
 
+@export var player:Player
+
 func fade_screen() -> void:
 	if fading == true:
 		return
@@ -18,6 +20,7 @@ func fade_screen() -> void:
 		faded = true
 
 func _process(delta) -> void:
-	global_delta = delta
-	if Input.is_action_just_pressed("change"):
-		fade_screen()
+	#global_delta = delta
+	#if Input.is_action_just_pressed("change"):
+		#fade_screen()
+	pass

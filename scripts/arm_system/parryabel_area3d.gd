@@ -1,9 +1,11 @@
 class_name ParryableArea
 extends Area3D
 
-@export var parent:Node3D = get_parent()
-@onready var player: Player = $"../../../entityRoot/PlayerFps"
+@onready var parent:Node3D = get_parent()
+@onready var player: Player 
 
+func _ready() -> void:
+	player = get_tree().get_first_node_in_group("player")
 
 func parry():
 	if parent is Bullet:

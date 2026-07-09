@@ -201,9 +201,6 @@ unique_name_in_owner = true
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, -2.9802322e-08, 0, 0.99999994, -1.1920929e-07, 0.79119873, 2.3841858e-07)
 can_climb = true
 
-[node name="gun_manager" parent="entityRoot/PlayerFps/Components" parent_id_path=PackedInt32Array(1880917842, 1053506328) index="0" unique_id=792572384]
-bullet_scene = null
-
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="entityRoot/PlayerFps/neck/head" parent_id_path=PackedInt32Array(1880917842, 272007608) index="7" unique_id=2108527850]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, -1.73647, 0)
 remote_path = NodePath("../../../CanvasLayer/SubViewportContainer/SubViewport/Camera3D")
