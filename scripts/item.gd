@@ -14,6 +14,7 @@ extends RigidBody3D
 signal graped
 signal taked
 
+var is_handed:= false
 
 func _init() -> void:
 	connect("graped",grap)
@@ -25,7 +26,10 @@ func take():
 
 
 func grap():
-	freeze = true
+	if not is_handed:
+		freeze = true
+	else:
+		freeze = false
 
 
 func drop():

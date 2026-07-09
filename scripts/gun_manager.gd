@@ -1,5 +1,5 @@
 ## silahları kontrol eden sınıf
-# TODO bunu baştan yaz
+# TODO  kesinlikle bunu baştan yaz
 class_name GunManager
 extends Node
 
@@ -13,6 +13,7 @@ var next_weapon:Weapon
 var next_weapon_id:int
 var weapon_scene
 var is_attacking:bool = false
+var can_attack:bool = true
 
 
 enum weapon_state {
@@ -43,6 +44,7 @@ var current_gun_id:int = 0
 @onready var gun_holder : Node = $gunHolder
 @onready var take_timer: Timer = $TakeTimer
 @onready var previus_cooldown_timer: Timer = $previusCooldownTimer # TODO bu nodu kullnanarak swap sorunu çz tmm mı :D yaparsın sen AMK
+@onready var shoot_anim: AnimationPlayer = %shootAnim
 
 func reset_timers()->void:
 	pass
@@ -128,12 +130,12 @@ func initilize_weapon() -> void:
 	cool_down_timer.wait_time = current_weapon.cooldown
 	is_attacking = false
 	cool_down_timer.start()
-	if current_weapon.can_swap == true or cool_down_timer.is_stopped():
-		is_attacking = false
-		cool_down_timer.start()
-	else:
-		await cool_down_timer.timeout
-		is_attacking = false
+	#if current_weapon.can_swap == true or cool_down_timer.is_stopped():
+		#is_attacking = false
+		#cool_down_timer.start()
+	#else:
+		#await cool_down_timer.timeout
+		#is_attacking = false
 
 	if current_state == weapon_state.CHANGE:
 		weapon_scene.queue_free()
@@ -145,37 +147,62 @@ func initilize_weapon() -> void:
 
 #firearm resourcunu düzenle (sadece şarjrü fln olsun mk)
 func fire():
-	if current_state == weapon_state.CHANGE:
-		return
+	#if current_state == weapon_state.CHANGE:
+		#return
 
-	elif Input.is_action_pressed("fire") and parent.is_cap and is_attacking == false and cool_down_timer.is_stopped():
-		if current_weapon:
-			
-				#if not anim == null or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
-					#
-				#anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak
-			if current_weapon.shoot_point_array == null or current_weapon.shoot_point_array.size() <= 1:
+	#if Input.is_action_pressed("fire") and parent.is_cap and is_attacking == false and cool_down_timer.is_stopped():
+		#if current_weapon:
+			#
+				##if not anim == null or (!anim.is_playing() or anim.has_animation("shoot") and not anim.is_playing()):
+					##
+				##anim.play(current_weapon.shoot_animation_name) # tüm animasyonlar hand anims de tutulacak
+			#if current_weapon.shoot_point_array == null or current_weapon.shoot_point_array.size() <= 1:
+				#cool_down_timer.start()
+				#var bullet = current_weapon.bullet_scene.instantiate()
+				#add_child(bullet)
+				#bullet.global_transform.basis = shoot_point.global_transform.basis
+				#bullet.global_position = shoot_point.global_position
+				#is_attacking = true
+				#cool_down_timer.start()
+				#await cool_down_timer.timeout
+				#cool_down_timer.stop()
+				#return
+			#else:
+				#for point in current_weapon.shoot_point_array:
+					#var bullet = current_weapon.bullet_scene.instantiate()
+					#owner.add_child(bullet)
+					#bullet.global_transform.basis = shoot_point.global_transform.basis
+					#bullet.global_position = point + shoot_point.global_position
+				#is_attacking = true
+				#cool_down_timer.start()
+				#await cool_down_timer.timeout
+				#cool_down_timer.stop()
+	if  not Input.is_action_pressed("fire"):
+		return
+	if can_attack:
+		if current_weapon.shoot_point_array == null or current_weapon.shoot_point_array.size() <= 1:
 				cool_down_timer.start()
 				var bullet = current_weapon.bullet_scene.instantiate()
 				add_child(bullet)
 				bullet.global_transform.basis = shoot_point.global_transform.basis
 				bullet.global_position = shoot_point.global_position
 				is_attacking = true
-				cool_down_timer.start()
-				await cool_down_timer.timeout
-				cool_down_timer.stop()
-				return
-			else:
+				can_attack = false
+				await get_tree().create_timer(current_weapon.cooldown).timeout
+				can_attack = true
+				is_attacking = false
+				
+		else:
 				for point in current_weapon.shoot_point_array:
 					var bullet = current_weapon.bullet_scene.instantiate()
 					owner.add_child(bullet)
 					bullet.global_transform.basis = shoot_point.global_transform.basis
 					bullet.global_position = point + shoot_point.global_position
 				is_attacking = true
-				cool_down_timer.start()
-				await cool_down_timer.timeout
-				cool_down_timer.stop()
-
+				can_attack = false
+				await get_tree().create_timer(current_weapon.cooldown).timeout
+				can_attack = true
+				is_attacking = false
 
 
 func _physics_process(_delta: float) -> void:

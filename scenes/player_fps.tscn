@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bxta387f04ag1" path="res://assets/PNG/Light/texture_06.png" id="2_r6ftr"]
 [ext_resource type="Script" uid="uid://dp0vjcbpr8pwa" path="res://scripts/damage_system/hurt_box.gd" id="2_rf6kb"]
 [ext_resource type="Resource" uid="uid://dn5ruus81teih" path="res://scripts/resources/basic_pistol.tres" id="3_88axs"]
+[ext_resource type="Script" uid="uid://dj0m33rpnfybw" path="res://scripts/mouse_locker.gd" id="3_ey7il"]
 [ext_resource type="Script" uid="uid://bcbpr471wgitq" path="res://scripts/resources/weapon.gd" id="3_kkqhm"]
 [ext_resource type="Script" uid="uid://d3vgvd142746t" path="res://scripts/gun_manager.gd" id="4_3na6w"]
 [ext_resource type="Texture2D" uid="uid://dnad56j0al4df" path="res://assets/PNG/Dark/texture_11.png" id="4_jgv2g"]
@@ -98,6 +99,43 @@ uv1_triplanar = true
 material = SubResource("StandardMaterial3D_bn4h4")
 size = Vector3(0.75, 0.2, 0.5)
 
+[sub_resource type="Animation" id="Animation_ey7il"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.52828515, -1.0138769)]
+}
+
+[sub_resource type="Animation" id="Animation_fryia"]
+resource_name = "shoot"
+length = 0.43333334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.39999998),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.52828515, -1.0138769), Vector3(0, -0.52828515, -0.61953735), Vector3(0, -0.52828515, -1.0138769)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_73u4g"]
+_data = {
+&"RESET": SubResource("Animation_ey7il"),
+&"shoot": SubResource("Animation_fryia")
+}
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iq32i"]
 albedo_texture = ExtResource("4_jgv2g")
 uv1_triplanar = true
@@ -168,6 +206,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8989322, 0)
 shape = SubResource("CapsuleShape3D_qx1m4")
 debug_color = Color(0.70555377, 0.48929888, 0, 0.41960785)
 
+[node name="mouse_locker" type="Node" parent="." unique_id=723739844]
+process_mode = 3
+script = ExtResource("3_ey7il")
+
 [node name="Components" type="Node" parent="." unique_id=1053506328]
 
 [node name="gun_manager" type="Node" parent="Components" unique_id=792572384 node_paths=PackedStringArray("anim", "parent")]
@@ -210,10 +252,15 @@ libraries/ = SubResource("AnimationLibrary_0enxy")
 wait_time = 0.05
 one_shot = true
 
+[node name="dashTimer" type="Timer" parent="." unique_id=1907605988]
+wait_time = 2.0
+autostart = true
+
 [node name="parryTimer" type="Timer" parent="." unique_id=462012610]
 
 [node name="player_model" parent="." unique_id=1881803560 instance=ExtResource("8_0enxy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12689963, 0)
+visible = false
 
 [node name="body" parent="player_model" index="0" unique_id=897603574]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75284004, -0.017888308)
@@ -288,6 +335,9 @@ layout_mode = 2
 [node name="iframeleftTime" type="Label" parent="neck/head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="3" unique_id=701869383]
 layout_mode = 2
 
+[node name="dashLabel" type="Label" parent="neck/head/Camera3D/CanvasLayer/hud/playerInfo" parent_id_path=PackedInt32Array(1579434716, 1449533014) index="4" unique_id=741895239]
+layout_mode = 2
+
 [node name="hpLabel" type="Label" parent="neck/head/Camera3D/CanvasLayer/hud" unique_id=377722252]
 layout_mode = 0
 offset_right = 40.0
@@ -313,6 +363,10 @@ collide_with_areas = true
 [node name="shoot_point" type="Node3D" parent="neck/head" unique_id=169550495]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52828515, -1.0138769)
+
+[node name="shootAnim" type="AnimationPlayer" parent="neck/head/shoot_point" unique_id=2045021010]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_73u4g")
 
 [node name="extra" type="Node3D" parent="." unique_id=472505193]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.048, 0)
@@ -416,9 +470,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1222897e-07, -0.3836699, 2
 [node name="MeshInstance3D" type="MeshInstance3D" parent="dashRoot/springarm/dashPos" unique_id=1555634479]
 transform = Transform3D(0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0)
 mesh = SubResource("BoxMesh_odr4i")
-
-[node name="dashTimer" type="Timer" parent="." unique_id=1603076506]
-one_shot = true
 
 [connection signal="timeout" from="Components/gun_manager/coolDownTimer" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]

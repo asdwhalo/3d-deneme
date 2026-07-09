@@ -15,7 +15,7 @@ func on_iframe_ended():
 
 
 func _ready() -> void:
-	owner.add_child.call_deferred(iframe_timer)
+	add_child(iframe_timer)
 	is_dead.connect(on_dead)
 	health_is_zero.connect(on_zero_health)
 	iframe_timer.wait_time = max_iframes

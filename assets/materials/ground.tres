@@ -5,6 +5,7 @@
 
 [resource]
 albedo_texture = ExtResource("1_jgrjp")
+roughness = 0.62
 normal_enabled = true
 normal_texture = ExtResource("2_47y7m")
 heightmap_enabled = true

@@ -1,12 +1,15 @@
 extends CanvasLayer
 
-@onready var world := get_tree().current_scene
-@export var player:Player
-#@onready var _player = $/root/world/PlayerFps
+@export var player:PlayerEntity
 
+
+
+#@onready var _player = $/root/world/PlayerFps
+var is_open:bool = false
 #FIXME oyun durdurulunca fare gözükmüyor
 func _ready() -> void:
-	world = get_tree().current_scene
+	pass
+	#world = get_tree().current_scene
 func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("escape"):
@@ -14,11 +17,11 @@ func _process(_delta: float) -> void:
 				
 				visible = false
 				get_tree().paused = false
-				player.is_cap = true
+				is_open = false
 			else:
 				visible = true
 				get_tree().paused = true
-				player.is_cap = false
+				is_open = true
 
 func _on_resume_pressed() -> void:
 	visible = false

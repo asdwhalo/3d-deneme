@@ -50,6 +50,7 @@ extends PlayerEntity
 var input_dir:Vector2
 var current_gravity:float
 var is_slowing:bool = false
+var is_dash_loading:bool = false
 var previus_speed:float:
 	get:
 		if Engine.get_physics_frames() % 2 == 0:
@@ -59,6 +60,8 @@ var previus_speed:float:
 var mass:float = 1
 var player_delta:float = 0
 var direction := Vector3.ZERO
+var height_tween:Tween
+var speed_tween:Tween
 var previus_dir:Vector2 :
 	get:
 		if Engine.get_physics_frames() % 2 == 0:
@@ -75,6 +78,8 @@ var previus_dir:Vector2 :
 @onready var stair_check_8: CollisionShape3D = $stair_check8
 @onready var dash_pos: Node3D = %dashPos
 @onready var spring_arm: SpringArm3D = $dashRoot/springarm
+
+@onready var dash_tweener:Tween
 
 @onready var stair_check_array = [stair_check,stair_check_2,stair_check_3,stair_check_4,stair_check_5,stair_check_6,stair_check_7,stair_check_8]
 @onready var model_head : MeshInstance3D = $player_model/head
@@ -131,6 +136,7 @@ func calc_dash_pos():
 		
 func _ready() -> void:
 	dash.connect(dash_to_dash_pos)
+	dash_timer.timeout.connect(_on_dash_timer_timeout)
 	
 func bobbed_y(multipler:float = 1)-> float:
 	return sin(multipler * (10 * global_position.x))
@@ -152,28 +158,28 @@ func dash_to_dash_pos():
 	if not can_dash():
 		print("out of dash")
 		return
-	global_position = lerp(global_position,dash_pos.global_position,player_delta*lerp_value*15)
+	if dash_tweener:dash_tweener.kill()
+	dash_tweener =  create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_ELASTIC)
+	dash_tweener.tween_property(self,"global_position",dash_pos.global_position,0.1)
 	print("dashed")
 	dash_count -= 1
+	await dash_timer.timeout
+	dash_count += 1
 
 
 func dash_control():
-	if dash_count == max_dash_count:
-		return
-	else:
+	if not dash_count == max_dash_count:
 		dash_timer.start()
-		if dash_timer.is_stopped():
-			if Mstates != stsm.RUN:
-				dash_count += 1
-			else:
-				return
-
+	else:
+		dash_timer.stop()
+	
+	
 
 func can_dash():
-	if dash_count != 0:
-		return true
-	else:
+	if dash_count == 0:
 		return false
+	else:
+		return true
 
 
 func change_stateM(new_state:stsm)-> void:
@@ -204,9 +210,16 @@ func change_stateM(new_state:stsm)-> void:
 			mesh.mesh.height = normal_height
 			mass = 1.25
 		stsm.CROUCH:
-			current_speed = crounch_speed
-			coll.shape.height = cruch_height
-			mesh.mesh.height = cruch_height
+			if height_tween:height_tween.kill()
+			height_tween = create_tween()
+			height_tween.set_parallel(true)
+			height_tween.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+			height_tween.tween_property(self,"current_speed",crounch_speed,0.05)
+			height_tween.tween_property(self,"coll:shape:height",cruch_height,0.05)
+			height_tween.tween_property(self,"mesh:mesh:height",cruch_height,0.05)
+			#current_speed = crounch_speed
+			#coll.shape.height = cruch_height
+			#mesh.mesh.height = cruch_height
 			mass = 2
 		stsm.Slide:
 			current_speed = 10
@@ -309,6 +322,7 @@ func cap_mouse()->void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 func tween_denemesi():
 	var _tween = self.create_tween()
+	@warning_ignore("unused_variable")
 	var degress:int = 10
 	#gun.rotation.x = lerp_angle(deg_to_rad(degress),deg_to_rad(-degress),1)
 	#tween.tween_property(gun,"rotation",Vector3(deg_to_rad(degress),0,0),2)
@@ -321,27 +335,31 @@ func tween_denemesi():
 		stsm.CROUCH:
 			degress = 2
 func _input(event: InputEvent) -> void:
+	var basis_x: Vector3 = Vector3(1,0,0)
 	cap_mouse()
 	if  is_cap == true:
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if event is InputEventMouseMotion :
 			if  not Mstates == stsm.Slide:
 				self.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
 			else:
 				neck.rotate_y(deg_to_rad(event.relative.x *-mouse_sensivity))
 			head.rotate_x(deg_to_rad(event.relative.y *-mouse_sensivity))
+			
 			head.rotation.x = clamp(head.rotation.x,deg_to_rad(-89),deg_to_rad(90))
 	else:
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		pass
 
 
 
 func _physics_process(delta: float) -> void:
+	dash_count = clamp(dash_count,0,max_dash_count)
 	player_delta = delta
-	dash_control()
+	#dash_control()
 	calc_dash_pos()
 	input_dir = Input.get_vector("a", "d", "w", "s")
-	model_head.global_rotation = head.global_rotation	
+	model_head.global_rotation = head.global_rotation
 	fire()
 	head_bob()
 	stair_control()
@@ -413,7 +431,11 @@ func _physics_process(delta: float) -> void:
 			#await get_tree().create_timer(0.1).timeout
 			#velocity.y = current_gravity * cos(velocity.x * 5)
 		else:
-			velocity.x = move_toward(velocity.x, 0, current_speed)
+			if speed_tween:speed_tween.kill()
+			speed_tween = create_tween()
+			speed_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
+			speed_tween.tween_property(self,"velocity:x",0,0.05)
+			#velocity.x = move_toward(velocity.x, 0, current_speed)
 			velocity.z = move_toward(velocity.z, 0, current_speed)
 	#if input_dir == Vector2.ZERO:
 		#input_dir = Vector2.ONE
@@ -423,3 +445,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 func _on_slowing_timer_timeout() -> void:
 	is_slowing = false
+
+
+func _on_dash_timer_timeout() -> void:
+	dash_count += 1 if dash_count != max_dash_count else 0
+	
+	

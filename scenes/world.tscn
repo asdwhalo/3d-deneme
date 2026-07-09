@@ -13,27 +13,57 @@
 [ext_resource type="Script" uid="uid://dc2oe0os4ril2" path="res://scripts/damage_system/hitbox.gd" id="9_7r4gi"]
 [ext_resource type="Script" uid="uid://dy3686j21hfco" path="res://scripts/pause_menu.gd" id="12_q5onr"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
-sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
-sky_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
-sky_curve = 4.63649
-sky_cover_modulate = Color(1, 0.885601, 0.934621, 1)
-ground_bottom_color = Color(0.158572, 0.177427, 0.194551, 1)
-ground_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
+[sub_resource type="Animation" id="Animation_e3hyu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fadeControl/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
-[sub_resource type="Sky" id="Sky_tlwt5"]
-sky_material = SubResource("ProceduralSkyMaterial_fj7yv")
+[sub_resource type="Animation" id="Animation_q5onr"]
+resource_name = "defade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fadeControl/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 0)]
+}
 
-[sub_resource type="Environment" id="Environment_aqk2v"]
-background_mode = 2
-sky = SubResource("Sky_tlwt5")
-ambient_light_source = 1
-reflected_light_source = 1
-fog_mode = 1
-fog_density = 1.0
-fog_height = 1.0
+[sub_resource type="Animation" id="Animation_jhx03"]
+resource_name = "fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fadeControl/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(0, 0, 0, 1)]
+}
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_e3hyu"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o8fc1"]
+_data = {
+&"RESET": SubResource("Animation_e3hyu"),
+&"defade": SubResource("Animation_q5onr"),
+&"fade": SubResource("Animation_jhx03")
+}
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4wyf3"]
 _surfaces = [{
@@ -71,246 +101,37 @@ _surfaces = [{
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_w7kh3"]
 
-[sub_resource type="Animation" id="Animation_e3hyu"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("%ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
+sky_top_color = Color(0.156863, 0.176471, 0.196078, 1)
+sky_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
+sky_curve = 4.63649
+sky_cover_modulate = Color(1, 0.885601, 0.934621, 1)
+ground_bottom_color = Color(0.158572, 0.177427, 0.194551, 1)
+ground_horizon_color = Color(0.36914, 0.378756, 0.387939, 1)
 
-[sub_resource type="Animation" id="Animation_q5onr"]
-resource_name = "defade"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("%ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 0)]
-}
+[sub_resource type="Sky" id="Sky_tlwt5"]
+sky_material = SubResource("ProceduralSkyMaterial_fj7yv")
 
-[sub_resource type="Animation" id="Animation_jhx03"]
-resource_name = "fade"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("%ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(0, 0, 0, 1)]
-}
+[sub_resource type="Environment" id="Environment_aqk2v"]
+background_mode = 2
+sky = SubResource("Sky_tlwt5")
+ssao_enabled = true
+ssao_radius = 1.79
+ssao_intensity = 4.4
+fog_mode = 1
+fog_density = 1.0
+fog_height = 1.0
+volumetric_fog_enabled = true
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_o8fc1"]
-_data = {
-&"RESET": SubResource("Animation_e3hyu"),
-&"defade": SubResource("Animation_q5onr"),
-&"fade": SubResource("Animation_jhx03")
-}
+[sub_resource type="NavigationMesh" id="NavigationMesh_e3hyu"]
 
 [node name="world" type="Node3D" unique_id=619601625]
 script = ExtResource("1_e3hyu")
 
-[node name="entityRoot" type="Node3D" parent="." unique_id=1038045749]
-
-[node name="levelRoot" type="Node3D" parent="." unique_id=266126378]
-
-[node name="env" type="Node" parent="." unique_id=1262920566]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="env" unique_id=19875502]
-environment = SubResource("Environment_aqk2v")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env" unique_id=2098593987]
-transform = Transform3D(-0.866004, -0.499992, 0.00671762, 0.0058192, 0.0033561, 0.999977, -0.500003, 0.866024, 3.15723e-06, 0.837257, 10.6437, 0)
-shadow_enabled = true
-directional_shadow_max_distance = 1.0
-
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="env" unique_id=1321815911]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45097983, 0)
-navigation_mesh = SubResource("NavigationMesh_e3hyu")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="env/NavigationRegion3D" unique_id=248578461]
-
-[node name="PlayerFps" parent="." unique_id=1880917842 instance=ExtResource("2_4wyf3")]
-unique_name_in_owner = true
-transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, -2.9802322e-08, 0, 0.99999994, -1.1920929e-07, 0.79119873, 2.3841858e-07)
-can_climb = true
-
-[node name="gun_manager" parent="PlayerFps/Components" parent_id_path=PackedInt32Array(1880917842, 1053506328) index="0" unique_id=792572384]
-bullet_scene = null
-
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="PlayerFps/neck/head" parent_id_path=PackedInt32Array(1880917842, 272007608) index="7" unique_id=2108527850]
-transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, -1.73647, 0)
-remote_path = NodePath("../../../CanvasLayer/SubViewportContainer/SubViewport/Camera3D")
-update_position = false
-update_rotation = false
-update_scale = false
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=426986428]
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer" unique_id=328409209]
-offset_right = 253.0
-offset_bottom = 234.0
-
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer" unique_id=1646290665]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(253, 234)
-render_target_update_mode = 4
-
-[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport" unique_id=1650283371]
-transform = Transform3D(1, 0, 2.9802326e-08, -2.9787865e-08, 0.031149073, 0.99951476, -9.283148e-10, -0.99951476, 0.031149073, -1.1920929e-07, 8.879956, 5.3571577)
-fov = 120.6
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=340447794]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.847889, 1.3630996, -4.86285)
-layers = 3
-use_collision = true
-size = Vector3(3.91992, 1.70593, 0.289917)
-metadata/name = "oha"
-
-[node name="Item" parent="." unique_id=1198258508 instance=ExtResource("3_4wyf3")]
-transform = Transform3D(0.86749643, -0.4974434, 0, 0.4974434, 0.86749643, 0, 0, 0, 1, 2.98872, 6.7345195, -4.86285)
-collision_layer = 5
-collision_mask = 5
-
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=18437983]
-
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1275238191]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45996, 0.919484, -4.86285)
-mesh = SubResource("ArrayMesh_4wyf3")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=54701181]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45996, 0.919484, -4.86285)
-shape = SubResource("ConcavePolygonShape3D_k0juu")
-
-[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=223790369]
-
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=2133182246]
-shape = SubResource("ConcavePolygonShape3D_71j4m")
-
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=467268727]
-material_override = ExtResource("3_w7kh3")
-mesh = SubResource("ArrayMesh_qfnet")
-skeleton = NodePath("../..")
-
-[node name="stairs2" parent="StaticBody3D2/CSGBakedMeshInstance3D" unique_id=1421608189 instance=ExtResource("4_4mrxx")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 1)
-
-[node name="stairs3" parent="StaticBody3D2/CSGBakedMeshInstance3D" unique_id=39083960 instance=ExtResource("4_4mrxx")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.117963, 1.4071772, 1)
-
-[node name="stairs4" parent="StaticBody3D2/CSGBakedMeshInstance3D" unique_id=2108554672 instance=ExtResource("4_4mrxx")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -13.129384, 2.6777632, 1)
-
-[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=491732748]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 0)
-
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=663456601]
-shape = SubResource("ConcavePolygonShape3D_71j4m")
-
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3" unique_id=132617141]
-material_override = ExtResource("3_w7kh3")
-mesh = SubResource("ArrayMesh_qfnet")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D4" type="StaticBody3D" parent="." unique_id=469067488]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 19.320057)
-
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4" unique_id=1919888761]
-shape = SubResource("ConcavePolygonShape3D_71j4m")
-
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4" unique_id=1816867193]
-material_override = ExtResource("3_w7kh3")
-mesh = SubResource("ArrayMesh_qfnet")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D5" type="StaticBody3D" parent="." unique_id=669412874]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4512024, 0, 19.320057)
-
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D5" unique_id=462307316]
-shape = SubResource("ConcavePolygonShape3D_71j4m")
-
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D5" unique_id=1251194564]
-material_override = ExtResource("3_w7kh3")
-mesh = SubResource("ArrayMesh_qfnet")
-skeleton = NodePath("../..")
-
-[node name="bullet" parent="." unique_id=1376065768 instance=ExtResource("4_k0juu")]
-transform = Transform3D(0.2315102, 0, 0.9728325, 0, 1, 0, -0.9728325, 0, 0.2315102, -5.7687044, 1.5563154, 0)
-
-[node name="stairs" parent="." unique_id=182041286 instance=ExtResource("5_71j4m")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 0)
-
-[node name="stairs2" parent="." unique_id=1205861711 instance=ExtResource("5_71j4m")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.972002, 0.8939953, 0)
-
-[node name="stairs3" parent="." unique_id=1528343909 instance=ExtResource("5_71j4m")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -14.780987, 1.7430763, 0)
-
-[node name="test_interaction" parent="." unique_id=1562778584 instance=ExtResource("6_qfnet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
-
-[node name="door" parent="." unique_id=1513769194 instance=ExtResource("7_i7141")]
-transform = Transform3D(-0.023123512, 0, -0.9997326, 0, 1, 0, 0.9997326, 0, -0.023123512, 3.7438855, 0, 0)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=845727711]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -4)
-
-[node name="Hitbox" type="Area3D" parent="." unique_id=1405769743 node_paths=PackedStringArray("coll")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9921346, 6.0164137)
-script = ExtResource("9_7r4gi")
-coll = NodePath("CollisionShape3D")
-metadata/_custom_type_script = "uid://dc2oe0os4ril2"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox" unique_id=1096643702]
-shape = SubResource("SphereShape3D_w7kh3")
-debug_color = Color(0.99844414, 0, 0.1533528, 0.41960785)
-
-[node name="fadeRoot" type="CanvasLayer" parent="." unique_id=572729767]
-
-[node name="fadeControl" type="Control" parent="fadeRoot" unique_id=2028702177]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect" type="ColorRect" parent="fadeRoot/fadeControl" unique_id=2000767432]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 1, 1, 0)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="fadeRoot" unique_id=131335593]
-libraries/ = SubResource("AnimationLibrary_o8fc1")
-
-[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=2138600475 node_paths=PackedStringArray("player")]
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=2138600475]
 process_mode = 3
 visible = false
 script = ExtResource("12_q5onr")
-player = NodePath("../PlayerFps")
 
 [node name="Control" type="Control" parent="PauseMenu" unique_id=1632384995]
 layout_mode = 3
@@ -350,11 +171,191 @@ layout_mode = 2
 text = "menu"
 flat = true
 
+[node name="fadeRoot" type="CanvasLayer" parent="." unique_id=572729767]
+
+[node name="fadeControl" type="Control" parent="fadeRoot" unique_id=2028702177]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="fadeRoot/fadeControl" unique_id=2000767432]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="fadeRoot" unique_id=131335593]
+libraries/ = SubResource("AnimationLibrary_o8fc1")
+
+[node name="entityRoot" type="Node3D" parent="." unique_id=1038045749]
+
+[node name="PlayerFps" parent="entityRoot" unique_id=1880917842 instance=ExtResource("2_4wyf3")]
+unique_name_in_owner = true
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, -2.9802322e-08, 0, 0.99999994, -1.1920929e-07, 0.79119873, 2.3841858e-07)
+can_climb = true
+
+[node name="gun_manager" parent="entityRoot/PlayerFps/Components" parent_id_path=PackedInt32Array(1880917842, 1053506328) index="0" unique_id=792572384]
+bullet_scene = null
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="entityRoot/PlayerFps/neck/head" parent_id_path=PackedInt32Array(1880917842, 272007608) index="7" unique_id=2108527850]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, -1.73647, 0)
+remote_path = NodePath("../../../CanvasLayer/SubViewportContainer/SubViewport/Camera3D")
+update_position = false
+update_rotation = false
+update_scale = false
+
+[node name="levelRoot" type="Node3D" parent="." unique_id=266126378]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="levelRoot" unique_id=340447794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.847889, 1.3630996, -4.86285)
+layers = 3
+use_collision = true
+size = Vector3(3.91992, 1.70593, 0.289917)
+metadata/name = "oha"
+
+[node name="Item" parent="levelRoot" unique_id=1198258508 instance=ExtResource("3_4wyf3")]
+transform = Transform3D(0.86749643, -0.4974434, 0, 0.4974434, 0.86749643, 0, 0, 0, 1, 2.98872, 6.7345195, -4.86285)
+collision_layer = 5
+collision_mask = 5
+
+[node name="StaticBody3D" type="StaticBody3D" parent="levelRoot" unique_id=18437983]
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="levelRoot/StaticBody3D" unique_id=1275238191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45996, 0.919484, -4.86285)
+mesh = SubResource("ArrayMesh_4wyf3")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="levelRoot/StaticBody3D" unique_id=54701181]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45996, 0.919484, -4.86285)
+shape = SubResource("ConcavePolygonShape3D_k0juu")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="levelRoot" unique_id=223790369]
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="levelRoot/StaticBody3D2" unique_id=2133182246]
+shape = SubResource("ConcavePolygonShape3D_71j4m")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="levelRoot/StaticBody3D2" unique_id=467268727]
+material_override = ExtResource("3_w7kh3")
+mesh = SubResource("ArrayMesh_qfnet")
+skeleton = NodePath("../../..")
+
+[node name="stairs2" parent="levelRoot/StaticBody3D2/CSGBakedMeshInstance3D" unique_id=1421608189 instance=ExtResource("4_4mrxx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 1)
+
+[node name="stairs3" parent="levelRoot/StaticBody3D2/CSGBakedMeshInstance3D" unique_id=39083960 instance=ExtResource("4_4mrxx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.117963, 1.4071772, 1)
+
+[node name="stairs4" parent="levelRoot/StaticBody3D2/CSGBakedMeshInstance3D" unique_id=2108554672 instance=ExtResource("4_4mrxx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -13.129384, 2.6777632, 1)
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="levelRoot" unique_id=491732748]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 0)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="levelRoot/StaticBody3D3" unique_id=663456601]
+shape = SubResource("ConcavePolygonShape3D_71j4m")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="levelRoot/StaticBody3D3" unique_id=132617141]
+material_override = ExtResource("3_w7kh3")
+mesh = SubResource("ArrayMesh_qfnet")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="levelRoot" unique_id=469067488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.633766, 0, 19.320057)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="levelRoot/StaticBody3D4" unique_id=1919888761]
+shape = SubResource("ConcavePolygonShape3D_71j4m")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="levelRoot/StaticBody3D4" unique_id=1816867193]
+material_override = ExtResource("3_w7kh3")
+mesh = SubResource("ArrayMesh_qfnet")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D5" type="StaticBody3D" parent="levelRoot" unique_id=669412874]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4512024, 0, 19.320057)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="levelRoot/StaticBody3D5" unique_id=462307316]
+shape = SubResource("ConcavePolygonShape3D_71j4m")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="levelRoot/StaticBody3D5" unique_id=1251194564]
+material_override = ExtResource("3_w7kh3")
+mesh = SubResource("ArrayMesh_qfnet")
+skeleton = NodePath("../../..")
+
+[node name="bullet" parent="levelRoot" unique_id=1376065768 instance=ExtResource("4_k0juu")]
+transform = Transform3D(0.2315102, 0, 0.9728325, 0, 1, 0, -0.9728325, 0, 0.2315102, -5.7687044, 1.5563154, 0)
+
+[node name="stairs" parent="levelRoot" unique_id=182041286 instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 0)
+
+[node name="stairs2" parent="levelRoot" unique_id=1205861711 instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.972002, 0.8939953, 0)
+
+[node name="stairs3" parent="levelRoot" unique_id=1528343909 instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -14.780987, 1.7430763, 0)
+
+[node name="test_interaction" parent="levelRoot" unique_id=1562778584 instance=ExtResource("6_qfnet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="door" parent="levelRoot" unique_id=1513769194 instance=ExtResource("7_i7141")]
+transform = Transform3D(-0.023123512, 0, -0.9997326, 0, 1, 0, 0.9997326, 0, -0.023123512, 3.7438855, 0, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="levelRoot" unique_id=845727711]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -4)
+
+[node name="Hitbox" type="Area3D" parent="levelRoot" unique_id=1405769743 node_paths=PackedStringArray("coll")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9921346, 6.0164137)
+script = ExtResource("9_7r4gi")
+coll = NodePath("CollisionShape3D")
+metadata/_custom_type_script = "uid://dc2oe0os4ril2"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="levelRoot/Hitbox" unique_id=1096643702]
+shape = SubResource("SphereShape3D_w7kh3")
+debug_color = Color(0.99844414, 0, 0.1533528, 0.41960785)
+
+[node name="env" type="Node" parent="." unique_id=1262920566]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env" unique_id=19875502]
+environment = SubResource("Environment_aqk2v")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env" unique_id=2098593987]
+transform = Transform3D(-0.866004, -0.499992, 0.00671762, 0.0058192, 0.0033561, 0.999977, -0.500003, 0.866024, 3.15723e-06, 0.837257, 10.6437, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 1.0
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="env" unique_id=1321815911]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45097983, 0)
+navigation_mesh = SubResource("NavigationMesh_e3hyu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="env/NavigationRegion3D" unique_id=248578461]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=426986428]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer" unique_id=328409209]
+offset_right = 253.0
+offset_bottom = 234.0
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer" unique_id=1646290665]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(253, 234)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport" unique_id=1650283371]
+transform = Transform3D(1, 0, 2.9802326e-08, -2.9787865e-08, 0.031149073, 0.99951476, -9.283148e-10, -0.99951476, 0.031149073, -1.1920929e-07, 8.879956, 5.3571577)
+fov = 120.6
+
 [connection signal="pressed" from="PauseMenu/Control/VBoxContainer/resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Control/VBoxContainer/Button2" to="PauseMenu" method="_on_button_2_pressed"]
 [connection signal="pressed" from="PauseMenu/Control/VBoxContainer/menu" to="PauseMenu" method="_on_menu_pressed"]
 
-[editable path="PlayerFps"]
-[editable path="PlayerFps/player_model"]
-[editable path="PlayerFps/neck/head/Camera3D/CanvasLayer/hud"]
-[editable path="Item"]
+[editable path="entityRoot/PlayerFps"]
+[editable path="entityRoot/PlayerFps/player_model"]
+[editable path="entityRoot/PlayerFps/neck/head/Camera3D/CanvasLayer/hud"]
+[editable path="levelRoot/Item"]
