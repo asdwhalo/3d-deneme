@@ -13,3 +13,4 @@ extends Resource
 @export var shoot_point_array:Array[Vector3]
 @export var can_swap:bool = false 
 @export var take_time:float = 0.1
+@export var time_left:float = 0

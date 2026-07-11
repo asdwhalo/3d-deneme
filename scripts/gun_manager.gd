@@ -45,6 +45,7 @@ var current_gun_id:int = 0
 @onready var take_timer: Timer = $TakeTimer
 @onready var previus_cooldown_timer: Timer = $previusCooldownTimer # TODO bu nodu kullnanarak swap sorunu çz tmm mı :D yaparsın sen AMK
 @onready var shoot_anim: AnimationPlayer = %shootAnim
+@onready var cooldown_time: Timer = $CooldownTime
 
 func reset_timers()->void:
 	pass
@@ -69,19 +70,36 @@ func weapon_control() -> void:
 			current_weapon = current_weapon_array[current_weapon_id]
 			next_weapon_id = current_weapon_id +1
 			next_weapon = current_weapon_array[current_weapon_id +1]
-
+			if cooldown_time.is_stopped() == false:
+				cooldown_time.stop()
+				cooldown_time.timeout.emit()
+				is_changing = false
+			else:
+				if cooldown_time.is_stopped() == false:
+					cooldown_time.stop()
+					cooldown_time.timeout.emit()
 			initilize_weapon()
 			return
-		previus_weapon = current_weapon_array[current_weapon_id]
-		current_weapon_id += 1
-		current_weapon = current_weapon_array[current_weapon_id]
-		next_weapon_id = current_weapon_id + 1 if not current_weapon_id +1 == current_weapon_array.size() -1 else 0
-		next_weapon = current_weapon_array[current_weapon_id + 1 if  current_weapon_id +1 == current_weapon_array.size() -1 else 0]
+		else:
+			previus_weapon = current_weapon_array[current_weapon_id]
+			current_weapon_id += 1
+			current_weapon = current_weapon_array[current_weapon_id]
+			next_weapon_id = current_weapon_id + 1 if not current_weapon_id +1 == current_weapon_array.size() -1 else 0
+			next_weapon = current_weapon_array[current_weapon_id + 1 if  current_weapon_id +1 == current_weapon_array.size() -1 else 0]
+			if cooldown_time.is_stopped() == false:
+				cooldown_time.stop()
+				cooldown_time.timeout.emit()
+				is_changing = false
+			else:
+				if cooldown_time.is_stopped() == false:
+					cooldown_time.stop()
+					cooldown_time.timeout.emit()
 	initilize_weapon()
 
 
 func _ready() -> void:
-	cool_down_timer.stop()
+	cooldown_time.stop()
+	cooldown_time.timeout.emit()
 	for resource in weapon_array:
 		current_weapon_array.append(resource.duplicate())
 		print(str(resource.cooldown))
@@ -90,27 +108,37 @@ func _ready() -> void:
 	current_weapon_id = 0
 	current_weapon = current_weapon_array[current_weapon_id]
 	initilize_weapon()
-
+	
 	cool_down_timer.wait_time = current_weapon.cooldown
 	if current_weapon is MeleeWeapon:
 		times_on_attack_timer.wait_time = current_weapon.times_on_attack
 
-
+var is_changing:bool = false
 #region bugged
 func change_weapon()->void:
 	#TODO
 	#numaralara basılınca  array da  o numaralara atanmış silah seçilir bu bir for döngüsüyle yazılacak
 	# ancak şuanlık tektuş ile değiştirilcek
 	if Input.is_action_just_pressed("change"):
+		is_changing = true
 		current_state = weapon_state.CHANGE
 		if current_weapon == weapon_array[0]:
+			print("oha")
 			current_weapon = weapon_array[1]
+			if cooldown_time.is_stopped() == false:
+				cooldown_time.stop()
+				cooldown_time.timeout.emit()
 			initilize_weapon()
 			current_state = weapon_state.IDLE
+			is_changing = false
 		else:
 			current_weapon = weapon_array[0]
+			if cooldown_time.is_stopped() == false:
+				cooldown_time.stop()
+				cooldown_time.timeout.emit()
 			initilize_weapon()
 			current_state = weapon_state.IDLE
+			is_changing = false
 
 
 func init_vars():
@@ -127,9 +155,10 @@ func initilize_weapon() -> void:
 	shoot_point.add_child(weapon_scene)
 
 
-	cool_down_timer.wait_time = current_weapon.cooldown
+	cooldown_time.wait_time = current_weapon.cooldown
 	is_attacking = false
-	cool_down_timer.start()
+	
+	#cool_down_timer.start()
 	#if current_weapon.can_swap == true or cool_down_timer.is_stopped():
 		#is_attacking = false
 		#cool_down_timer.start()
@@ -188,8 +217,10 @@ func fire():
 				bullet.global_position = shoot_point.global_position
 				is_attacking = true
 				can_attack = false
-				await get_tree().create_timer(current_weapon.cooldown).timeout
-				can_attack = true
+				#if not is_changing:
+					#await get_tree().create_timer(current_weapon.cooldown).timeout
+				cooldown_time.start()
+				#can_attack = true
 				is_attacking = false
 				
 		else:
@@ -200,8 +231,10 @@ func fire():
 					bullet.global_position = point + shoot_point.global_position
 				is_attacking = true
 				can_attack = false
-				await get_tree().create_timer(current_weapon.cooldown).timeout
-				can_attack = true
+				#if not is_changing:
+					#await get_tree().create_timer(current_weapon.cooldown).timeout
+				cooldown_time.start()
+				#can_attack = true
 				is_attacking = false
 
 
@@ -220,4 +253,4 @@ func _on_cool_down_timer_timeout() -> void:
 	#else:
 		#await cool_down_timer.timeout
 		#is_attacking = false
-	is_attacking = false
+	can_attack = true
