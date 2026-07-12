@@ -34,7 +34,7 @@ metadata/_custom_type_script = "uid://oea6fdn1ied1"
 script = ExtResource("7_odr4i")
 scene = ExtResource("6_ts7aj")
 shoot_point_array = Array[Vector3]([Vector3(0.2, 0.2, 0.2), Vector3(-0.2, -0.2, -0.2), Vector3(0, 0, 0)])
-can_swap = true
+can_quickswap = true
 metadata/_custom_type_script = "uid://oea6fdn1ied1"
 
 [sub_resource type="Animation" id="Animation_fh3vb"]
@@ -220,6 +220,7 @@ anim = NodePath("../animHolder/AnimationPlayer")
 parent = NodePath("../..")
 
 [node name="coolDownTimer" type="Timer" parent="Components/gun_manager" unique_id=1843360715]
+editor_description = "bozuk CooldownTimer ı kullan"
 
 [node name="previusCooldownTimer" type="Timer" parent="Components/gun_manager" unique_id=149919288]
 one_shot = true
@@ -234,6 +235,8 @@ one_shot = true
 
 [node name="CooldownTime" type="Timer" parent="Components/gun_manager" unique_id=1721650166]
 one_shot = true
+
+[node name="AltCooldownTimer" type="Timer" parent="Components/gun_manager" unique_id=904134778]
 
 [node name="armManager" type="Node" parent="Components" unique_id=814134739]
 script = ExtResource("6_maesr")
@@ -483,8 +486,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1222897e-07, -0.3836699, 2
 transform = Transform3D(0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0, 0.2136541, 0, 0, 0)
 mesh = SubResource("BoxMesh_odr4i")
 
+[node name="CrounchRay" type="RayCast3D" parent="." unique_id=185829587]
+
 [connection signal="timeout" from="Components/gun_manager/coolDownTimer" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
 [connection signal="timeout" from="Components/gun_manager/CooldownTime" to="Components/gun_manager" method="_on_cool_down_timer_timeout"]
+[connection signal="timeout" from="Components/gun_manager/AltCooldownTimer" to="Components/gun_manager" method="_on_alt_cooldown_timer_timeout"]
 [connection signal="timeout" from="slowingTimer" to="." method="_on_slowing_timer_timeout"]
 [connection signal="area_entered" from="neck/head/parryArea" to="Components/armManager" method="_on_parry_area_entered"]
 [connection signal="area_exited" from="neck/head/parryArea" to="Components/armManager" method="_on_parry_area_exited"]

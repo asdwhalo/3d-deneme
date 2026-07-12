@@ -14,7 +14,8 @@ var next_weapon_id:int
 var weapon_scene
 var is_attacking:bool = false
 var can_attack:bool = true
-
+var is_alt_attaking:bool = false
+var can_alt_attack:bool = false
 
 enum weapon_state {
 	FIRE = 0,
@@ -64,6 +65,7 @@ func init_gun() ->void:
 ## Resource tabanlı silah değiştirme fonksiyonu
 func weapon_control() -> void:
 	if Input.is_action_just_pressed("change"):
+		current_weapon.time_left = cooldown_time.time_left
 		if current_weapon_id == current_weapon_array.size() -1 :
 			current_weapon_id = 0
 			previus_weapon = current_weapon_array[current_weapon_array.size() -1]
@@ -175,7 +177,7 @@ func initilize_weapon() -> void:
 
 
 #firearm resourcunu düzenle (sadece şarjrü fln olsun mk)
-func fire():
+func fire() -> void:
 	#if current_state == weapon_state.CHANGE:
 		#return
 
@@ -237,6 +239,18 @@ func fire():
 				#can_attack = true
 				is_attacking = false
 
+func alt_fire() ->void:
+	if not Input.is_action_just_pressed("alt_fire") or not Input.is_action_just_pressed("alt_fire"):
+		return
+	match  current_weapon.input_for_alt:
+		Weapon.AltInputType.hold:
+			if not Input.is_action_pressed("alt_fire"):
+				return
+		Weapon.AltInputType.per_click:
+			if not Input.is_action_just_pressed("alt_fire"):
+				return
+	match  current_weapon.AltBulletType:
+		pass # TODO
 
 func _physics_process(_delta: float) -> void:
 	#var weapon_scene = current_weapon.scene.instantiate()
@@ -244,6 +258,7 @@ func _physics_process(_delta: float) -> void:
 		#weapon_scene.queue_free()
 	weapon_control()
 	fire()
+	alt_fire()
 	#change_weapon()
 
 
@@ -254,3 +269,7 @@ func _on_cool_down_timer_timeout() -> void:
 		#await cool_down_timer.timeout
 		#is_attacking = false
 	can_attack = true
+
+
+func _on_alt_cooldown_timer_timeout() -> void:
+	can_alt_attack = true

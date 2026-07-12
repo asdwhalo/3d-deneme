@@ -78,6 +78,7 @@ var previus_dir:Vector2 :
 @onready var stair_check_8: CollisionShape3D = $stair_check8
 @onready var dash_pos: Node3D = %dashPos
 @onready var spring_arm: SpringArm3D = $dashRoot/springarm
+@onready var crounch_ray: RayCast3D = $CrounchRay
 
 @onready var dash_tweener:Tween
 

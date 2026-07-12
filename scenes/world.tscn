@@ -128,6 +128,9 @@ volumetric_fog_enabled = true
 [node name="world" type="Node3D" unique_id=619601625]
 script = ExtResource("1_e3hyu")
 
+[node name="SoundRoot" type="Node" parent="." unique_id=1394909470]
+unique_name_in_owner = true
+
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=2138600475]
 process_mode = 3
 visible = false
