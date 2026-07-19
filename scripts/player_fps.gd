@@ -36,7 +36,7 @@ extends PlayerEntity
 @onready var particels: GPUParticles3D = $GPUParticles3D
 #@onready var hand: Node3D = %hand
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var raycast: RayCast3D = $neck/head/RayCast3D
+@onready var raycast: RayCast3D = %RayCast3D
 @onready var hud: Control = %hud
 @onready var grap_point: Node3D = $neck/head/grapPoint
 @onready var bullet_scene = preload("res://scenes/bullet.tscn")
@@ -48,6 +48,7 @@ extends PlayerEntity
 #@onready var ground_check :RayCast3D= $groundCheck
 #@onready var is_on_ground :bool = ground_check.is_colliding() and ground_check.get_collider() is not Player
 var input_dir:Vector2
+var info_text:String = ""
 var current_gravity:float
 var is_slowing:bool = false
 var is_dash_loading:bool = false
@@ -79,6 +80,7 @@ var previus_dir:Vector2 :
 @onready var dash_pos: Node3D = %dashPos
 @onready var spring_arm: SpringArm3D = $dashRoot/springarm
 @onready var crounch_ray: RayCast3D = $CrounchRay
+@onready var fps_label: Label = $neck/head/Camera3D/CanvasLayer/hud/fpsLabel
 
 @onready var dash_tweener:Tween
 
@@ -153,7 +155,7 @@ func Mstate_manager():
 		Mstates = stsm.RUN
 	elif Input.is_action_pressed("crouch"):
 		Mstates = stsm.CROUCH
-	else:
+	elif crounch_ray.is_colliding() == false:
 		Mstates = stsm.WALK
 func dash_to_dash_pos():
 	if not can_dash():
@@ -201,15 +203,33 @@ func change_stateM(new_state:stsm)-> void:
 				pass
 	match new_state:
 		stsm.RUN:
-			current_speed = walk_speed#run_speed
-			coll.shape.height = normal_height
-			mesh.mesh.height = normal_height
-			mass = 0.3 
+			if not crounch_ray.is_colliding():
+				current_speed = walk_speed#run_speed
+				coll.shape.height = normal_height
+				mesh.mesh.height = normal_height
+				mass = 0.3
+			else:
+				if height_tween:height_tween.kill()
+				height_tween = create_tween()
+				height_tween.set_parallel(true)
+				height_tween.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+				height_tween.tween_property(self,"current_speed",crounch_speed,0.05)
+				height_tween.tween_property(self,"coll:shape:height",cruch_height,0.05)
+				height_tween.tween_property(self,"mesh:mesh:height",cruch_height,0.05)
 		stsm.WALK:
-			current_speed = walk_speed
-			coll.shape.height = normal_height
-			mesh.mesh.height = normal_height
-			mass = 1.25
+			if not crounch_ray.is_colliding():
+				current_speed = walk_speed
+				coll.shape.height = normal_height
+				mesh.mesh.height = normal_height
+				mass = 1.25
+			else:
+				if height_tween:height_tween.kill()
+				height_tween = create_tween()
+				height_tween.set_parallel(true)
+				height_tween.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+				height_tween.tween_property(self,"current_speed",crounch_speed,0.05)
+				height_tween.tween_property(self,"coll:shape:height",cruch_height,0.05)
+				height_tween.tween_property(self,"mesh:mesh:height",cruch_height,0.05)
 		stsm.CROUCH:
 			if height_tween:height_tween.kill()
 			height_tween = create_tween()
@@ -238,6 +258,21 @@ func stair_control():
 			continue
 		else:
 			ray.disabled = false
+
+func set_info_text() ->void:
+	var collider = raycast.get_collider() as Node3D
+	
+	if raycast.is_colliding() == false:
+		info_text = "+"
+		return
+	else:
+		if collider.has_node("Namer"):
+			info_text = str(collider.get_node("Namer").Name)
+		elif collider.has_meta("name"):
+			info_text = collider.get_meta("name")
+		
+			
+
 func hudControl()->void:
 
 #	if invertory[1] == null:
@@ -253,10 +288,9 @@ func hudControl()->void:
 	hud.is_ground.text = str(is_on_floor())
 	if not raycast.is_colliding():
 		hud.info.text = "+"
-		return
 	else:
 		if collider is Item:
-			hud.info.text = str(collider.item_name)
+			info_text = str(collider.item_name)
 			if Input.is_action_pressed("interac"):
 				if collider.grapable == false:
 					if collider.has_method("take"):
@@ -278,6 +312,9 @@ func hudControl()->void:
 						collider.grap()
 				else:
 					collider.drop()
+		elif collider.has_node("Namer"):
+			print("oha" + str(collider))
+			info_text =  str(collider.get_node("Namer").Name)
 		elif collider.has_node("$interacableArea3D") != null or collider is interacableArea3D:
 			if Input.is_action_just_pressed("interac") and collider.has_signal("on_interac"):
 				print("interac object found and request input")
@@ -291,9 +328,10 @@ func hudControl()->void:
 		else:
 			hud.info.text = "+"
 		if collider != null and collider.has_meta("name") and collider is not Item:
-			hud.info.text = str(collider.get_meta("name"))
+			info_text = str(collider.get_meta("name"))
 		else:
-			hud.info.text = "+"
+			info_text = "+"
+	
 func get_interac(object:Node3D)->void:
 	if not object.has_signal(object.on_interac) or not object.has_method(object.on_interac) :
 		return
@@ -355,6 +393,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	fps_label.text = str(int(Engine.get_frames_per_second()))
 	dash_count = clamp(dash_count,0,max_dash_count)
 	player_delta = delta
 	#dash_control()
@@ -365,6 +404,7 @@ func _physics_process(delta: float) -> void:
 	head_bob()
 	stair_control()
 	hudControl()
+	set_info_text()
 	if current_speed >= 6 and states == sts.YER and input_dir:
 		particels.emitting = true
 	else:

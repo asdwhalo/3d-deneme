@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cnrm4aqfuaamq"]
+
+[ext_resource type="Texture2D" uid="uid://dbnwtnwjdh4rr" path="res://assets/PNG/WhatsApp Image 2026-03-19 at 17.32.31.jpeg" id="1_npnek"]
+
+[resource]
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("1_npnek")
+metallic = 0.03
+roughness = 0.2
+roughness_texture = ExtResource("1_npnek")
+uv1_triplanar = true

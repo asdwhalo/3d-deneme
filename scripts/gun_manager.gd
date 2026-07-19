@@ -60,6 +60,7 @@ func init_gun() ->void:
 		current_gun.un_take()
 	current_gun = gun_array[current_gun_id]
 	current_gun.take()
+	
 
 
 ## Resource tabanlı silah değiştirme fonksiyonu

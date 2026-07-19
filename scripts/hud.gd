@@ -13,7 +13,11 @@ extends Control
 @export var gun_manager:GunManager
 
 func _process(_delta: float) -> void:
+	player.set_info_text()
 	hp_label.text = str(player.hp) + "/" + str(player.max_hp - player.hard_damage)
 	current_weapon.text = str(gun_manager.current_weapon_id)
 	iframeleft_time.text = str(player.iframe_timer.time_left)
 	dash_label.text = "dashes remain : " + str(player.dash_count)
+
+func write_info() ->void:
+	info.text = player.info_text

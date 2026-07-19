@@ -1,0 +1,178 @@
+[gd_scene format=3 uid="uid://e0l6dtdk26vf"]
+
+[ext_resource type="Script" uid="uid://bvco36f3tswxh" path="res://scripts/setting_ui_root.gd" id="1_05p07"]
+[ext_resource type="Material" uid="uid://p3kbgbp6rtes" path="res://assets/materials/ground.tres" id="2_wswnh"]
+[ext_resource type="Material" uid="uid://cnrm4aqfuaamq" path="res://assets/materials/ex_tground.tres" id="3_labj1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lwwgp"]
+sky_top_color = Color(0.24165836, 0.23937628, 0.22481677, 1)
+sky_horizon_color = Color(0.44499105, 0.4493439, 0.44595957, 1)
+ground_bottom_color = Color(0.15934026, 0.17903379, 0.1800561, 1)
+ground_horizon_color = Color(0.44499105, 0.4493439, 0.44595957, 1)
+
+[sub_resource type="Sky" id="Sky_bgjg7"]
+sky_material = SubResource("ProceduralSkyMaterial_lwwgp")
+
+[sub_resource type="Environment" id="Environment_48ojb"]
+background_mode = 2
+sky = SubResource("Sky_bgjg7")
+reflected_light_source = 1
+ssao_enabled = true
+ssil_enabled = true
+glow_enabled = true
+volumetric_fog_enabled = true
+adjustment_enabled = true
+adjustment_brightness = 0.74
+
+[node name="settingsMenu" type="Node3D" unique_id=877572736]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=656213063]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_color = Color(0.8100942, 0.8100943, 0.81009424, 1)
+light_energy = 0.589
+light_indirect_energy = 0.726
+shadow_enabled = true
+sky_mode = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=594711408]
+environment = SubResource("Environment_48ojb")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=330178904]
+transform = Transform3D(0.85008097, -0.100456, 0.51698285, -0.011911675, 0.97772115, 0.20956951, -0.5265175, -0.18430905, 0.82994545, 0, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D" unique_id=1799170601]
+
+[node name="settingUiRoot" type="Control" parent="Camera3D/CanvasLayer" unique_id=1341974239]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_05p07")
+
+[node name="MarginContainer" type="MarginContainer" parent="Camera3D/CanvasLayer/settingUiRoot" unique_id=1120910061]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="PanelContainer" type="PanelContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer" unique_id=1378774359]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer" unique_id=641577396]
+layout_mode = 2
+
+[node name="TabBar" type="TabBar" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer" unique_id=494192882]
+unique_name_in_owner = true
+layout_mode = 2
+current_tab = 0
+close_with_middle_mouse = false
+select_with_rmb = true
+tab_count = 2
+tab_0/title = "audio"
+tab_1/title = "graphics"
+
+[node name="settings" type="VBoxContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer" unique_id=1458277523]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings" unique_id=862534660]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer" unique_id=2129393946]
+layout_mode = 2
+
+[node name="audioSettingsRoot" type="Control" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer" unique_id=1121335337]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/audioSettingsRoot" unique_id=8354476]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="allVolume" type="PanelContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/audioSettingsRoot/VBoxContainer" unique_id=1602522395]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/audioSettingsRoot/VBoxContainer/allVolume" unique_id=146875743]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/audioSettingsRoot/VBoxContainer/allVolume/HBoxContainer" unique_id=1324338814]
+layout_mode = 2
+text = "All Game sound"
+
+[node name="SpinBox" type="SpinBox" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/audioSettingsRoot/VBoxContainer/allVolume/HBoxContainer" unique_id=1692207268]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 1
+
+[node name="graphicsSettingsRoot" type="Control" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer" unique_id=1681206644]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/graphicsSettingsRoot" unique_id=590255847]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/graphicsSettingsRoot/HBoxContainer" unique_id=1640035530]
+layout_mode = 2
+text = "aspect ratio"
+
+[node name="OptionButton" type="OptionButton" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/graphicsSettingsRoot/HBoxContainer" unique_id=1148066850]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "1920x1080"
+popup/item_0/id = 0
+popup/item_1/text = "100x50"
+popup/item_1/id = 1
+
+[node name="exitSettings" type="Button" parent="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings" unique_id=1418067488]
+layout_mode = 2
+size_flags_vertical = 4
+text = "exit to main"
+
+[node name="env" type="CSGCombiner3D" parent="." unique_id=616655873]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="env" unique_id=190916792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65597534, -0.3869629, -0.8545761)
+size = Vector3(16.718445, 0.22607422, 17.207779)
+material = ExtResource("2_wswnh")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="env" unique_id=236573041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.488492, -0.32507324, -2.2571464)
+size = Vector3(1.0844727, 0.34985352, 1.4610596)
+material = ExtResource("3_labj1")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1643691682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.0098786)
+light_energy = 0.571
+shadow_enabled = true
+distance_fade_enabled = true
+
+[connection signal="tab_changed" from="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/TabBar" to="Camera3D/CanvasLayer/settingUiRoot" method="_on_tab_bar_tab_changed"]
+[connection signal="value_changed" from="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/audioSettingsRoot/VBoxContainer/allVolume/HBoxContainer/SpinBox" to="Camera3D/CanvasLayer/settingUiRoot" method="_on_spin_box_value_changed"]
+[connection signal="item_selected" from="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/MarginContainer/PanelContainer/graphicsSettingsRoot/HBoxContainer/OptionButton" to="Camera3D/CanvasLayer/settingUiRoot" method="_on_option_button_item_selected"]
+[connection signal="pressed" from="Camera3D/CanvasLayer/settingUiRoot/MarginContainer/PanelContainer/VBoxContainer/settings/exitSettings" to="Camera3D/CanvasLayer/settingUiRoot" method="_on_exit_settings_pressed"]
